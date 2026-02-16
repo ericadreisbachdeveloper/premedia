@@ -1,0 +1,209 @@
+# as of 16 Feb 2026 - erica dreisbach - erica@peppergroup.com
+
+
+#
+# IGNORE EVERYTHING in root ...
+# 
+/*
+
+
+
+#
+# ... except DO track ...
+#
+!.editorconfig
+!.gitignore
+!favicon.ico
+!favicon.svg
+!favicon.png
+!icons/
+!manifest.json
+!README.md
+!robots.txt
+!site.webmanifest
+!wp-content/
+
+
+
+#
+# DON'T track contents of wp-content
+# ... with exceptions below ...
+# 
+wp-content/*
+
+
+
+#
+# DO track custom post types 
+# replace XXX with three-letter theme prefix 
+# 
+!wp-content/mu-plugins/
+wp-content/mu-plugins/*
+!wp-content/mu-plugins/pre-post-types.php
+
+
+
+#
+# DON'T track directory wp-content/plugins/ 
+#
+wp-content/plugins/
+
+
+
+#
+# DO track directory wp-content/themes/ 
+#
+!wp-content/themes/
+
+
+
+#
+# ... but ignore any theme files that start with zz-
+#
+wp-content/themes/**/zz-*
+wp-content/themes/**/**/zz-*
+wp-content/themes/**/**/**/zz-*
+
+
+
+#
+# DON'T track WordPress themes
+#
+wp-content/themes/twenty*/
+
+
+
+#
+# DON'T track system files
+#
+*~
+.php-cs-fixer.dist.php
+.DS_Store
+.svn
+.cvs
+*.bak
+*.swp
+Thumbs.db
+gulpfile.js
+package.json
+static-config.json
+node_modules/
+
+
+
+#
+# DON'T track these WP Engine-specific files
+#
+.smushit-status
+.gitattributes
+_wpeprivate*
+
+
+
+#
+# DON'T track large files
+# a CDN should be used for these
+#
+*.hqx
+*.bin
+*.exe
+*.dll
+*.deb
+*.dmg
+*.iso
+*.img
+*.msi
+*.msp
+*.msm
+*.mid
+*.midi
+*.kar
+*.mp3
+*.ogg
+*.m4a
+*.ra
+*.3gpp
+*.3gp
+*.mp4
+*.mpeg
+*.mpg
+*.mov
+*.webm
+*.flv
+*.m4v
+*.mng
+*.asx
+*.asf
+*.wmv
+*.avi
+
+
+
+#
+# GIT SMART 
+# 
+
+
+
+#
+# Ignore previously tracked content without changing on remote 
+# 
+# For a file
+# $ git update-index --assume-unchanged [file]
+# 
+# For a directory like wp-content/plugins/ or wp-content/uploads/
+# ref: https://stackoverflow.com/a/12288918
+# 
+# $ cd [DIR]
+# $ git ls-files | tr '\n' ' ' | xargs git update-index --assume-unchanged
+# 
+# ... and also update .gitignore so that new files in the ignored directories will be untracked
+
+
+
+# 
+# Stop tracking files
+#
+# $ git rm --cached /\*.exe
+# 
+
+
+#
+# Output tracked files on master
+#
+# $ git ls-tree -r master --name-only
+# $ git ls-tree -r main --name-only
+
+
+
+# 
+# Output untracked files 
+#
+# $ git status -u
+# $ git status --untracked-files
+
+
+
+#
+# .gitignore Rules 
+#
+# src: https://stackoverflow.com/questions/17888695/difference-between-gitignore-rules-with-and-without-trailing-slash-like-dir-an
+#
+# /dir will match a file, directory, link, anything named dir
+# /dir/ will match only a directory named dir
+# /dir/* will match all files, directories and anything else inside a
+# directory named dir (but not the dir directory itself).
+
+
+
+# 
+# "Diverging branches can't be fast-forwarded, you need to either: ... "
+#
+# try ... 
+# 
+# $ git checkout -b TEMP
+# $ git add .
+# $ git commit -m'Local commit'
+# $ git reset --hard production/main
+# $ git checkout main
+# $ get merge TEMP  
