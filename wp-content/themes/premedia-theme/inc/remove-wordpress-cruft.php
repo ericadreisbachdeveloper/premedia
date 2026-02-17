@@ -75,3 +75,29 @@ function head_cleanup(): void
 {
     add_filter('feed_links_show_comments_feed', '__return_false');
 }
+
+
+
+/**
+ * Remove Really Simple Discovery Link
+ *
+ * src: https://wpadminify.com/kb/how-to-remove-rsd-link-from-wordpress-header-source/
+ */
+remove_action('wp_head', 'rsd_link');
+
+
+
+/**
+ * Remove wlmanifest
+ *
+ * src: https://wpassist.me/how-to-remove-wlwmanifest-from-wordpress/
+ */
+remove_action('wp_head', 'wlwmanifest_link');
+
+
+
+/**
+ * Remove emoji support
+ */
+remove_action('wp_head', 'print_emoji_detection_script', 7);
+remove_action('wp_print_styles', 'print_emoji_styles');
