@@ -1,0 +1,16 @@
+// Structured according to many of the principles of RSCSS 
+// https://rstacruz.github.io/rscss/
+
+
+@import '_alterations-to-wordpress.scss';
+@import '_breakpoints.scss';
+@import '_colors.scss';
+@import '_mixins.scss';
+@import '_typography.scss';
+
+@import 'footer.scss';
+
+
+
+
+// $ sass --watch assets/sass/__style.scss:assets/css/style.css --style compressed

@@ -50,9 +50,12 @@ add_action('wp_enqueue_scripts', 'remove_gutenberg_styling', 100);
 function remove_gutenberg_styling()
 {
 
-    wp_dequeue_style('wp-block-library'); // External CSS
+    //wp_dequeue_style('wp-block-library'); // External CSS
     wp_dequeue_style('wp-block-library-theme'); // Inline CSS
-    wp_dequeue_style('global-styles'); // Inline CSS
+
+    /* Inline CSS necessary for back end Editor customization tools to work */
+    //wp_dequeue_style('global-styles'); // Inline CSS
+
 }
 
 

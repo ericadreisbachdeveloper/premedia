@@ -1,0 +1,314 @@
+// mixins 
+
+
+
+// define optional-at-root 
+@mixin optional-at-root($sel) {
+    @at-root #{if(not &, $sel, selector-append(&, $sel))} {
+        @content;
+    }
+}
+
+
+
+// :before :after pseudoclasses 
+@mixin has-pseudoclass-content-display {
+    content: '';
+    display: block;
+    position: absolute;
+    visibility: visible;
+}
+
+@mixin has-before {
+    position: relative;
+
+    &:before {
+        @include has-pseudoclass-content-display;
+    }
+}
+
+@mixin has-after {
+    position: relative;
+
+    &:after {
+        @include has-pseudoclass-content-display;
+    }
+
+}
+
+
+
+// animations - in 4 parts                   
+// animation part 1 of 4 (leave it alone :)  
+@mixin keyframes($animationName) {
+    @-webkit-keyframes #{$animationName} {
+        @content;
+    }
+
+    @-moz-keyframes #{$animationName} {
+        @content;
+    }
+
+    @-o-keyframes #{$animationName} {
+        @content;
+    }
+
+    @keyframes #{$animationName} {
+        @content;
+    }
+}
+
+// animation part 2 of 4: name and define the animation 
+// copy and adjust the below                            
+/*  
+@include keyframes(NAME) {
+    50% { transform: scale(1.2); transform-origin: center center; }
+    0%, 100% { transform: scale(1); transform-origin: center center; }
+}  
+*/
+
+
+// animation part 3 of 4: define @include animation, leave this alone  
+@mixin animation($name, $timing, $count, $duration) {
+    -webkit-animation-name: $name;
+    -webkit-animation-timing-function: $timing;
+    -webkit-animation-iteration-count: $count;
+    -webkit-animation-duration: $duration;
+
+    animation-name: $name;
+    animation-timing-function: $timing;
+    animation-iteration-count: $count;
+    animation-duration: $duration;
+}
+
+// animation part 4 of 4: copy and repurpose the below                    
+// #animated-div { @include animation(NAME, ease-in-out, infinite, 4s); } 
+
+
+
+// box shadow - box-shadow 
+@mixin box-shadow ($vert, $horiz, $blur, $color) {
+    -webkit-box-shadow: $vert $horiz $blur $color;
+    box-shadow: $vert $horiz $blur $color;
+}
+
+@mixin box-shadow-none {
+    -webkit-box-shadow: 0 0 0 transparent;
+    box-shadow: 0 0 0 transparent;
+}
+
+
+
+// flexbox 
+@mixin flex {
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: -webkit-box;
+    display: flex;
+}
+
+@mixin align-items($args) {
+    -webkit-box-align: $args;
+    -ms-flex-align: $args;
+    align-items: flex-+$args;
+}
+
+@mixin align-items-center {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+@mixin justify-content-center {
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+@mixin justify-content-flex-end {
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+
+@mixin justify-content-space-between {
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+
+@mixin flex-direction-col {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+@mixin flex-direction-col-reverse {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+    -ms-flex-direction: column-reverse;
+    flex-direction: column-reverse;
+}
+
+@mixin flex-direction-row {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+
+@mixin flex-direction-row-reverse {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+    -ms-flex-direction: row-reverse;
+    flex-direction: row-reverse;
+}
+
+@mixin flex-wrap {
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+@mixin flex-grow {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
+
+@mixin align-self-center {
+    -ms-flex-item-align: center;
+    -ms-grid-row-align: center;
+    align-self: center;
+}
+
+
+
+// hovers + transitions 
+@mixin hover {
+    &:hover {
+        @content;
+    }
+
+    &:active {
+        @content;
+    }
+
+    &:focus {
+        @content;
+    }
+
+    &:focus-visible {
+        @content;
+    }
+
+    &:target {
+        @content;
+    }
+}
+
+@mixin transition($multi...) {
+    -webkit-transition: $multi;
+    -moz-transition: $multi;
+    -ms-transition: $multi;
+    -o-transition: $multi;
+    transition: $multi;
+}
+
+@mixin transitiondelay ($time) {
+    transition-delay: $time;
+    -webkit-transition-delay: $time;
+}
+
+@mixin transition-transform {
+    @include transition(-webkit-transform .25s ease-in-out, -moz-transform .25s ease-in-out, -ms-transform .25s ease-in-out, -o-transform .25s ease-in-out, transform .25s ease-in-out);
+}
+
+
+
+// linear gradient 
+@mixin lineargradient($val...) {
+    background-image: -o-linear-gradient($val);
+    background-image: -moz-linear-gradient($val);
+    background-image: -webkit-linear-gradient($val);
+    background-image: -ms-linear-gradient($val);
+    background-image: linear-gradient($val);
+}
+
+
+
+
+// placeholder for inputs                                                                  
+// include opacity: 1; in placeholder styling to override native browser semi-transparency 
+@mixin placeholder {
+    @include optional-at-root('::-webkit-input-placeholder') {
+        @content;
+    }
+
+    @include optional-at-root(':-moz-placeholder') {
+        @content;
+    }
+
+    @include optional-at-root('::-moz-placeholder') {
+        @content;
+    }
+
+    @include optional-at-root(':-ms-input-placeholder') {
+        @content;
+    }
+}
+
+
+
+// transforms 
+@mixin translate($horiz, $vert) {
+    -webkit-transform: translate($horiz, $vert);
+    -moz-transform: translate($horiz, $vert);
+    -ms-transform: translate($horiz, $vert);
+    -o-transform: translate($horiz, $vert);
+    transform: translate($horiz, $vert);
+}
+
+// $rotate and $skew with deg, a la "90deg"
+// skew is in degrees, 0 is default         
+@mixin transform($rotate, $scale, $skew, $translatex, $translatey) {
+    transform: rotate($rotate) scale($scale) skew($skew) translateX($translatex) translateY($translatey);
+    -webkit-transform: rotate($rotate) scale($scale) skew($skew) translateX($translatex) translateY($translatey);
+    -moz-transform: rotate($rotate) scale($scale) skew($skew) translateX($translatex) translateY($translatey);
+    -o-transform: rotate($rotate) scale($scale) skew($skew) translateX($translatex) translateY($translatey);
+    -ms-transform: rotate($rotate) scale($scale) skew($skew) translateX($translatex) translateY($translatey);
+}
+
+@mixin scale($scale) {
+    transform: scale($scale);
+    -webkit-transform: scale($scale);
+    -moz-transform: scale($scale);
+    -o-transform: scale($scale);
+    -ms-transform: scale($scale);
+}
+
+@mixin scalexy($x, $y) {
+    transform: scale($x, $y);
+    -webkit-transform: scale($x, $y);
+    -moz-transform: scale($x, $y);
+    -o-transform: scale($x, $y);
+    -ms-transform: sclae($x, $y);
+}
+
+@mixin rotate($deg) {
+    transform: rotate($deg);
+    -webkit-transform: rotate($deg);
+    -moz-transform: rotate($deg);
+    -o-transform: rotate($deg);
+    -ms-transform: rotate($deg);
+}
+
+
+
+// saturation 
+@mixin saturate($val) {
+    -webkit-filter: saturate($val);
+    filter: saturate($val)
+}

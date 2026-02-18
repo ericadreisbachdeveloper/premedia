@@ -2,7 +2,12 @@
     "$schema": "https://schemas.wp.org/wp/6.7/theme.json",
     "version": 3,
     "settings": {
-        "appearanceTools": true,
+        "border": {
+            "color": true,
+            "radius": true,
+            "style": true,
+            "width": true
+        },
         "color": {
             "defaultDuotone": false,
             "defaultGradients": false,
@@ -50,9 +55,77 @@
                 }
             ]
         },
+        "dimensions": {
+            "minHeight": true
+        },
         "layout": {
             "contentSize": "645px",
             "wideSize": "1340px"
         },
-    ]
+        "spacing": {
+            "padding": true,
+            "margin": true,
+            "blockGap": true,
+            "defaultSpacingSizes": false,
+            "spacingSizes": [
+                {
+                    "name": "Tiny",
+                    "size": "10px",
+                    "slug": "20"
+                },
+                {
+                    "name": "X-Small",
+                    "size": "20px",
+                    "slug": "30"
+                },
+                {
+                    "name": "Small",
+                    "size": "30px",
+                    "slug": "40"
+                },
+                {
+                    "name": "Regular",
+                    "size": "clamp(30px, 5vw, 50px)",
+                    "slug": "50"
+                },
+                {
+                    "name": "Large",
+                    "size": "clamp(30px, 7vw, 70px)",
+                    "slug": "60"
+                },
+                {
+                    "name": "X-Large",
+                    "size": "clamp(50px, 7vw, 90px)",
+                    "slug": "70"
+                },
+                {
+                    "name": "XX-Large",
+                    "size": "clamp(70px, 10vw, 140px)",
+                    "slug": "80"
+                }
+            ],
+            "units": [
+                "%",
+                "px",
+                "em",
+                "rem",
+                "vh",
+                "vw"
+            ]
+        },
+        "typography": {
+            "lineHeight": true,
+            "fontSize": true,
+            "fontWeight": true
+        },
+        "blocks": {
+            "core/group": {
+                "spacing": {
+                    "padding": true,
+                    "margin": true,
+                    "blockGap": true
+                }
+            }
+        }
+    }
 }
