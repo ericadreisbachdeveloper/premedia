@@ -5,6 +5,11 @@
 
 // fonts
 @font-face {
+    font-family: 'merriweather-reg';
+    src: url('../fonts/merriweather-reg.ttf') format('truetype');
+}
+
+@font-face {
     font-family: 'merriweather';
     src: url('../fonts/merriweather.ttf') format('truetype');
 }
@@ -22,6 +27,11 @@
 @font-face {
     font-family: 'roboto-ital';
     src: url('../fonts/roboto-ital.ttf') format('truetype');
+}
+
+%merriweather-reg {
+    font-family: merriweather-reg, serif;
+    font-weight: 400;
 }
 
 
@@ -95,15 +105,20 @@ html {
 }
 
 h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h2 {
     @extend %merriweather;
     margin-block-start: .2em;
 }
 
+
+h2.has-medium-font-size,
+h3,
+h4,
+h5,
+h6 {
+    @extend %merriweather-reg;
+    margin-block-start: .2em;
+}
 
 // Extra Large 
 %h1 {
