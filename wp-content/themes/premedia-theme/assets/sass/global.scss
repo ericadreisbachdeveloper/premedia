@@ -1,0 +1,29 @@
+// global.scss
+
+// skip links
+%hidden {
+    position: absolute;
+    line-height: 0;
+    overflow: hidden;
+    -webkit-clip-path: polygon(0 0, calc(1rem / 16) 0, calc(1rem / 16) calc(1rem / 16), 0 calc(1rem / 16));
+    clip-path: polygon(0 0, calc(1rem / 16) 0, calc(1rem / 16) calc(1rem / 16), 0 calc(1rem / 16));
+    //top: -9999px; /* leave vertical position intact for smooth scroll to anchors */ 
+    left: -99999px;
+}
+
+@mixin hidden {
+    position: absolute;
+    line-height: 0;
+    overflow: hidden;
+    -webkit-clip-path: polygon(0 0, calc(1rem / 16) 0, calc(1rem / 16) calc(1rem / 16), 0 calc(1rem / 16));
+    clip-path: polygon(0 0, calc(1rem / 16) 0, calc(1rem / 16) calc(1rem / 16), 0 calc(1rem / 16));
+    //top: -9999px;
+    left: -99999px;
+}
+
+
+.hidden,
+.skip-link,
+.sr-only {
+    @extend %hidden;
+}

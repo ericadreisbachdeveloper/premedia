@@ -9,8 +9,11 @@
 @import '_typography.scss';
 
 @import 'footer.scss';
-
+@import 'global.scss';
 
 
 
 // $ sass --watch assets/sass/__style.scss:assets/css/style.css --style compressed
+
+// production
+// $ sass --watch assets/sass/__style.scss:assets/css/style.css --style compressed --no-source-map

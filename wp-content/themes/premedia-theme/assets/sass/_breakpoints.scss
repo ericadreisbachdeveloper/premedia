@@ -1,0 +1,60 @@
+// breakpoints
+
+
+
+// 768px 
+$tablet: calc(768rem / 16);
+
+$narrower-than-tablet: calc(767rem / 16);
+
+
+
+// 990px 
+$laptop: calc(990rem / 16);
+
+@media (min-width: $laptop) {
+
+    .laptop-br {
+        display: block;
+    }
+
+    .laptop-and-narrower,
+    .laptop-hide {
+        display: none;
+    }
+
+}
+
+// narrower-than-laptop = hamburger nav 
+$narrower-than-laptop: calc(989rem / 16);
+
+@media (max-width: $narrower-than-laptop) {
+
+    .tablet-hide {
+        display: none;
+    }
+
+}
+
+
+
+// 1300px
+$desktop: calc(1300rem / 16);
+
+$narrower-than-desktop: calc(1299rem / 16);
+
+
+@media (min-width: $desktop) {
+
+    .desktop-hide {
+        display: none;
+    }
+
+}
+
+
+
+// 1500px 
+$wide: calc(1500rem / 16);
+
+$narrower-than-wide: calc(1499rem / 16);

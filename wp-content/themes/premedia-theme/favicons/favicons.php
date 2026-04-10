@@ -17,11 +17,17 @@
  *
  *
  * 2 of 5 - favicon.ico
- * generate from  iMagick
- * $ magick -compress lossless -density 300 -define icon:auto-resize=256,96,48 -background none favicons/favicon.svg ../../../favicon.ico
+ * generate from  rsvg-convert and convert
+ *
+ * $ rsvg-convert -w 48 -h 48 ./favicons/favicon.svg -o ./favicons/favicon-48.png
+ * $ rsvg-convert -w 32 -h 32 ./favicons/favicon.svg -o ./favicons/favicon-32.png
+ * $ magick ./favicons/favicon-48.png ./favicons/favicon-32.png ../../../favicon.ico
+
+ * x $ magick -compress lossless -density 300 -define icon:auto-resize=256,96,48 -background none favicons/favicon.svg ../../../favicon.ico
  * ref: https://stackoverflow.com/a/34958537
  * "Note the sizes="48x48" attribute. This is a trick to fool the latest versions of Chromium browsers
  * (Chrome, Edge, Opera, etc.) so that they will pick the SVG favicon rather than the .ico version of the favicon.
+ *
  *
  *
  *
