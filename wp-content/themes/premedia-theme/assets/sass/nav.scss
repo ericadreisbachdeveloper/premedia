@@ -1,0 +1,29 @@
+// nav.scss
+
+@media (min-width: $laptop) {
+
+    [href].wp-block-navigation-item__content {
+        @include has-after;
+        padding: 1rem .5rem;
+
+        &:after {
+            width: calc(100% - 1rem);
+            height: calc(2rem / 16);
+
+            bottom: .5rem;
+            left: .5rem;
+        }
+    }
+
+
+    // fighting wordpress 
+    .wp-block-navigation .wp-block-navigation-item__content.wp-block-navigation-item__content[aria-current="page"] {
+        color: $teal;
+    }
+
+    [aria-current="page"]:after {
+        background-color: $teal;
+
+    }
+
+}

@@ -2,6 +2,7 @@
 
 
 
+
 // fonts
 @font-face {
     font-family: 'merriweather';
@@ -100,26 +101,57 @@ h4,
 h5,
 h6 {
     @extend %merriweather;
+    margin-block-start: .2em;
 }
 
 
+// Extra Large 
 %h1 {
     font-size: clamp(1.5rem, 1.5rem + 1.8462vw, 3rem);
     line-height: 1.25em;
 }
 
-h2 {
-    @extend %h1;
+
+// Large 
+%h2 {
+    font-size: clamp(1.25rem, 1.25rem + 1.3333vw, 2.25rem);
+}
+
+// For h2 in hero section apply Extra Large in WordPress back end 
+h2:not([class*="-font-size"]) {
+    @extend %h2;
 }
 
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    &:not(.has-text-color) {
+        color: $navy;
+    }
+
+}
+
+
+p,
+li {
+    &:not(.has-text-color) {
+        color: $text;
+    }
+}
+
+
+// Medium 
 %deck {
     font-size: clamp(0.875rem, 0.875rem + 0.4615vw, 1.25rem);
     line-height: 1.4em;
 }
 
-p.deck,
-.wp-element-button {
+p.deck:not([class*="-font-size"]),
+.wp-element-button:not([class*="-font-size"]) {
     @extend %deck;
 }
 
@@ -129,7 +161,7 @@ p.deck,
     line-height: 1.5em;
 }
 
-p,
-li {
+p:not([class*="-font-size"]),
+li:not([class*="-font-size"]) {
     @extend %text;
 }

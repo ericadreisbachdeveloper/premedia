@@ -1,0 +1,15 @@
+// wp-block-media-text.scss
+
+
+@media (min-width: $tablet) {
+
+    .wp-block-media-text.has-media-on-the-right .wp-block-media-text__content {
+        padding-right: 3rem;
+    }
+
+}
+
+.wp-block-media-text__media [src] {
+    border-radius: .35rem;
+    box-shadow: 0 .5rem 2.2rem rgba(0, 0, 0, .3);
+}
