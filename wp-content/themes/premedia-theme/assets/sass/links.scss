@@ -1,0 +1,85 @@
+// links.scss
+
+
+
+
+%true-for-all-links {
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    text-decoration: none;
+
+    @include hover {
+        background-size: 0 100%;
+    }
+}
+
+
+
+@property --linklightbgcolor {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: #004181;
+}
+
+%link-light-bg [href] {
+    @extend %true-for-all-links;
+
+    --linklightbgcolor: #004181;
+    color: var(--linklightbgcolor);
+
+    @include lineargradient(180deg, transparent 0, transparent calc(100% - calc(2rem / 16)), var(--linklightbgcolor) calc(100% - calc(1rem / 16)), var(--linklightbgcolor) 100%);
+
+    @include transition(--linklightbgcolor .2s ease-in-out, background-size .15s ease-in-out, color .25s ease-in-out);
+
+    @include hover {
+        --linklightbgcolor: #00708a;
+    }
+
+}
+
+
+@property --linkdarkbgcolor {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: #fff;
+}
+
+%link-dark-bg [href] {
+    @extend %true-for-all-links;
+
+    --linkdarkbgcolor: #fff;
+    color: var(--linkdarkbgcolor);
+
+    @include lineargradient(180deg, transparent 0, transparent calc(100% - calc(2rem / 16)), var(--linkdarkbgcolor) calc(100% - calc(1rem / 16)), var(--linkdarkbgcolor) 100%);
+
+    @include transition(--linkdarkbgcolor .2s ease-in-out, background-size .15s ease-in-out, color .25s ease-in-out);
+
+    @include hover {
+        --linkdarkbgcolor: #f9fafb;
+    }
+
+}
+
+
+.entry-content {
+
+    p:not(.has-dark-bg p),
+    li:not(.has-dark-bg li),
+    cite:not(.has-dark-bg cite) {
+        @extend %link-light-bg;
+    }
+
+
+
+    .has-dark-bg {
+
+        p,
+        li,
+        cite {
+            @extend %link-dark-bg;
+        }
+
+    }
+
+}
