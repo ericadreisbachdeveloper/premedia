@@ -312,3 +312,11 @@
     -webkit-filter: saturate($val);
     filter: saturate($val)
 }
+
+
+
+%cool-border {
+    border-radius: 1rem;
+    border: calc(1rem/16) solid rgba(0, 0, 0, .1);
+    box-shadow: 0 .1rem 0 rgba(0, 0, 0, .1);
+}

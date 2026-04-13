@@ -10,19 +10,48 @@
 
 @media (min-width: $tablet) {
 
-    .wp-block-media-text.has-media-on-the-right .wp-block-media-text__content {
-        padding-right: 3rem;
-        padding-left: 0;
-    }
-
-    .wp-block-media-text.has-media-on-the-left .wp-block-media-text__content {
-        padding-right: 0;
-        padding-left: 3rem;
-    }
-
     .wp-block-media-text__media [src] {
         border-radius: .25rem;
     }
 
+}
+
+
+
+@media(min-width: $tablet) {
+
+    .wp-block-media-text__media,
+    .wp-block-media-text__media>[src] {
+        height: 100%;
+    }
+
+    .wp-block-media-text__media>[src] {
+        object-fit: cover;
+    }
+
+}
+
+
+
+@media (min-width: $tablet) {
+
+    .wp-block-media-text.has-media-on-the-right .wp-block-media-text__content {
+        padding-right: 3rem;
+    }
+
+    .wp-block-media-text.has-media-on-the-left .wp-block-media-text__content {
+        padding-left: 3rem;
+    }
+}
+
+@media (min-width: $tablet) and (max-width: $narrower-than-desktop) {
+
+    .wp-block-media-text.has-media-on-the-right .wp-block-media-text__content {
+        padding-left: 3rem;
+    }
+
+    .wp-block-media-text.has-media-on-the-left .wp-block-media-text__content {
+        padding-right: 3rem;
+    }
 
 }

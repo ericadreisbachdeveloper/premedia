@@ -7,6 +7,15 @@
 }
 
 
+:root :where(.is-layout-flow)>* {
+    margin-block-start: 0;
+}
+
+:root .wp-block-column>* {
+    margin-block-start: 1rem;
+}
+
+
 
 // neutralize the wp default for 600px 
 @media (min-width: calc(600rem / 16)) {
