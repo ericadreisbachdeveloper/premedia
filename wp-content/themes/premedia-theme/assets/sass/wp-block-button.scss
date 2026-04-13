@@ -1,0 +1,41 @@
+// wp-block-button.scss
+
+.wp-block-button__link[href] {
+
+    @include transition(background-color .2s ease-in-out);
+
+    @include hover {
+        cursor: pointer;
+
+
+    }
+
+    // yellow
+    &.has-accent-6-background-color {
+        @include hover {
+            background-color: $golden-hover !important;
+        }
+    }
+
+    // white
+    &.has-base-background-color {
+        @include hover {
+            background-color: #ddd !important;
+        }
+    }
+
+
+}
+
+
+
+
+
+
+:where(.wp-block-button__link)[href] {
+    border-radius: .5rem;
+}
+
+:root :where(.wp-element-button, .wp-block-button__link) {
+    padding: .8rem 2rem;
+}

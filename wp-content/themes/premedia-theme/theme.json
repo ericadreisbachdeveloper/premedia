@@ -57,6 +57,11 @@
                     "color": "#f9ae1e",
                     "name": "Accent 6",
                     "slug": "accent-6"
+                },
+                {
+                    "color": "#f9fafb",
+                    "name": "Accent 7",
+                    "slug": "accent-7"
                 }
             ]
         },
@@ -64,8 +69,8 @@
             "minHeight": true
         },
         "layout": {
-            "contentSize": "700px",
-            "wideSize": "1300px"
+            "contentSize": "1200px",
+            "wideSize": "1200px"
         },
         "spacing": {
             "padding": true,
@@ -74,8 +79,13 @@
             "defaultSpacingSizes": false,
             "spacingSizes": [
                 {
+                    "name": "Mobile Hide",
+                    "size": "clamp(0px, calc((100vw - 600px) * (48 / 600)), 48px)",
+                    "slug": "10"
+                },
+                {
                     "name": "Tiny",
-                    "size": "clamp(0px, calc((100vw - 600px) * (96 / 600)), 96px)",
+                    "size": "8px",
                     "slug": "20"
                 },
                 {
@@ -90,7 +100,7 @@
                 },
                 {
                     "name": "Regular",
-                    "size": "clamp(30px, 5vw, 50px)",
+                    "size": "clamp(24px, calc((100vw - 600px) * (48 / 600)), 48px)",
                     "slug": "50"
                 },
                 {

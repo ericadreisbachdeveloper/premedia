@@ -1,5 +1,21 @@
 // footer 
 
+
+
 .about-this-study {
     max-width: 25rem;
+}
+
+
+// sticky footer
+@media (min-width: $tablet) {
+
+    body:not(.logged-in) .wp-site-blocks>.entry-content {
+        min-height: calc(100vh - calc(138rem / 16) - calc(390rem / 16));
+    }
+
+    body.logged-in .wp-site-blocks>.entry-content {
+        min-height: calc(100vh - calc(138rem / 16) - calc(390rem / 16) - calc(32rem / 16));
+    }
+
 }
