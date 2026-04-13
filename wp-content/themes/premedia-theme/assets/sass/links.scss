@@ -45,6 +45,8 @@
     initial-value: #fff;
 }
 
+
+
 %link-dark-bg [href] {
     @extend %true-for-all-links;
 
@@ -56,7 +58,7 @@
     @include transition(--linkdarkbgcolor .2s ease-in-out, background-size .15s ease-in-out, color .25s ease-in-out);
 
     @include hover {
-        --linkdarkbgcolor: #f9fafb;
+        --linkdarkbgcolor: #4e9ed3;
     }
 
 }
@@ -70,16 +72,26 @@
         @extend %link-light-bg;
     }
 
-
-
     .has-dark-bg {
 
         p,
         li,
         cite {
+
             @extend %link-dark-bg;
         }
 
+    }
+
+}
+
+
+.footer.has-dark-bg {
+
+    p,
+    li,
+    cite {
+        @extend %link-dark-bg;
     }
 
 }
