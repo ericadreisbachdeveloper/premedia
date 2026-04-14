@@ -22,7 +22,21 @@
 
 
 
-@media (max-width: $narrower-than-laptop) {
+@media (min-width: $tablet) and (max-width: $narrower-than-desktop) {
+
+    .footer-section .wp-block-columns.is-layout-flex {
+        flex-wrap: wrap !important;
+
+        &>div:first-of-type {
+            flex-basis: 100% !important;
+        }
+    }
+
+}
+
+
+
+@media (max-width: $narrower-than-desktop) {
 
     .wp-block-group.footer-section .wp-block-columns {
         max-width: 84%;

@@ -65,7 +65,6 @@
 
 }
 
-
 %roboto {
     font-family: roboto, sans-serif;
     font-weight: 400;
@@ -74,6 +73,7 @@
     b {
         font-family: roboto, sans-serif;
         font-weight: 800;
+        -webkit-font-smoothing: none;
 
         &>em {
             font-family: roboto-ital, sans-serif;
@@ -92,13 +92,12 @@
             font-family: roboto-ital, sans-serif;
             font-weight: 800;
             font-style: normal;
+            -webkit-font-smoothing: none;
         }
 
     }
 
 }
-
-
 
 html {
     @extend %roboto;
@@ -110,7 +109,6 @@ h1,
     margin-block-start: .2em;
 }
 
-
 h2,
 h3,
 h2.has-medium-font-size,
@@ -121,11 +119,18 @@ h6 {
     margin-block-start: .2em;
 }
 
+
+
 // Extra Large 
 %h1 {
     font-size: clamp(1.5rem, 1.5rem + 1.8462vw, 3rem);
     line-height: 1.25em;
 }
+
+h1 {
+    @extend %h1;
+}
+
 
 
 // Large 
@@ -138,7 +143,9 @@ h2:not([class*="-font-size"]) {
     @extend %h2;
 }
 
-// Medium
+
+
+// Medium - Deck 
 %h3 {
     font-size: clamp(1.15rem, 1.15rem + 1.3333vw, 1.5rem);
 }
@@ -146,7 +153,6 @@ h2:not([class*="-font-size"]) {
 h3:not([class*="-font-size"]) {
     @extend %h3;
 }
-
 
 h1,
 h2,
@@ -160,7 +166,6 @@ h6 {
 
 }
 
-
 p,
 li {
     &:not(.has-text-color) {
@@ -168,8 +173,6 @@ li {
     }
 }
 
-
-// Medium 
 %deck {
     font-size: clamp(0.875rem, 0.875rem + 0.4615vw, 1.25rem);
     line-height: 1.4em;
@@ -181,6 +184,8 @@ p.has-medium-font-size,
 }
 
 
+
+// Text 
 %text {
     font-size: clamp(0.75rem, 0.75rem + 0.3077vw, 1rem);
     line-height: 1.5em;

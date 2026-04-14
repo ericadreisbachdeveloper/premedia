@@ -90,12 +90,12 @@
                 },
                 {
                     "name": "X-Small",
-                    "size": "20px",
+                    "size": "2rem",
                     "slug": "30"
                 },
                 {
                     "name": "Small",
-                    "size": "30px",
+                    "size": "10%",
                     "slug": "40"
                 },
                 {
