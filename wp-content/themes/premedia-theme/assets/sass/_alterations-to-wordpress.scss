@@ -15,6 +15,11 @@
     margin-block-start: 1rem;
 }
 
+:where(.wp-site-blocks)>*:not(#wp--skip-link--target):not(:has(.footer-section)) {
+    margin-block-start: 1.5rem;
+}
+
+
 
 
 // neutralize the wp default for 600px 
