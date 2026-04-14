@@ -25,8 +25,10 @@ $style_vsn = '1.0.6';
 /**
  * Vital functions and includes
  */
+require_once(THEMEPATH . '/inc/disable-comments.php');
 require_once(THEMEPATH . '/inc/remove-wordpress-cruft.php');
-require_once(THEMEPATH . '/inc/simple-shortcodes.php');
+require_once(THEMEPATH . '/inc/simple-shortcodes.php'); /* includes query functions and references to template partials       */
+require_once(THEMEPATH . '/inc/shortcode-map.php');
 
 
 /**
