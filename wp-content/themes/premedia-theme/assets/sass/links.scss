@@ -58,7 +58,7 @@
     @include transition(--linkdarkbgcolor .2s ease-in-out, background-size .15s ease-in-out, color .25s ease-in-out);
 
     @include hover {
-        --linkdarkbgcolor: #4e9ed3;
+        --linkdarkbgcolor: #ddd;
     }
 
 }
@@ -91,6 +91,17 @@
     p,
     li,
     cite {
+        @extend %link-dark-bg;
+    }
+
+}
+
+
+.entry-content {
+
+    p:is(.has-dark-bg p),
+    li:is(.has-dark-bg li),
+    cite:is(.has-dark-bg cite) {
         @extend %link-dark-bg;
     }
 
