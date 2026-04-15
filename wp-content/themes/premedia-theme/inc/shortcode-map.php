@@ -17,22 +17,15 @@ add_shortcode('map', 'map_shortcode_fxn');
 function map_shortcode_fxn()
 {
 
-    wp_enqueue_script(
-        'map-js',
-        TDIR . '/assets/js/zz-dev/map.js',
-        '',
-        '1.0.1',
-        true
-    );
-
-
     global $post;
 
     $post_id = $post->ID;
 
-
-    // save string to output buffer
+    // Save string to output buffer
     ob_start();
+
+
+
 
     $map_output = '';
 
@@ -61,7 +54,7 @@ function map_shortcode_fxn()
 
                 foreach ($site['physicians'] as $physician) {
 
-                    $clinical_site_info[$site['slug']]['physicians'] = [
+                    $clinical_site_info[$site['slug']]['physicians'][] = [
                         'name' => $physician['physician'],
                         'institution' => $physician['institution'],
                         'img_src' => $physician['photo']
@@ -72,23 +65,6 @@ function map_shortcode_fxn()
             }
         }
 
-        print_r($clinical_site_info);
-
-
-        // Loop through a given distributor's regions
-        foreach ($row['regions'] ?? array() as $region) {
-
-            $region_distributors[$region][] = [
-                'name' => $dist['name'],
-                'contact_info' => $dist['contact_info'],
-            ];
-        }
-
-
-
-        //        return $region_distributors;
-
-
 
         foreach ($rows as $row) {
             $map_output .= '<div class="map-pin" style="top: ' . $row['vertical'] . '%; right: ' . $row['horizontal'] . '%;">';
@@ -98,8 +74,9 @@ function map_shortcode_fxn()
 
         $map_output .= '<div id="data-modal" class="modal main_color" role="dialog" aria-modal="true" aria-labelledby="modal-data-heading" style="display: none;">
             <div class="modal-content" id="region-data">
-                <div id="clinical-site-location"> </div>
-                <div id="clinical-site-physicians"> </div>
+                <div id="clinic-site-name"> </div>
+                <div id="clinic-site-city-state"> </div>
+                <div id="clinic-site-physicians"> </div>
                 <button class="close-data" data-close-modal data-modal-type="data-modal" aria-label="Close dialog">&times;</button>
             </div>
         </div>';
@@ -109,6 +86,18 @@ function map_shortcode_fxn()
 
     $map_output .= '</div>';
 
+    wp_enqueue_script(
+        'map-js',
+        TDIR . '/assets/js/zz-dev/map.js',
+        '',
+        '1.0.3',
+        true
+    );
+
+    // Pass clinicData object to JavaScript
+    wp_localize_script('map-js', 'clinicData', array(
+        'clinical_site_info' => $clinical_site_info
+    ));
 
     return $map_output;
 
