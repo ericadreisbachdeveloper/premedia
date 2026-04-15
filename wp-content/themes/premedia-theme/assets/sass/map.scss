@@ -18,20 +18,153 @@
 }
 
 .map-pin-img {
-    width: 2rem;
-    height: 2rem;
-    object-fit: contain;
+    width: 3rem;
+    height: 3rem;
+    background-image: url('../img/map-pin-48.svg');
+    background-position: .75rem 0;
+    background-repeat: no-repeat;
+    background-size: 1.7rem;
     position: absolute;
-    top: -1.75rem;
-    left: -.9rem;
+    top: -1.5rem;
+    left: -1.5rem;
+    filter: drop-shadow(-2px 5px 8px rgba(0, 0, 0, .3));
+    @include transition(filter .2s ease-in-out);
+
+    @include hover {
+        cursor: pointer;
+        filter: drop-shadow(-2px 5px 8px rgba(0, 0, 0, .3)) brightness(1.4142);
+    }
+
+    &[aria-pressed="true"] {
+        filter: drop-shadow(-2px 5px 8px rgba(0, 0, 0, .3)) brightness(1.4142);
+    }
+
 }
 
-.map-pin.test {
-    width: 4px;
-    height: 4px;
-    border-radius: 100%;
-    background-color: orange;
+// massaging Cleveland
+.map-pin-img#case-western-university {
+    left: -.5rem;
+    background-position: -.2rem 0;
+}
 
-    right: 45%;
-    top: 20%;
+.map-pin-img#case-western-metrohealth {
+    left: -2.3rem;
+    background-position: calc(100% + .2rem) 0;
+
+
+}
+
+
+// modal 
+@keyframes modal-bg-on {
+    0% {
+        background-color: transparent;
+
+    }
+
+    100% {
+        background-color: rgba(0, 0, 0, 0.5);
+
+    }
+}
+
+.modal {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: transparent;
+}
+
+
+.modal[style*="block"] {
+    animation-name: modal-bg-on;
+    animation-duration: .24s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+/* body scroll lock when modal is open */
+html:has(.modal[style*="block"]) {
+    overflow-y: hidden;
+}
+
+/* scrollbar gutter keeps space */
+html {
+    scrollbar-gutter: stable;
+}
+
+/* scroll modal if needed*/
+.modal[role="dialog"] {
+    overflow-y: auto;
+}
+
+
+
+
+
+.modal-content {
+    max-width: calc(600rem / 16);
+    position: relative;
+    padding: calc(50rem / 16) calc(30rem / 16) calc(30rem / 16);
+    background-color: white;
+    border-radius: .5rem;
+}
+
+
+@media (max-width: $narrower-than-tablet) {
+    .modal-content {
+        width: 96%;
+        margin: 1rem auto 0;
+    }
+}
+
+
+
+// landscape phone - approximate height of form is 700px
+@media (min-width: $tablet) and (max-height: calc(699rem / 16)) {
+    .modal-content {
+        width: 80%;
+        margin: 4rem auto 0;
+    }
+}
+
+
+@media (min-width: $tablet) and (min-height: calc(700rem / 16)) {
+    .modal-content {
+        width: 80%;
+        margin: 18rem auto 0;
+    }
+}
+
+
+
+// close
+button[class*="close-"] {
+    width: 3rem;
+    height: 3rem;
+
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: calc(28rem / 16);
+    font-weight: bold;
+
+    -webkit-transition: color .2s ease-in-out;
+    -moz-transition: color .2s ease-in-out;
+    -ms-transition: color .2s ease-in-out;
+    -o-transition: color .2s ease-in-out;
+    transition: color .2s ease-in-out;
+}
+
+button[class*="close-"]:hover,
+button[class*="close-"]:active,
+button[class*="close-"]:focus {
+    color: $teal;
 }
