@@ -109,6 +109,7 @@ h1,
     margin-block-start: .2em;
 }
 
+#clinic-site-name,
 h2,
 h3,
 h2.has-medium-font-size,
@@ -145,14 +146,16 @@ h2:not([class*="-font-size"]) {
 
 
 
-// Medium - Deck 
 %h3 {
     font-size: clamp(1.15rem, 1.15rem + 1.3333vw, 1.5rem);
 }
 
+#clinic-site-name,
 h3:not([class*="-font-size"]) {
     @extend %h3;
 }
+
+
 
 h1,
 h2,
@@ -166,13 +169,8 @@ h6 {
 
 }
 
-p,
-li {
-    &:not(.has-text-color) {
-        color: $text;
-    }
-}
 
+// Medium - Deck 
 %deck {
     font-size: clamp(0.875rem, 0.875rem + 0.4615vw, 1.25rem);
     line-height: 1.4em;
@@ -190,6 +188,14 @@ p.has-medium-font-size,
     font-size: clamp(0.75rem, 0.75rem + 0.3077vw, 1rem);
     line-height: 1.5em;
 }
+
+
+li {
+    &:not(.has-text-color) {
+        color: $text;
+    }
+}
+
 
 p:not([class*="-font-size"]),
 li:not([class*="-font-size"]) {

@@ -14,6 +14,10 @@
 
 .map-pin {
     position: absolute;
+
+    &:has(.map-pin-path[aria-pressed="true"]) {
+        z-index: 1001;
+    }
 }
 
 .map-pin-svg {
@@ -24,9 +28,20 @@
     top: -2rem;
     left: -1rem;
     filter: drop-shadow(-2px 5px 8px rgba(0, 0, 0, .3));
-    //@include transition(filter .2s ease-in-out);
+    @include transition(filter .2s ease-in-out);
 }
 
+
+.map-pin-svg:has(#case-western-metrohealth[aria-pressed="true"]),
+.map-pin-svg:has(#case-western-metrohealth:hover),
+.map-pin-svg:has(#case-western-metrohealth:active),
+.map-pin-svg:has(#case-western-metrohealth:focus) {
+    z-index: 10;
+}
+
+.map-pin:has(#case-western-metrohealth:hover)~.map-pin:has(#case-western-university) .map-pin-svg {
+    filter: none;
+}
 
 
 .s0.map-pin-path {
@@ -40,7 +55,17 @@
     @include hover {
         fill: $golden;
     }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:focus-visible {
+        outline: calc(5rem/16) auto -webkit-focus-ring-color;
+        outline-offset: calc(-2rem / 16);
+    }
 }
+
 
 .s0 {
     fill: $lightblue;
@@ -52,11 +77,19 @@
 }
 
 
+// body scroll lock when modal is open 
+html:has(.modal[style*="block"]) {
+    overflow-y: hidden;
+}
+
+// scrollbar gutter keeps space 
+html {
+    scrollbar-gutter: stable;
+}
 
 
 
-
-// modal 
+// modal bg
 .modal {
     width: 100%;
     height: 100%;
@@ -67,38 +100,60 @@
     background-color: transparent;
 }
 
-/* body scroll lock when modal is open */
-html:has(.modal[style*="block"]) {
-    overflow-y: hidden;
+
+@keyframes modal-bg-on {
+    0% {
+        background-color: transparent;
+        //transform: translate(0, -10rem);
+    }
+
+    100% {
+        background-color: rgba(0, 0, 0, 0.5);
+        //transform: translate(0, 0);
+    }
 }
 
-/* scrollbar gutter keeps space */
-html {
-    scrollbar-gutter: stable;
+.modal[style*="block"] {
+    animation-name: modal-bg-on;
+    animation-duration: .24s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+
+
+    &:focus-visible {
+        outline: none;
+
+        .modal-content {
+            outline: calc(5rem/16) auto -webkit-focus-ring-color;
+            outline-offset: calc(-2rem / 16);
+        }
+    }
 }
 
-/* scroll modal if needed*/
+
+
+
+
+// scroll modal if needed 
 .modal[role="dialog"] {
     overflow-y: auto;
 }
 
-
-
-
-
 .modal-content {
-    max-width: calc(600rem / 16);
+    max-width: calc(400rem / 16);
     position: relative;
-    padding: calc(50rem / 16) calc(30rem / 16) calc(30rem / 16);
+    padding: 1rem;
     background-color: white;
+    border: calc(2rem / 16) solid $navy;
     border-radius: .5rem;
+    filter: drop-shadow(-2px 5px 8px rgba(0, 0, 0, .3));
 }
 
 
 @media (max-width: $narrower-than-tablet) {
     .modal-content {
-        width: 96%;
-        margin: 1rem auto 0;
+        width: calc(90% - calc(50rem / 16));
+        margin: 6rem auto 0;
     }
 }
 
@@ -113,13 +168,6 @@ html {
 }
 
 
-@media (min-width: $tablet) and (min-height: calc(700rem / 16)) {
-    .modal-content {
-        width: 80%;
-        margin: 4rem auto 0;
-    }
-}
-
 
 
 // close
@@ -128,8 +176,8 @@ button[class*="close-"] {
     height: 3rem;
 
     position: absolute;
-    right: 1rem;
-    top: 1rem;
+    right: -.3rem;
+    top: -.3rem;
 
     background: none;
     border: none;
@@ -148,4 +196,41 @@ button[class*="close-"]:hover,
 button[class*="close-"]:active,
 button[class*="close-"]:focus {
     color: $teal;
+}
+
+
+// modal
+$physician-size: 5rem;
+
+.physician-div {
+    @include flex;
+    @include flex-direction-col;
+    @include flex-wrap;
+    height: calc(#{$physician-size} + 1rem);
+}
+
+.physician-name,
+.physician-institution {
+    width: calc(100% - #{$physician-size} - 2rem);
+}
+
+.physician-src {
+    width: $physician-size;
+    height: $physician-size;
+    border: calc(3rem / 16) solid $lightblue;
+    border-radius: 50%;
+}
+
+
+#clinic-site-name {
+    color: $blue;
+}
+
+#clinic-site-city-state {
+    margin-top: .3rem;
+    color: $text;
+}
+
+.physician-name {
+    color: $blue;
 }

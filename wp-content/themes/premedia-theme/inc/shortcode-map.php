@@ -67,10 +67,7 @@ function map_shortcode_fxn()
 
 
         foreach ($rows as $row) {
-            $map_output .= '<div class="map-pin" style="top: ' . $row['vertical'] . '%; right: ' . $row['horizontal'] . '%;">';
-            /*
-            $map_output .= '<div role="button" aria-pressed="false" tabindex="0" id="' . $row['slug'] . '" class="map-pin-img" src="' . TDIR . '/assets/img/map-pin-48.svg" aria-label="' . $row['site_name'] . ', ' . $row['city_state'] . ' physicians"></div>';
-            */
+            $map_output .= '<div data-pin="pin-' . $row['slug'] . '" class="map-pin" style="top: ' . $row['vertical'] . '%; right: ' . $row['horizontal'] . '%;">';
 
             $map_output .= '<svg class="s0 map-pin-svg" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
                 <g>
@@ -85,7 +82,7 @@ function map_shortcode_fxn()
         $map_output .= '<div id="data-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-data-heading" style="display: none;">
             <div class="modal-content" id="clinic-data">
                 <div id="clinic-site-name"> </div>
-                <div id="clinic-site-city-state"> </div>
+                <p id="clinic-site-city-state"> </p>
                 <div id="clinic-site-physicians"> </div>
                 <button class="close-data" data-close-modal data-modal-type="data-modal" aria-label="Close dialog">&times;</button>
             </div>
@@ -100,7 +97,7 @@ function map_shortcode_fxn()
         'map-js',
         TDIR . '/assets/js/zz-dev/map.js',
         '',
-        '1.0.6',
+        '1.0.8',
         true
     );
 
