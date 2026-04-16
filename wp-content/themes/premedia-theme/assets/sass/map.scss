@@ -146,6 +146,20 @@ html {
     background-color: white;
     border-radius: .5rem;
     filter: drop-shadow(-2px 5px 8px rgba(0, 0, 0, .3));
+
+    &:after {
+        width: calc(100% - calc(4rem / 16));
+        height: calc(100% - calc(4rem / 16));
+        position: absolute;
+        background-color: transparent;
+        border: calc(2rem / 16) solid $navy;
+        content: '';
+        display: block;
+        border-radius: .5rem;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+    }
 }
 
 
