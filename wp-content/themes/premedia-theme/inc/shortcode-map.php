@@ -89,7 +89,7 @@ function map_shortcode_fxn()
                 <div id="clinic-site-physicians"> </div>
                 <button class="close-data" data-close-modal data-modal-type="data-modal" aria-label="Close dialog">&times;</button>
             </div>
-            
+
         </div>';
 
     }
@@ -99,9 +99,9 @@ function map_shortcode_fxn()
 
     wp_enqueue_script(
         'map-js',
-        TDIR . '/assets/js/zz-dev/map.js',
+        TDIR . '/assets/js/map.js',
         '',
-        '1.0.8',
+        '1.0.9',
         true
     );
 
