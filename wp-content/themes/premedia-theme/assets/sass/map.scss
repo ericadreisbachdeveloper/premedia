@@ -140,14 +140,14 @@ html {
 }
 
 .modal-content {
-    max-width: calc(400rem / 16);
+    max-width: calc(360rem / 16);
     position: relative;
-    padding: 1rem;
+    padding: 1rem 1.414rem;
     background-color: white;
-    border: calc(2rem / 16) solid $navy;
     border-radius: .5rem;
     filter: drop-shadow(-2px 5px 8px rgba(0, 0, 0, .3));
 }
+
 
 
 @media (max-width: $narrower-than-tablet) {
@@ -157,6 +157,27 @@ html {
     }
 }
 
+#modal-nubbin {
+    width: 1rem;
+    height: 1rem;
+    position: absolute;
+
+    background-color: white;
+    @include rotate(45deg);
+
+    &.points-up {
+        border-left: calc(2rem / 16) solid $navy;
+        border-top: calc(2rem / 16) solid $navy;
+    }
+
+    &.points-down {
+        border-right: calc(2rem / 16) solid $navy;
+        border-bottom: calc(2rem / 16) solid $navy;
+    }
+
+    z-index: 1000;
+
+}
 
 
 // landscape phone - approximate height of form is 700px

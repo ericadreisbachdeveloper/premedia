@@ -80,12 +80,16 @@ function map_shortcode_fxn()
         }
 
         $map_output .= '<div id="data-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-data-heading" style="display: none;">
-            <div class="modal-content" id="clinic-data">
+
+            <div id="modal-nubbin"></div>
+
+            <div class="modal-content" id="clinic-data">        
                 <div id="clinic-site-name"> </div>
                 <p id="clinic-site-city-state"> </p>
                 <div id="clinic-site-physicians"> </div>
                 <button class="close-data" data-close-modal data-modal-type="data-modal" aria-label="Close dialog">&times;</button>
             </div>
+            
         </div>';
 
     }
