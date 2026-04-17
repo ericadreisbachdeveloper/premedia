@@ -14,10 +14,7 @@
 
 .map-pin {
     position: absolute;
-}
-
-.map-pin:has(.map-pin-path[aria-pressed="true"]) {
-    z-index: 1001;
+    cursor: pointer;
 }
 
 
@@ -33,7 +30,7 @@
     @include transition(filter .2s ease-in-out);
 }
 
-
+// massaging the special case of case western 
 .map-pin-svg:has(#case-western-metrohealth[aria-pressed="true"]),
 .map-pin-svg:has(#case-western-metrohealth:hover),
 .map-pin-svg:has(#case-western-metrohealth:active),
@@ -46,6 +43,11 @@
 }
 
 
+.s0 {
+    fill: $lightblue;
+}
+
+// map pin hover
 .s0.map-pin-path {
     pointer-events: auto;
     @include transition(fill .2s ease-in-out);
@@ -68,59 +70,78 @@
     }
 }
 
-
-.s0 {
-    fill: $lightblue;
-}
-
 .s1 {
     fill: $navy;
     pointer-events: none;
 }
 
 
-// body scroll lock when modal is open 
-html:has(.modal[style*="block"]) {
-    overflow-y: hidden;
+html {
+    //scrollbar-gutter: stable;
 }
 
-// scrollbar gutter keeps space 
-html {
-    scrollbar-gutter: stable;
+// body scroll lock when modal is open 
+html:has(.modal[style*="block"]) {
+    overflow: hidden;
+    padding-right: calc(15rem / 16);
 }
 
 
 
 // modal bg
 .modal {
+    max-height: 100vh;
     width: 100%;
     height: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 1001;
     background-color: transparent;
+}
+
+.map-pin:has(.map-pin-path[aria-pressed="true"]) {
+    z-index: 1000;
+}
+
+#modal-nubbin {
+    z-index: 1002;
 }
 
 
 @keyframes modal-bg-on {
     0% {
         background-color: transparent;
-        //transform: translate(0, -10rem);
     }
 
     100% {
         background-color: rgba(0, 0, 0, 0.5);
-        //transform: translate(0, 0);
+    }
+}
+
+html:has(.modal[style*="block"]) {
+    @include has-after;
+
+    &:after {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        animation-name: modal-bg-on;
+        animation-duration: .24s;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        z-index: 0;
     }
 }
 
 .modal[style*="block"] {
+    /* 
     animation-name: modal-bg-on;
     animation-duration: .24s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
-
+    */
 
     &:focus-visible {
         outline: none;
@@ -142,12 +163,12 @@ html {
 }
 
 .modal-content {
-
     position: relative;
     padding: 1rem 1.414rem;
     background-color: white;
     border-radius: .5rem;
     filter: drop-shadow(-2px 5px 8px rgba(0, 0, 0, .3));
+
 
     &:after {
         width: calc(100% - calc(4rem / 16));
@@ -220,8 +241,6 @@ html {
         border-bottom: calc(2rem / 16) solid $navy;
         border-left: none;
     }
-
-    z-index: 1000;
 
 }
 
