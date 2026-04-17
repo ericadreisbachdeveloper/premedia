@@ -76,14 +76,16 @@
 }
 
 
-html {
-    //scrollbar-gutter: stable;
-}
-
-// body scroll lock when modal is open 
+// body scroll lock when modal is open  ... 
 html:has(.modal[style*="block"]) {
     overflow: hidden;
-    padding-right: calc(15rem / 16);
+}
+
+// ... tho not on "mobile"
+@media (min-width: $tablet) {
+    html:has(.modal[style*="block"]) {
+        padding-right: calc(15rem / 16);
+    }
 }
 
 
