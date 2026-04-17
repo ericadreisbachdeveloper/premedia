@@ -14,11 +14,13 @@
 
 .map-pin {
     position: absolute;
-
-    &:has(.map-pin-path[aria-pressed="true"]) {
-        z-index: 1001;
-    }
 }
+
+.map-pin:has(.map-pin-path[aria-pressed="true"]) {
+    z-index: 1001;
+}
+
+
 
 .map-pin-svg {
     width: 2rem;
@@ -140,7 +142,7 @@ html {
 }
 
 .modal-content {
-    max-width: calc(360rem / 16);
+
     position: relative;
     padding: 1rem 1.414rem;
     background-color: white;
@@ -163,13 +165,39 @@ html {
 }
 
 
+@media (min-width: $tablet) {
 
+    .modal-content {
+        max-width: calc(360rem / 16);
+    }
+
+}
+
+
+@media (max-width: $narrower-than-tablet) {
+    #modal-nubbin {
+        display: none;
+    }
+
+    .modal-content {
+
+        right: 5% !important;
+        position: fixed;
+        width: 80%;
+        max-width: 80%;
+    }
+
+}
+
+
+/* 
 @media (max-width: $narrower-than-tablet) {
     .modal-content {
         width: calc(90% - calc(50rem / 16));
         margin: 6rem auto 0;
     }
 }
+*/
 
 #modal-nubbin {
     width: 1rem;
@@ -180,13 +208,17 @@ html {
     @include rotate(45deg);
 
     &.points-up {
-        border-left: calc(2rem / 16) solid $navy;
         border-top: calc(2rem / 16) solid $navy;
+        border-right: none;
+        border-bottom: none;
+        border-left: calc(2rem / 16) solid $navy;
     }
 
     &.points-down {
+        border-top: none;
         border-right: calc(2rem / 16) solid $navy;
         border-bottom: calc(2rem / 16) solid $navy;
+        border-left: none;
     }
 
     z-index: 1000;
@@ -195,12 +227,15 @@ html {
 
 
 // landscape phone - approximate height of form is 700px
+/* 
 @media (min-width: $tablet) and (max-height: calc(699rem / 16)) {
     .modal-content {
         width: 80%;
         margin: 4rem auto 0;
     }
 }
+*/
+
 
 
 
