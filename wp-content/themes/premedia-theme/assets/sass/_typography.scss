@@ -29,6 +29,17 @@
     src: url('../fonts/roboto-ital.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'roboto-bold';
+    src: url('../fonts/roboto-bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'roboto-bold-ital';
+    src: url('../fonts/roboto-bold-ital.ttf') format('truetype');
+}
+
+
 %merriweather-reg {
     font-family: merriweather-reg, serif;
     font-weight: 400;
@@ -71,13 +82,13 @@
 
     strong,
     b {
-        font-family: roboto, sans-serif;
-        font-weight: 800;
+        font-family: roboto-bold, sans-serif;
+        font-weight: 400;
         -webkit-font-smoothing: none;
 
         &>em {
-            font-family: roboto-ital, sans-serif;
-            font-weight: 800;
+            font-family: roboto-bold-ital, sans-serif;
+            font-weight: 400;
             font-style: normal;
         }
 
@@ -89,8 +100,8 @@
 
         &>strong,
         &>b {
-            font-family: roboto-ital, sans-serif;
-            font-weight: 800;
+            font-family: roboto-md-ital, sans-serif;
+            font-weight: 400;
             font-style: normal;
             -webkit-font-smoothing: none;
         }

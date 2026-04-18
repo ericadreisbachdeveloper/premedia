@@ -1,6 +1,7 @@
 /* jshint esversion: 6, expr: true, -W033 */
 
-// see also: inc/shortcode-map.php - where $clinical_site_info array is built 
+// see also: inc/shortcode-map.php - where $clinical_site_info array is built from Advanced Custom Fields 'sites' repeater field 
+// access ACF data via clinicData[clinical_site_info][CLINICAL_SITE_SLUG] 
 
 document.addEventListener(`DOMContentLoaded`,function(){    
     
@@ -36,8 +37,7 @@ document.addEventListener(`DOMContentLoaded`,function(){
         // Note: #form-modal content is written in template-map.php near top of file
         function showDataModal(siteId) {            
 
-
-            // Position modal on wider viewports 
+            // Position modal on desktop viewports 
             let clinic = clinicData.clinical_site_info[siteId]; 
 
             document.getElementById(`clinic-site-name`).innerText = clinic.site_name;

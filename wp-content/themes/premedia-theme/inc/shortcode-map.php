@@ -3,6 +3,7 @@
 if (!defined('ABSPATH')) {
     exit;
 }    // Exit if accessed directly
+// also: Lol at this assignment to paste in actual WordPress code :)
 
 
 /**
@@ -10,7 +11,6 @@ if (!defined('ABSPATH')) {
  * [map]
  *
  * Relies on Advanced Custom Fields 'sites' repeater field
- *
  */
 add_shortcode('map', 'map_shortcode_fxn');
 
@@ -24,18 +24,20 @@ function map_shortcode_fxn()
     // Save string to output buffer
     ob_start();
 
-
-
-
     $map_output = '';
 
     $map_output .= '<div class="map-container">';
 
+    // Note: TDIR constant set in functions.php
     $map_output .= '<img class="us-map" src="' . TDIR . '/assets/img/us-map.svg" alt="United States map">';
 
-
-    $rows = get_field('sites', $post_id);
-
+    // Pull distributors data from ACF repeater field
+    if (function_exists('get_field')) {
+        $rows = get_field('sites', $post_id);
+    } else {
+        // Allow for graceful failure if ACF is disabled
+        $rows = array();
+    }
 
     if (!empty($rows)) {
 
@@ -94,7 +96,6 @@ function map_shortcode_fxn()
 
     }
 
-
     $map_output .= '</div>';
 
     wp_enqueue_script(
@@ -106,12 +107,16 @@ function map_shortcode_fxn()
     );
 
     // Pass clinicData object to JavaScript
-    wp_localize_script('map-js', 'clinicData', array(
+    wp_localize_script(
+        'map-js',
+        'clinicData',
+        array(
         'clinical_site_info' => $clinical_site_info
-    ));
+        )
+    );
 
     return $map_output;
 
-    // clear output buffer
+    // Clear output buffer
     return ob_get_clean();
 }
