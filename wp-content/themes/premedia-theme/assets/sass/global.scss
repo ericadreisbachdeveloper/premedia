@@ -101,3 +101,19 @@
 .time:before {
     background-image: url('../img/clock.svg');
 }
+
+
+.has-accent-8-background-color {
+    border-radius: .5rem;
+    overflow: hidden;
+    @include has-before;
+
+    &:before {
+        top: 0;
+        left: 0;
+        width: calc(3rem / 16);
+        height: 100%;
+        background-color: $golden;
+
+    }
+}

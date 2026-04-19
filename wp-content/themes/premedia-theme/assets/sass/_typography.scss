@@ -84,7 +84,6 @@
     b {
         font-family: roboto-bold, sans-serif;
         font-weight: 400;
-        -webkit-font-smoothing: none;
 
         &>em {
             font-family: roboto-bold-ital, sans-serif;
@@ -100,10 +99,9 @@
 
         &>strong,
         &>b {
-            font-family: roboto-md-ital, sans-serif;
+            font-family: roboto-bold-ital, sans-serif;
             font-weight: 400;
             font-style: normal;
-            -webkit-font-smoothing: none;
         }
 
     }
@@ -187,6 +185,7 @@ h6 {
     line-height: 1.4em;
 }
 
+div.wpforms-container-full button[type=submit],
 p.has-medium-font-size,
 .wp-element-button:not([class*="-font-size"]) {
     @extend %deck;
@@ -200,7 +199,7 @@ p.has-medium-font-size,
     line-height: 1.5em;
 }
 
-
+p,
 li {
     &:not(.has-text-color) {
         color: $text;
