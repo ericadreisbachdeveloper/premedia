@@ -111,8 +111,6 @@ document.addEventListener(`DOMContentLoaded`,function(){
             else {
                 rightStr = rightFormula.toString() + `px`; 
             }
-
-            console.log(rightStr); 
   
             modalInner.style.top =  topStr;
             modalInner.style.right = rightStr;  
@@ -149,7 +147,11 @@ document.addEventListener(`DOMContentLoaded`,function(){
             // If the event wasn't actually a 'click' but instead was a keystroke like Enter
             // add :focus to the relevant map region after dismissing via Close button       
             if (event.detail === 0) { 
-                mapRegion.focus(); 
+                console.log(`some keystroke or other`);
+                setTimeout(() => {
+                    mapRegion.focus();
+                }, 2000); // Small delay for the sake of Voiceover 
+                
             }
 
         });
@@ -191,10 +193,15 @@ document.addEventListener(`DOMContentLoaded`,function(){
             if (modal) {
                 
                 if(mapRegion) {
-                    mapRegion.setAttribute(`aria-pressed`, `false`);
-                    mapRegion.focus(); 
-                }
 
+                    mapRegion.setAttribute(`aria-pressed`, `false`);
+
+                    setTimeout(() => {
+                        mapRegion.focus();
+                    }, 50); // Small delay for the sake of Voiceover 
+
+                }
+ 
                 modal.setAttribute(`data-site`, ``); 
                 modal.style.display = `none`;
             
