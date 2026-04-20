@@ -4,6 +4,36 @@
 // access ACF data via clinicData[clinical_site_info][CLINICAL_SITE_SLUG] 
 
 document.addEventListener(`DOMContentLoaded`,function(){    
+
+    // Keyboard focus trap for modal
+    function trapFocus(modal) {
+
+        const focusableElements = modal.querySelectorAll(
+            'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        
+        const firstFocusable = focusableElements[0];
+        const lastFocusable = focusableElements[focusableElements.length - 1];
+        
+        modal.addEventListener('keydown', function(e) {
+            if (e.key !== 'Tab') return;
+            
+            if (e.shiftKey) { // Shift + Tab
+                if (document.activeElement === firstFocusable) {
+                    e.preventDefault();
+                    lastFocusable.focus();
+                }
+            } else { // Tab
+                if (document.activeElement === lastFocusable) {
+                    e.preventDefault();
+                    firstFocusable.focus();
+                }
+            }
+
+        });
+
+    }
+
     
 
     // Map region click handler
@@ -69,7 +99,7 @@ document.addEventListener(`DOMContentLoaded`,function(){
             const modal = document.getElementById('data-modal');
 
             modal.setAttribute(`data-site`, siteId); 
-            modal.style.display = 'block';
+            modal.style.visibility = `visible`;
 
 
             // Position modal
@@ -118,10 +148,7 @@ document.addEventListener(`DOMContentLoaded`,function(){
             modalNubbin.style.top = topStrNubbin;
             modalNubbin.style.left = (rect.left + 3).toString() + `px`; 
 
-
         }
-
-
 
     }); 
         
@@ -142,16 +169,12 @@ document.addEventListener(`DOMContentLoaded`,function(){
             }
 
             modal.setAttribute(`data-site`, ``); 
-            modal.style.display = `none`;
+            modal.style.visibility = `hidden`; 
 
             // If the event wasn't actually a 'click' but instead was a keystroke like Enter
             // add :focus to the relevant map region after dismissing via Close button       
             if (event.detail === 0) { 
-                console.log(`some keystroke or other`);
-                setTimeout(() => {
-                    mapRegion.focus();
-                }, 2000); // Small delay for the sake of Voiceover 
-                
+                mapRegion.focus();
             }
 
         });
@@ -171,10 +194,10 @@ document.addEventListener(`DOMContentLoaded`,function(){
                 this.document.getElementById(siteId).setAttribute(`aria-pressed`, `false`); 
             }
 
-            const modal = document.querySelector(`.modal[style*="display: block"]`);
+            const modal = document.querySelector(`.modal`);
 
             modal.setAttribute(`data-site`, ``); 
-            modal.style.display = `none`;
+            modal.style.visibility = `hidden`; 
 
         }
 
@@ -186,24 +209,19 @@ document.addEventListener(`DOMContentLoaded`,function(){
     window.addEventListener(`keydown`, function(e) {
         
         if (e.key === `Escape`) {
-            const modal = document.querySelector(`.modal[style*="display: block"]`);
+            const modal = document.querySelector(`.modal`);
             const siteId = modal.getAttribute(`data-site`); 
             const mapRegion = document.getElementById(siteId); 
             
             if (modal) {
                 
                 if(mapRegion) {
-
                     mapRegion.setAttribute(`aria-pressed`, `false`);
-
-                    setTimeout(() => {
-                        mapRegion.focus();
-                    }, 50); // Small delay for the sake of Voiceover 
-
+                    mapRegion.focus();
                 }
  
                 modal.setAttribute(`data-site`, ``); 
-                modal.style.display = `none`;
+                modal.style.visibility = `hidden`;
             
             }
 
@@ -212,7 +230,6 @@ document.addEventListener(`DOMContentLoaded`,function(){
     });
 
 
- 
 
 
 }); 

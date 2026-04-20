@@ -77,13 +77,13 @@
 
 
 // body scroll lock when modal is open  ... 
-html:has(.modal[style*="block"]) {
+html:has(.modal:not([style*="hidden"])) {
     overflow: hidden;
 }
 
 // ... tho not on "mobile"
 @media (min-width: $tablet) {
-    html:has(.modal[style*="block"]) {
+    html:has(.modal:not([style*="hidden"])) {
         padding-right: calc(15rem / 16);
     }
 }
@@ -121,7 +121,7 @@ html:has(.modal[style*="block"]) {
     }
 }
 
-html:has(.modal[style*="block"]) {
+html:has(.modal:not([style*="hidden"])) {
     @include has-after;
 
     &:after {
@@ -137,7 +137,12 @@ html:has(.modal[style*="block"]) {
     }
 }
 
-.modal[style*="block"] {
+/* 
+.modal[style="vis] {
+    visibility: hidden;
+}
+*/
+.modal:not([style*="hidden"]) {
     /* 
     animation-name: modal-bg-on;
     animation-duration: .24s;

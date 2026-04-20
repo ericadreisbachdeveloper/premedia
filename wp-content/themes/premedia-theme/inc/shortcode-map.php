@@ -18,8 +18,11 @@ function map_shortcode_fxn()
 {
 
     global $post;
+    global $map_shortcode_used;
 
     $post_id = $post->ID;
+
+    $map_shortcode_used = true; // Set flag when shortcode is called - used for wp_footer() hook to generate modal
 
     // Save string to output buffer
     ob_start();
@@ -81,19 +84,6 @@ function map_shortcode_fxn()
             $map_output .= '</div>';
         }
 
-        $map_output .= '<div id="data-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-data-heading" style="display: none;">
-
-            <div id="modal-nubbin"></div>
-
-            <div class="modal-content" id="clinic-data">        
-                <div id="clinic-site-name"> </div>
-                <p id="clinic-site-city-state"> </p>
-                <div id="clinic-site-physicians"> </div>
-                <button class="close-data" data-close-modal data-modal-type="data-modal" aria-label="Close dialog">&times;</button>
-            </div>
-
-        </div>';
-
     }
 
     $map_output .= '</div>';
@@ -119,4 +109,46 @@ function map_shortcode_fxn()
 
     // Clear output buffer
     return ob_get_clean();
+}
+
+
+
+/**
+ * Add clinic data modal to footer when [map] shortcode is used
+ */
+
+add_action('wp_footer', 'add_clinic_data_modal');
+
+function add_clinic_data_modal()
+{
+    global $map_shortcode_used;
+
+    // Only output if the shortcode was used on this page
+    if (!isset($map_shortcode_used) || !$map_shortcode_used) {
+        return;
+    }
+
+    ?>
+    <div id="data-modal" 
+         class="modal" 
+         role="dialog" 
+         aria-modal="true" 
+         aria-labelledby="clinic-site-name" 
+         aria-hidden="true"
+         style="visibility: hidden;">
+
+        <div id="modal-nubbin"></div>
+
+        <div class="modal-content" id="clinic-data">        
+            <div id="clinic-site-name"></div>
+            <p id="clinic-site-city-state"></p>
+            <div id="clinic-site-physicians"></div>
+            <button class="close-data" 
+                    data-close-modal 
+                    data-modal-type="data-modal" 
+                    aria-label="Close dialog">&times;</button>
+        </div>
+
+    </div>
+    <?php
 }
