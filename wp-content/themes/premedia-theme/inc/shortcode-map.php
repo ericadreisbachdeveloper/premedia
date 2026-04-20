@@ -3,7 +3,6 @@
 if (!defined('ABSPATH')) {
     exit;
 }    // Exit if accessed directly
-// also: Lol at this assignment to paste in actual WordPress code :)
 
 
 /**
@@ -92,7 +91,7 @@ function map_shortcode_fxn()
         'map-js',
         TDIR . '/assets/js/map.js',
         '',
-        '1.0.11',
+        '1.0.14',
         true
     );
 

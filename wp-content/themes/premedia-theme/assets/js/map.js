@@ -5,34 +5,36 @@
 
 document.addEventListener(`DOMContentLoaded`,function(){    
 
-    // Keyboard focus trap for modal
-    function trapFocus(modal) {
 
-        const focusableElements = modal.querySelectorAll(
+    // Constants used throughout
+    const bodyContent = document.querySelector(`.wp-site-blocks`); 
+    const modal = document.getElementById(`data-modal`); 
+
+
+    // Keyboard focus trap for modal
+    modal.addEventListener('keydown', function(e) {
+        // Only trap focus if modal is visible
+        if (this.style.visibility !== 'visible' || e.key !== 'Tab') return;
+        
+        const focusableElements = this.querySelectorAll(
             'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
         );
         
         const firstFocusable = focusableElements[0];
         const lastFocusable = focusableElements[focusableElements.length - 1];
         
-        modal.addEventListener('keydown', function(e) {
-            if (e.key !== 'Tab') return;
-            
-            if (e.shiftKey) { // Shift + Tab
-                if (document.activeElement === firstFocusable) {
-                    e.preventDefault();
-                    lastFocusable.focus();
-                }
-            } else { // Tab
-                if (document.activeElement === lastFocusable) {
-                    e.preventDefault();
-                    firstFocusable.focus();
-                }
+        if (e.shiftKey) { // Shift + Tab
+            if (document.activeElement === firstFocusable) {
+                e.preventDefault();
+                lastFocusable.focus();
             }
-
-        });
-
-    }
+        } else { // Tab
+            if (document.activeElement === lastFocusable) {
+                e.preventDefault();
+                firstFocusable.focus();
+            }
+        }
+    });
 
     
 
@@ -46,13 +48,10 @@ document.addEventListener(`DOMContentLoaded`,function(){
             if (event.type === 'keydown' && event.key !== 'Enter') {
                 return;
             }
-                
-            const siteId = this.id; 
-
-            this.setAttribute(`aria-pressed`, `true`); 
             
+            this.setAttribute(`aria-pressed`, `true`); 
+            const siteId = this.id; 
             showDataModal(siteId);
-            const modal = document.getElementById(`data-modal`); 
             modal.setAttribute(`tabindex`, `0`); 
             modal.focus(); 
         }
@@ -96,11 +95,13 @@ document.addEventListener(`DOMContentLoaded`,function(){
              
             }
                 
-            const modal = document.getElementById('data-modal');
-
             modal.setAttribute(`data-site`, siteId); 
             modal.style.visibility = `visible`;
-
+            modal.setAttribute(`aria-hidden`, `false`); 
+            
+            // Keyboard/screenreader focus trap using [inert]
+            bodyContent.inert = true; 
+            bodyContent.setAttribute(`aria-hidden`, `true`);
 
             // Position modal
             let clinicOnMap = document.getElementById(siteId); 
@@ -154,36 +155,41 @@ document.addEventListener(`DOMContentLoaded`,function(){
         
 
 
-    // Close buttons
-    document.querySelectorAll(`[data-close-modal]`).forEach(button => {
+    // Close 1 of 3 - close button
+    const closeButton = document.querySelector(`[data-close-modal]`);
+    
+    closeButton.addEventListener(`click`, function(e) {
 
-        button.addEventListener(`click`, function(event) {
-            
-            const modalType = this.getAttribute(`data-modal-type`);
-            const modal = document.getElementById(modalType);
-            const siteId = modal.getAttribute(`data-site`);
-            const mapRegion = document.getElementById(siteId); 
+        const siteId = modal.getAttribute(`data-site`);
+        const mapRegion = document.getElementById(siteId); 
 
-            if (siteId) {
-                document.getElementById(siteId).setAttribute(`aria-pressed`, `false`);
-            }
+        if (mapRegion) {
+            mapRegion.setAttribute(`aria-pressed`, `false`);
+        }
 
+        if(modal) {
             modal.setAttribute(`data-site`, ``); 
             modal.style.visibility = `hidden`; 
+        }
 
-            // If the event wasn't actually a 'click' but instead was a keystroke like Enter
-            // add :focus to the relevant map region after dismissing via Close button       
-            if (event.detail === 0) { 
-                mapRegion.focus();
-            }
 
-        });
+        bodyContent.setAttribute(`aria-hidden`, `false`);
+        bodyContent.inert = false;
+
+        // If the event wasn't actually a 'click' but instead was a keystroke like Enter
+        // add :focus to the relevant map region after dismissing via Close button       
+        if (e.detail === 0 && mapRegion) { 
+            mapRegion.focus();
+            modal.setAttribute(`aria-hidden`, `true`); 
+        }
+
 
     });
-    
+
+
     
 
-    // Close modal on outside click - .modal covers entire viewport
+    // Close 2 of 3 - close on outside click - .modal covers entire viewport
     window.addEventListener(`click`, function(e) {
 
         if (e.target.classList.contains(`modal`)) {
@@ -194,35 +200,11 @@ document.addEventListener(`DOMContentLoaded`,function(){
                 this.document.getElementById(siteId).setAttribute(`aria-pressed`, `false`); 
             }
 
-            const modal = document.querySelector(`.modal`);
-
-            modal.setAttribute(`data-site`, ``); 
-            modal.style.visibility = `hidden`; 
-
-        }
-
-    });
-
-
-
-    // Close modal with Escape key
-    window.addEventListener(`keydown`, function(e) {
-        
-        if (e.key === `Escape`) {
-            const modal = document.querySelector(`.modal`);
-            const siteId = modal.getAttribute(`data-site`); 
-            const mapRegion = document.getElementById(siteId); 
-            
-            if (modal) {
-                
-                if(mapRegion) {
-                    mapRegion.setAttribute(`aria-pressed`, `false`);
-                    mapRegion.focus();
-                }
- 
+            if(modal) {
                 modal.setAttribute(`data-site`, ``); 
-                modal.style.visibility = `hidden`;
-            
+                modal.style.visibility = `hidden`; 
+                bodyContent.inert = false; 
+                bodyContent.setAttribute(`aria-hidden`, `false`);
             }
 
         }
@@ -231,5 +213,38 @@ document.addEventListener(`DOMContentLoaded`,function(){
 
 
 
+    // Close 3 of 3 - close with Escape key 
+    window.addEventListener(`keydown`, function(e) {
+
+        if (e.key === `Escape`) {
+
+            console.log(`case 3 - Escape key`); 
+
+            const siteId = modal.getAttribute(`data-site`);
+            const mapRegion = document.getElementById(siteId); 
+
+            if (mapRegion)  {
+                mapRegion.setAttribute(`aria-pressed`, `false`);
+            }
+
+            if(modal) {
+                modal.setAttribute(`data-site`, ``); 
+                bodyContent.inert = false; 
+                bodyContent.setAttribute(`aria-hidden`, `false`);
+                modal.style.visibility = `hidden`;
+                modal.setAttribute(`aria-hidden`, `true`); 
+            }
+       
+            mapRegion.focus();
+              
+        }
+
+    });
+
 
 }); 
+
+
+
+
+
