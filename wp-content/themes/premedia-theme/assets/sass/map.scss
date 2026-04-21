@@ -1,14 +1,23 @@
 // map.scss
 
 
+:root :where(.is-layout-constrained)>.map-container {
+    margin-top: 0;
+}
+
 .map-container {
     position: relative;
+    outline: 2px solid purple;
 }
 
 .us-map {
     width: 100%;
-    height: auto;
+    //height: auto;
+    // @include scale(1.2);
+    //margin-top: 3rem;
     display: block;
+
+    outline: 2px solid red;
 }
 
 
@@ -22,8 +31,8 @@
     height: 2rem;
     pointer-events: none;
     position: absolute;
-    top: -2rem;
-    left: -1rem;
+    //top: -2rem;
+    //left: -1rem;
     filter: drop-shadow(-2px 5px 8px rgba(0, 0, 0, .3));
     @include transition(filter .2s ease-in-out);
 }

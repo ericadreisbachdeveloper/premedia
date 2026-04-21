@@ -3,7 +3,7 @@
 
 @media (max-width: $narrower-than-laptop) {
 
-    .wp-block-group:not(.wp-block-group .wp-block-group)>* {
+    .wp-block-group:not(.wp-block-group .wp-block-group):not(.wp-block-group:has(.map-container))>* {
         padding-left: 8%;
         padding-right: 8%;
         overflow: hidden;
