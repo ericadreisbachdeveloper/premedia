@@ -377,7 +377,7 @@ function map_shortcode_fxn()
         'map-js',
         TDIR . '/assets/js/map.js',
         '',
-        '1.0.29',
+        '1.0.30',
         true
     );
 
@@ -430,7 +430,7 @@ function add_clinic_data_modal()
     }
 
     ?>
-    <dialog id="data-modal" 
+    <div id="data-modal" 
          class="modal" 
          role="dialog" 
          aria-labelledby="clinic-site-name">
@@ -446,6 +446,6 @@ function add_clinic_data_modal()
                     aria-label="Close dialog">&times;</button>
         </div>
 
-    </dialog>
+    </div>
     <?php
 }

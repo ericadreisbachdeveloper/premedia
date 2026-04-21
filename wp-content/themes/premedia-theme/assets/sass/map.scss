@@ -86,13 +86,7 @@ html:has(.modal[open]) {
 }
 
 
-
-// modal bg
-dialog {
-    padding: 0;
-}
-
-/* 
+// modal
 .modal {
     max-height: 100vh;
     width: 100%;
@@ -101,17 +95,19 @@ dialog {
     top: 0;
     left: 0;
     z-index: 1001;
-    background-color: transparent;
-}
-    */
-
-.modal::backdrop {
-    background: rgba(0, 0, 0, 0.5);
 }
 
+.modal:not([open]) {
+    visibility: hidden;
+}
+
+
+
+// selected pin moves to front 
 .map-pin:has(.map-pin-path[aria-pressed="true"]) {
     z-index: 1000;
 }
+
 
 #modal-nubbin {
     z-index: 1002;
@@ -145,19 +141,8 @@ html:has(.modal:not([style*="hidden"])) {
 }
 */
 
-/* 
-.modal[style="vis] {
-    visibility: hidden;
-}
-*/
-.modal[open] {
-    /* 
-    animation-name: modal-bg-on;
-    animation-duration: .24s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    */
 
+.modal[open] {
     &:focus-visible {
         outline: none;
 
@@ -172,14 +157,13 @@ html:has(.modal:not([style*="hidden"])) {
 
 
 
-// scroll modal if needed 
 .modal[role="dialog"] {
-    overflow-y: auto;
-    background: none;
-    border: none;
+    //overflow-y: auto;
 }
 
+// scroll modal if needed 
 .modal-content {
+    overflow-y: auto;
     position: relative;
     padding: 2rem 1.414rem 1.414rem;
     background-color: white;
@@ -206,7 +190,6 @@ html:has(.modal:not([style*="hidden"])) {
     .modal-content {
         width: calc(360rem / 16);
     }
-
 }
 
 
@@ -216,26 +199,19 @@ html:has(.modal:not([style*="hidden"])) {
         display: none;
     }
 
-    .modal {
-        right: 5% !important;
-        position: fixed;
-        width: 80%;
-        max-width: 80%;
-    }
 
-}
-
-
-/* 
-@media (max-width: $narrower-than-tablet) {
     .modal-content {
         width: calc(90% - calc(50rem / 16));
-        margin: 6rem auto 0;
+        margin: 0 auto;
+        top: 50%;
+        @include translate(0, -50%);
     }
-}
-*/
 
-/* 
+}
+
+
+
+
 #modal-nubbin {
     width: 1rem;
     height: 1rem;
@@ -259,7 +235,7 @@ html:has(.modal:not([style*="hidden"])) {
     }
 
 }
-*/
+
 
 // landscape phone - approximate height of form is 700px
 /* 
@@ -275,7 +251,7 @@ html:has(.modal:not([style*="hidden"])) {
 
 
 
-// close
+// close button
 button.modal-close {
     width: 3rem;
     height: 3rem;
@@ -304,7 +280,9 @@ button.modal-close:focus {
 }
 
 
-// modal
+
+
+// modal content - physician data
 $physician-size: 5rem;
 
 .physician-div {
