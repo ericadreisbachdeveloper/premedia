@@ -12,28 +12,17 @@
 
 .us-map {
     width: 100%;
-    //height: auto;
-    // @include scale(1.2);
-    //margin-top: 3rem;
     display: block;
-
     outline: 2px solid red;
 }
 
 
-.map-pin {
-    position: absolute;
-    cursor: pointer;
-}
+
 
 .map-pin-svg {
-    width: 2rem;
-    height: 2rem;
     pointer-events: none;
-    position: absolute;
-    //top: -2rem;
-    //left: -1rem;
     filter: drop-shadow(-2px 5px 8px rgba(0, 0, 0, .3));
+    @include scale(.67);
     @include transition(filter .2s ease-in-out);
 }
 
@@ -55,6 +44,7 @@
 
 // map pin hover
 .s0.map-pin-path {
+    cursor: pointer;
     pointer-events: auto;
     @include transition(fill .2s ease-in-out);
 
@@ -72,7 +62,7 @@
 
     &:focus-visible {
         outline: calc(5rem/16) auto -webkit-focus-ring-color;
-        outline-offset: calc(-2rem / 16);
+        outline-offset: calc(2rem / 16);
     }
 }
 
@@ -156,8 +146,8 @@ html:has(.modal:not([style*="hidden"])) {
         outline: none;
 
         .modal-content {
-            outline: calc(5rem/16) auto -webkit-focus-ring-color;
-            outline-offset: calc(-2rem / 16);
+            //outline: calc(5rem/16) auto -webkit-focus-ring-color;
+            //outline-offset: calc(1rem / 16);
         }
     }
 }
@@ -202,7 +192,6 @@ html:has(.modal:not([style*="hidden"])) {
     #modal-nubbin {
         display: none;
     }
-
 
     .modal-content {
         width: calc(90% - calc(50rem / 16));

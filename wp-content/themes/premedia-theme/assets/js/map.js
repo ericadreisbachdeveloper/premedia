@@ -19,7 +19,7 @@ document.addEventListener(`DOMContentLoaded`,function(){
         }
 
     }
-
+    
 
     // Keyboard focus trap for modal
     modal.addEventListener('keydown', function(e) {
