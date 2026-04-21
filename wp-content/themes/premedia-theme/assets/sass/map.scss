@@ -155,12 +155,6 @@ html:has(.modal:not([style*="hidden"])) {
 
 
 
-
-
-.modal[role="dialog"] {
-    //overflow-y: auto;
-}
-
 // scroll modal if needed 
 .modal-content {
     overflow-y: auto;
@@ -183,6 +177,7 @@ html:has(.modal:not([style*="hidden"])) {
         left: 0;
         pointer-events: none;
     }
+
 }
 
 

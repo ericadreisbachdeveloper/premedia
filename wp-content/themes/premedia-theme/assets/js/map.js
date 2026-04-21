@@ -7,12 +7,23 @@ document.addEventListener(`DOMContentLoaded`,function(){
 
 
     // Constants used throughout
-    const bodyContent = document.querySelector(`.wp-site-blocks`); 
+    const wpAdminBar = document.getElementById(`wpadminbar`); 
     const modal = document.getElementById(`data-modal`); 
+
+
+    // Helper function for admin bar 
+    // sets #wpadminbar[inert] upon any map interaction 
+    function setAdminBarInert(value) {
+        if (wpAdminBar) {
+            wpAdminBar.inert = value;
+        }
+
+    }
 
 
     // Keyboard focus trap for modal
     modal.addEventListener('keydown', function(e) {
+
         // Only trap focus if modal is visible
         if (this.style.visibility !== 'visible' || e.key !== 'Tab') return;
         
@@ -34,6 +45,7 @@ document.addEventListener(`DOMContentLoaded`,function(){
                 firstFocusable.focus();
             }
         }
+
     });
 
     
@@ -51,22 +63,19 @@ document.addEventListener(`DOMContentLoaded`,function(){
             
             this.setAttribute(`aria-pressed`, `true`); 
             const siteId = this.id; 
+            setAdminBarInert(true);
             showDataModal(siteId);
             modal.setAttribute(`tabindex`, `0`); 
             modal.focus(); 
         }
 
-
-        // Mouse click
-        pin.addEventListener(`click`, handleModal);
-        // Keyboard Enter 
-        pin.addEventListener(`keydown`, handleModal);
+        pin.addEventListener(`click`, handleModal); // Mouse click
+        pin.addEventListener(`keydown`, handleModal); // Keyboard Enter 
 
 
-        // Note: content is written in inc/shortcode-map.php near top of file
+        // Populate modal window with clinic + physicial data built in inc/shortcode-map.php
         function showDataModal(siteId) {            
 
-            // Populate modal window
             let clinic = clinicData.clinical_site_info[siteId]; 
 
             document.getElementById(`clinic-site-name`).innerText = clinic.site_name;
@@ -95,15 +104,10 @@ document.addEventListener(`DOMContentLoaded`,function(){
              
             }
             
-            modal.open = true; 
+            modal.setAttribute(`open`,``); 
             modal.setAttribute(`data-site`, siteId); 
-            modal.style.visibility = `visible`;
+            modal.style.visibility = `visible`; 
             modal.setAttribute(`aria-hidden`, `false`); 
-            
-            
-            // Keyboard/screenreader focus trap using [inert]
-            bodyContent.inert = true; 
-            bodyContent.setAttribute(`aria-hidden`, `true`);
 
             // Position modal on desktop viewports 
             // width INCLUDES scrollbars
@@ -162,7 +166,6 @@ document.addEventListener(`DOMContentLoaded`,function(){
     }); 
         
 
-
     // Close 1 of 3 - close button
     const closeButton = document.querySelector(`[data-close-modal]`);
     
@@ -176,13 +179,10 @@ document.addEventListener(`DOMContentLoaded`,function(){
         }
 
         if(modal) {
+            modal.removeAttribute(`open`); 
             modal.setAttribute(`data-site`, ``); 
             modal.style.visibility = `hidden`; 
         }
-
-
-        bodyContent.setAttribute(`aria-hidden`, `false`);
-        bodyContent.inert = false;
 
         // If the event wasn't actually a 'click' but instead was a keystroke like Enter
         // add :focus to the relevant map region after dismissing via Close button       
@@ -191,11 +191,8 @@ document.addEventListener(`DOMContentLoaded`,function(){
             modal.setAttribute(`aria-hidden`, `true`); 
         }
 
-
     });
 
-
-    
 
     // Close 2 of 3 - close on outside click - .modal covers entire viewport
     window.addEventListener(`click`, function(e) {
@@ -209,10 +206,9 @@ document.addEventListener(`DOMContentLoaded`,function(){
             }
 
             if(modal) {
+                modal.removeAttribute(`open`); 
                 modal.setAttribute(`data-site`, ``); 
                 modal.style.visibility = `hidden`; 
-                bodyContent.inert = false; 
-                bodyContent.setAttribute(`aria-hidden`, `false`);
             }
 
         }
@@ -220,30 +216,25 @@ document.addEventListener(`DOMContentLoaded`,function(){
     });
 
 
-
     // Close 3 of 3 - close with Escape key 
     window.addEventListener(`keydown`, function(e) {
 
         if (e.key === `Escape`) {
-
-            console.log(`case 3 - Escape key`); 
 
             const siteId = modal.getAttribute(`data-site`);
             const mapRegion = document.getElementById(siteId); 
 
             if (mapRegion)  {
                 mapRegion.setAttribute(`aria-pressed`, `false`);
+                mapRegion.focus();
             }
 
             if(modal) {
+                modal.removeAttribute(`open`); 
                 modal.setAttribute(`data-site`, ``); 
-                bodyContent.inert = false; 
-                bodyContent.setAttribute(`aria-hidden`, `false`);
                 modal.style.visibility = `hidden`;
-                modal.setAttribute(`aria-hidden`, `true`); 
             }
-       
-            mapRegion.focus();
+            
               
         }
 
