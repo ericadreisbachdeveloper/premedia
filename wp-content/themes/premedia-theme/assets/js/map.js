@@ -41,9 +41,57 @@ document.addEventListener(`DOMContentLoaded`,function(){
 
             });
 
-            dialog.querySelector(`#clinic-site-physicians`).innerHTML = physicians_html;
-            
+            dialog.querySelector(`#clinic-site-physicians`).innerHTML = physicians_html;   
         }
+
+        // Position modal
+        /* 
+        let clinicOnMap = document.getElementById(siteId); 
+        var rect = clinicOnMap.getBoundingClientRect();
+
+        // Get Modal Dimenions 
+        let modalInner = document.getElementById(`clinic-data`);
+        let modalInnerH = modalInner.offsetHeight;
+        let modalInnerW = modalInner.offsetWidth; 
+        let topStr = `0px`;
+        let rightStr = `0px`; 
+
+        let modalNubbin = document.getElementById(`modal-nubbin`); 
+            modalNubbin.setAttribute(`class`, ``); 
+
+        if( (rect.top - modalInnerH).toString() > 64 )  {
+            topStr = (rect.top - modalInnerH - 16).toString() + `px`; 
+            modalNubbin.classList.add(`points-down`); 
+            topStrNubbin = (rect.top - 26).toString() + `px`;
+        }
+        else {
+            topStr = (rect.top + 46).toString() + `px`;                 
+            modalNubbin.classList.add(`points-up`); 
+            topStrNubbin = (rect.top + 38).toString() + `px`;
+        }
+
+        let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0); 
+
+        let rightEdge = modalInnerW - vw + 24; 
+        let rightFormula = (-1 * rect.right) + ( modalInnerW / 2) + 20; 
+
+        if(rightFormula < rightEdge) {
+            rightStr = rightEdge.toString() + `px`;
+        }
+        else if(rightFormula > -12) {
+            rightStr = `-12px`; 
+        }
+        else {
+            rightStr = rightFormula.toString() + `px`; 
+        }
+
+        modalInner.style.top =  topStr;
+        modalInner.style.right = rightStr;  
+
+        modalNubbin.style.top = topStrNubbin;
+        modalNubbin.style.left = (rect.left + 3).toString() + `px`; 
+        */ 
+
     }
 
     // Helper function
@@ -90,5 +138,8 @@ document.addEventListener(`DOMContentLoaded`,function(){
             dialog.close();
         }
     });
+
+
+    
 
 });

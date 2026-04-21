@@ -36,10 +36,11 @@
 
 
 
-@media (max-width: $narrower-than-desktop) {
+@media (min-width: $tablet) and (max-width: $narrower-than-desktop) {
 
-    .wp-block-group.footer-section .wp-block-columns {
-        //max-width: 84%;
+    .wp-block-group.footer-section {
+        padding-right: 8%;
+        padding-left: 8%;
     }
 
 }

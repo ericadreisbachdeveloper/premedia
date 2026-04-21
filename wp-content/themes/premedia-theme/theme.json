@@ -85,7 +85,7 @@
             "spacingSizes": [
                 {
                     "name": "Mobile Hide",
-                    "size": "clamp(0px, calc((100vw - 600px) * (48 / 600)), 48px)",
+                    "size": "clamp(0px, calc((100vw - 767px) * (48 / 767)), 48px)",
                     "slug": "10"
                 },
                 {
