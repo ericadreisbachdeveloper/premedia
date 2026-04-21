@@ -42,7 +42,6 @@
     filter: none;
 }
 
-
 .s0 {
     fill: $lightblue;
 }
@@ -77,13 +76,13 @@
 
 
 // body scroll lock when modal is open  ... 
-html:has(.modal:not([style*="hidden"])) {
+html:has(.modal[open]) {
     overflow: hidden;
 }
 
 // ... tho not on "mobile"
 @media (min-width: $tablet) {
-    html:has(.modal:not([style*="hidden"])) {
+    html:has(.modal[open]) {
         padding-right: calc(15rem / 16);
     }
 }
@@ -91,6 +90,11 @@ html:has(.modal:not([style*="hidden"])) {
 
 
 // modal bg
+dialog {
+    padding: 0;
+}
+
+/* 
 .modal {
     max-height: 100vh;
     width: 100%;
@@ -101,6 +105,11 @@ html:has(.modal:not([style*="hidden"])) {
     z-index: 1001;
     background-color: transparent;
 }
+    */
+
+.modal::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
 
 .map-pin:has(.map-pin-path[aria-pressed="true"]) {
     z-index: 1000;
@@ -110,7 +119,7 @@ html:has(.modal:not([style*="hidden"])) {
     z-index: 1002;
 }
 
-
+/* 
 @keyframes modal-bg-on {
     0% {
         background-color: transparent;
@@ -136,13 +145,14 @@ html:has(.modal:not([style*="hidden"])) {
         z-index: 0;
     }
 }
+*/
 
 /* 
 .modal[style="vis] {
     visibility: hidden;
 }
 */
-.modal:not([style*="hidden"]) {
+.modal[open] {
     /* 
     animation-name: modal-bg-on;
     animation-duration: .24s;
@@ -175,7 +185,6 @@ html:has(.modal:not([style*="hidden"])) {
     background-color: white;
     border-radius: .5rem;
     filter: drop-shadow(-2px 5px 8px rgba(0, 0, 0, .3));
-
 
     &:after {
         width: calc(100% - calc(4rem / 16));

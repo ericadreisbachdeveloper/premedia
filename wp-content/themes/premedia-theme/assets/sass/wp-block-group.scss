@@ -1,0 +1,13 @@
+// wp-block-group.scss
+
+
+@media (max-width: $narrower-than-tablet) {
+
+    .wp-block-group:not(.wp-block-group .wp-block-group)>* {
+        padding-left: 8%;
+        padding-right: 8%;
+        overflow: hidden;
+        //margin-top: 0;
+    }
+
+}

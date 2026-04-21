@@ -19,8 +19,9 @@
     margin-block-start: 1.5rem;
 }
 
-
-
+:root :where(.is-layout-constrained)>.wp-block-media-text {
+    margin-block-start: 0;
+}
 
 // neutralize the wp default for 600px 
 @media (min-width: calc(600rem / 16)) {

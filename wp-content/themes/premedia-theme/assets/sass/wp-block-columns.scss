@@ -8,20 +8,11 @@
 
 
 
-
-
 @media (max-width: $narrower-than-tablet) {
 
     .wp-block-columns:has(.wp-block-column.has-background) .wp-block-column+.wp-block-column {
         margin-top: 2rem;
     }
 
-}
 
-
-@media (max-width: $narrower-than-desktop) {
-
-    .wp-block-columns:has(.wp-block-column.has-background) {
-        max-width: 84%;
-    }
 }

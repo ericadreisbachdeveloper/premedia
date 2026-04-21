@@ -1,11 +1,20 @@
 // wp-block-media-text.scss
 
-
-
 .wp-block-media-text__media [src] {
     box-shadow: 0 .5rem 2.2rem rgba(0, 0, 0, .3);
 }
 
+
+@media (max-width: $narrower-than-tablet) {
+    .wp-block-media-text>.wp-block-media-text__content {
+        padding: 0;
+    }
+
+    .wp-block-media-text>.wp-block-media-text__media {
+        width: 100vw;
+        margin-left: -8vw;
+    }
+}
 
 
 @media (min-width: $tablet) {
@@ -13,12 +22,6 @@
     .wp-block-media-text__media [src] {
         border-radius: .25rem;
     }
-
-}
-
-
-
-@media(min-width: $tablet) {
 
     .wp-block-media-text__media,
     .wp-block-media-text__media>[src] {
