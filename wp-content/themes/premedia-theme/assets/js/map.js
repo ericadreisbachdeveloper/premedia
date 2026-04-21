@@ -77,28 +77,17 @@ document.addEventListener(`DOMContentLoaded`,function(){
     }); 
 
     
-    // Close 1 of 3 - close button 
+    // Close 1 of 2 - close button 
     // focus to the element that was focused before
     // showModal() was called
     closeBtn.addEventListener(`click`, () => {
-        //wpAdminBar.inert = false; 
         dialog.close();
     });
 
-    // Close 2 of 3 - on backdrop click
+    // Close 2 of 2 - on backdrop click
     dialog.addEventListener(`click`, (event) => {
         if (event.target === dialog) {
-            //wpAdminBar.inert = false; 
             dialog.close();
-        }
-    });
-
-    // Close 3 of 3 - close with Escape key 
-    window.addEventListener(`keydown`, function(e) {
-        if (e.key === `Escape`) {
-            setTimeout(() => {
-                //wpAdminBar.inert = false;
-            }, 2000);
         }
     });
 
