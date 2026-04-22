@@ -15,6 +15,26 @@
 }
 
 
+.state path {
+    fill: lightgray;
+}
+
+.borders path {
+    stroke: white;
+}
+
+/* 
+.s2 {
+    fill: #4e9ed3
+}
+    */
+
+.s3 {
+    fill: #002a55
+}
+
+
+
 
 
 .map-pin-svg {
@@ -36,12 +56,12 @@
     filter: none;
 }
 
-.s0 {
+.s2 {
     fill: $lightblue;
 }
 
 // map pin hover
-.s0.map-pin-path {
+.s2.map-pin-path {
     cursor: pointer;
     pointer-events: auto;
     @include transition(fill .2s ease-in-out);
