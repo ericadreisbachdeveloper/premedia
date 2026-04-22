@@ -19,7 +19,7 @@ define('THEMEPATH', get_stylesheet_directory());
  * used to juke browser cache
  */
 global $style_vsn;
-$style_vsn = '1.0.14';
+$style_vsn = '1.0.15';
 
 
 /**
