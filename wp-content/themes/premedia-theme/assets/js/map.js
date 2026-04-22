@@ -21,13 +21,14 @@ document.addEventListener(`DOMContentLoaded`,function(){
     }
 
     // Special CASE for Case Western and Case MetroHealth
+    
     const metroPath = document.getElementById(`case-western-metrohealth`); 
 
-        const metroSvg = metroPath.closest(`svg`); 
+        const metroSvg = metroPath.closest(`g`); 
     
     const casePath = document.getElementById(`case-western-university`); 
 
-        const caseSvg = casePath.closest(`svg`); 
+        const caseSvg = casePath.closest(`g`); 
     
 
     // metro (behind) on hover moves ahead of case
@@ -42,6 +43,7 @@ document.addEventListener(`DOMContentLoaded`,function(){
         }); 
      
     }   
+    
 
 
     // Keyboard focus trap for modal
