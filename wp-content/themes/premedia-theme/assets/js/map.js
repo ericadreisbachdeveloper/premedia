@@ -19,7 +19,30 @@ document.addEventListener(`DOMContentLoaded`,function(){
         }
 
     }
+
+    // Special CASE for Case Western and Case MetroHealth
+    const metroPath = document.getElementById(`case-western-metrohealth`); 
+
+        const metroSvg = metroPath.closest(`svg`); 
     
+    const casePath = document.getElementById(`case-western-university`); 
+
+        const caseSvg = casePath.closest(`svg`); 
+    
+
+    // metro (behind) on hover moves ahead of case
+    if(metroPath && casePath) {
+
+        metroPath.addEventListener(`mouseenter`, function() {
+            metroSvg.parentNode.insertBefore(caseSvg, metroSvg);
+        }); 
+   
+        casePath.addEventListener(`mouseenter`, function() {
+            metroSvg.parentNode.insertBefore(metroSvg, caseSvg);
+        }); 
+     
+    }   
+
 
     // Keyboard focus trap for modal
     modal.addEventListener('keydown', function(e) {

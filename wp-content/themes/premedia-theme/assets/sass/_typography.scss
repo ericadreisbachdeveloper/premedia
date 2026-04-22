@@ -208,6 +208,6 @@ li {
 
 
 p:not([class*="-font-size"]),
-li:not([class*="-font-size"]) {
+li:not([class*="-font-size"]):not(.wp-block-navigation-link) {
     @extend %text;
 }
