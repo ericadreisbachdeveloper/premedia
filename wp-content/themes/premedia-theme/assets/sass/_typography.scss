@@ -159,9 +159,14 @@ h2:not([class*="-font-size"]) {
     font-size: clamp(1.15rem, 1.15rem + 1.3333vw, 1.5rem);
 }
 
-#clinic-site-name,
+
 h3:not([class*="-font-size"]) {
     @extend %h3;
+}
+
+
+#clinic-site-name {
+    font-size: clamp(4vw, 4vw, 1.5rem);
 }
 
 

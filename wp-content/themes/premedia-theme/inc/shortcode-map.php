@@ -427,7 +427,7 @@ function map_shortcode_fxn()
         'map-js',
         TDIR . '/assets/js/map.js',
         '',
-        '1.0.33',
+        '1.0.35',
         true
     );
 
