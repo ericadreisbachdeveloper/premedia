@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * Completely disable WordPress comments system and block endpoints
  */
 
