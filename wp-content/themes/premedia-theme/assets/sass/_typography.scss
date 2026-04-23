@@ -165,11 +165,10 @@ h3:not([class*="-font-size"]) {
 }
 
 
+
 #clinic-site-name {
-    font-size: clamp(4vw, 4vw, 1.5rem);
+    font-size: clamp(4vw, 4vw, 1.5em);
 }
-
-
 
 h1,
 h2,

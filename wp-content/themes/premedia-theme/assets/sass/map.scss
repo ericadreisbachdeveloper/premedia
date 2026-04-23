@@ -213,7 +213,7 @@ html:has(.modal:not([style*="hidden"])) {
     }
 
     .modal-content {
-        max-width: 90vw;
+        max-width: 12em;
         width: calc(90% - calc(50rem / 16));
         margin: 0 auto;
         top: 50%;
