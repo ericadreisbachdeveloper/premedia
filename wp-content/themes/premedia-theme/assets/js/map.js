@@ -42,7 +42,29 @@ document.addEventListener(`DOMContentLoaded`,function(){
         }); 
      
     }   
-    
+
+
+    // scale SVG map
+    const svg = document.getElementById(`us-map`);
+    let scale = 1;
+    let panX = 0, panY = 0;
+
+    // Touch/mouse zoom
+    svg.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        scale += e.deltaY * -0.001;
+        scale = Math.min(Math.max(1, scale), 5);
+        updateTransform();
+    });
+
+    // Pinch zoom for mobile
+    // Pan with drag
+    // etc.
+
+    function updateTransform() {
+        svg.style.transform = `scale(${scale}) translate(${panX}px, ${panY}px)`;
+    }
+        
 
 
     // Keyboard focus trap for modal

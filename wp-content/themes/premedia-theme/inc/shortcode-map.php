@@ -28,7 +28,8 @@ function map_shortcode_fxn()
 
     $map_output = '';
 
-    $map_output .= '<div class="map-container">';
+    $map_output .= '<div id="map-container" class="map-container">';
+
 
     // Note: TDIR constant set in functions.php
     //$map_output .= '<img id="us-map" class="us-map" src="' . TDIR . '/assets/img/us-map.svg" alt="United States map">';
@@ -74,7 +75,7 @@ function map_shortcode_fxn()
 
     //print_r($clinical_site_info['ucsd']['site_name']);
 
-    $map_output .= '<svg id="us-map"  preserveAspectRatio="xMaxYMin" class="us-map" xmlns="http://www.w3.org/2000/svg" style="width:959px; height: 593px;" viewBox="0 0 959 593">
+    $map_output .= '<svg id="us-map" preserveAspectRatio="xMaxYMin" class="us-map" xmlns="http://www.w3.org/2000/svg" style="width:959px; height: 593px;" viewBox="0 0 959 593">
 
     <defs>
 
@@ -427,7 +428,7 @@ function map_shortcode_fxn()
         'map-js',
         TDIR . '/assets/js/map.js',
         '',
-        '1.0.35',
+        '1.0.37',
         true
     );
 
