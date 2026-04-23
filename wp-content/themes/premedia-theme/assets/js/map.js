@@ -81,13 +81,18 @@ document.addEventListener(`DOMContentLoaded`,function(){
         function handleModal(event) {
 
             // For keyboard events, only proceed if Enter key was pressed
-            if (event.type === 'keydown' && event.key !== 'Enter') {
+            if (event.type === 'keydown' && event.key !== 'Enter' && event.key !== ' ') {
                 return;
             }
             
             this.setAttribute(`aria-pressed`, `true`); 
-            const siteId = this.id; 
-            setAdminBarInert(true);
+            const siteId = this.id;
+
+            // if navigating via keyboard, set #wpadminbar[inert] 
+            // TECH DEBT: allow admins to access #wpadminbar after keyboard interaction with the map
+            if (event.type === 'keydown') {
+                setAdminBarInert(true);
+            }    
             showDataModal(siteId);
             modal.setAttribute(`tabindex`, `0`); 
             modal.focus(); 
