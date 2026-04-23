@@ -431,7 +431,7 @@ function map_shortcode_fxn()
         true
     );
 
-
+    /*
     wp_enqueue_script(
         'svg-pan-zoom',
         TDIR . '/assets/js/svg-pan-zoom.min.js',
@@ -448,6 +448,7 @@ function map_shortcode_fxn()
         '1.0.3',
         true
     );
+    */
 
 
     // Pass clinicData object to JavaScript
