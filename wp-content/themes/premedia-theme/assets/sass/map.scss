@@ -5,13 +5,17 @@
     margin-top: 0;
 }
 
-.map-container {
-    //   position: relative;
-}
-
 .us-map {
-    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 61.8vw;
     display: block;
+    margin: 0 auto;
+
+
+    &:has(.svg-pan-zoom_viewport) {
+        filter: blur(0rem) !important;
+    }
 }
 
 
@@ -33,6 +37,7 @@
     fill: #002a55
 }
     */
+
 
 
 

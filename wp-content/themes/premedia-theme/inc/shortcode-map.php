@@ -74,7 +74,7 @@ function map_shortcode_fxn()
 
 
 
-    $map_output .= '<svg id="us-map" class="us-map" xmlns="http://www.w3.org/2000/svg" width="959" height="593">
+    $map_output .= '<svg id="us-map"  preserveAspectRatio="xMaxYMin" class="us-map" xmlns="http://www.w3.org/2000/svg" style="width:959px; height: 593px;" viewBox="0 0 959 593">
 
     <defs>
 
@@ -355,7 +355,7 @@ function map_shortcode_fxn()
     </g>';
 
     $map_output .= '<g>
-		<path id="ucsd"" class="s2 map-pin-path" d="m96.26 342.03c-5.62 0-10.2 4.58-10.2 10.2 0 6.84 9.35 18.03 9.75 18.5q0.18 0.2 0.45 0.21 0.27 0 0.44-0.21c0.4-0.46 9.76-11.46 9.76-18.5 0-5.62-4.57-10.2-10.2-10.2z"/>
+		<path id="ucsd" class="s2 map-pin-path" role="button" aria-pressed="false" tabindex="0" d="m96.26 342.03c-5.62 0-10.2 4.58-10.2 10.2 0 6.84 9.35 18.03 9.75 18.5q0.18 0.2 0.45 0.21 0.27 0 0.44-0.21c0.4-0.46 9.76-11.46 9.76-18.5 0-5.62-4.57-10.2-10.2-10.2z"/>
 		<path id="Layer 3" fill-rule="evenodd" class="s3" d="m106.46 352.23c0 7.04-9.36 18.04-9.76 18.5q-0.17 0.21-0.44 0.21-0.27-0.01-0.45-0.21c-0.4-0.47-9.75-11.66-9.75-18.5 0-5.62 4.58-10.2 10.2-10.2 5.63 0 10.2 4.58 10.2 10.2zm-1.18 0c0-4.98-4.05-9.03-9.02-9.03-4.98 0-9.02 4.05-9.02 9.03 0 5.6 7.14 14.86 9.02 17.2 1.89-2.31 9.02-11.44 9.02-17.2zm-9.02 4.14c-2.4 0-4.34-1.94-4.34-4.34 0-2.39 1.94-4.33 4.34-4.33 2.4 0 4.33 1.94 4.33 4.33 0 2.4-1.93 4.34-4.33 4.34z"/>
 	</g>
 	<g>
@@ -439,6 +439,7 @@ function map_shortcode_fxn()
         '3.6.2',
         true
     );
+
 
     wp_enqueue_script(
         'svg-pan-zoom-init',

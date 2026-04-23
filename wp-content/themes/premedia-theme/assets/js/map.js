@@ -21,7 +21,6 @@ document.addEventListener(`DOMContentLoaded`,function(){
     }
 
     // Special CASE for Case Western and Case MetroHealth
-    
     const metroPath = document.getElementById(`case-western-metrohealth`); 
 
         const metroSvg = metroPath.closest(`g`); 

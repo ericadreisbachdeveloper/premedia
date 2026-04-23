@@ -2,7 +2,7 @@
 
 var panZoomTiger = svgPanZoom(`#us-map`, {
     minZoom: .5,
-    maxZoom: 1.5
+    maxZoom: 3
 });
 
 panZoomTiger.fit();
