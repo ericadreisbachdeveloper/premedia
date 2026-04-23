@@ -432,24 +432,24 @@ function map_shortcode_fxn()
         true
     );
 
-    /*
+
     wp_enqueue_script(
-        'svg-pan-zoom',
-        TDIR . '/assets/js/svg-pan-zoom.min.js',
-        '',
-        '3.6.2',
+        'panzoom',
+        'https://unpkg.com/panzoom@9.4.3/dist/panzoom.min.js',
+        [],
+        '9.4.3',
         true
     );
 
 
     wp_enqueue_script(
-        'svg-pan-zoom-init',
-        TDIR . '/assets/js/svg-pan-zoom-init.js',
-        'svg-pan-zoom',
-        '1.0.3',
+        'panzoom-init',
+        TDIR . '/assets/js/panzoom-init.js',
+        'panzoom',
+        '1.0.1',
         true
     );
-    */
+
 
 
     // Pass clinicData object to JavaScript

@@ -45,6 +45,7 @@ document.addEventListener(`DOMContentLoaded`,function(){
 
 
     // scale SVG map
+    /* 
     const svg = document.getElementById(`us-map`);
     let scale = 1;
     let panX = 0, panY = 0;
@@ -64,6 +65,7 @@ document.addEventListener(`DOMContentLoaded`,function(){
     function updateTransform() {
         svg.style.transform = `scale(${scale}) translate(${panX}px, ${panY}px)`;
     }
+    */ 
         
 
 
