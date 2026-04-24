@@ -5,8 +5,15 @@
     margin-top: 0;
 }
 
+
+.wp-block-group:has(.us-map) {
+    background-color: #f9f9f9;
+}
+
+
 #map-container {
-    outline: 2px solid red;
+    overflow: hidden;
+    background-color: white;
     touch-action: none;
     user-select: none;
 }
@@ -92,7 +99,7 @@ html:has(.modal) {
 
 // body scroll lock when modal is open  ... 
 html:has(.modal[open]) {
-    overflow: hidden;
+    //overflow: hidden;
 }
 
 
@@ -123,6 +130,10 @@ html:has(.modal[open]) {
     z-index: 1002;
 }
 
+#modal-nubbin:not([class*="points"]) {
+    display: none;
+}
+
 /* 
 @keyframes modal-bg-on {
     0% {
@@ -151,17 +162,11 @@ html:has(.modal:not([style*="hidden"])) {
 }
 */
 
-
-.modal[open] {
-    &:focus-visible {
-        outline: none;
-
-        .modal-content {
-            //outline: calc(5rem/16) auto -webkit-focus-ring-color;
-            //outline-offset: calc(1rem / 16);
-        }
-    }
+/* 
+.modal[open]:focus-visible {
+    outline: none;
 }
+*/
 
 
 
@@ -219,7 +224,7 @@ html:has(.modal:not([style*="hidden"])) {
     }
 
     .modal-content {
-        max-width: 12em;
+        max-width: calc(360rem / 16);
         width: calc(90% - calc(50rem / 16));
         margin: 0 auto;
         top: 50%;

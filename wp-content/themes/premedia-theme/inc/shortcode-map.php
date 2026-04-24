@@ -425,15 +425,6 @@ function map_shortcode_fxn()
     $map_output .= '</div>'; // #map-container.map-container
 
     wp_enqueue_script(
-        'map-js',
-        TDIR . '/assets/js/map.js',
-        '',
-        '1.0.37',
-        true
-    );
-
-
-    wp_enqueue_script(
         'panzoom',
         'https://unpkg.com/panzoom@9.4.3/dist/panzoom.min.js',
         [],
@@ -441,16 +432,21 @@ function map_shortcode_fxn()
         true
     );
 
-
     wp_enqueue_script(
         'panzoom-init',
         TDIR . '/assets/js/panzoom-init.js',
-        'panzoom',
-        '1.0.1',
+        ['panzoom'],
+        '1.0.5',
         true
     );
 
-
+    wp_enqueue_script(
+        'map-js',
+        TDIR . '/assets/js/map.js',
+        ['panzoom', 'panzoom-init'],
+        '1.0.43',
+        true
+    );
 
     // Pass clinicData object to JavaScript
     wp_localize_script(

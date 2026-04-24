@@ -99,13 +99,13 @@ document.addEventListener(`DOMContentLoaded`,function(){
     
 
     // Map region click handler
-    document.querySelectorAll('.map-pin-path').forEach(function(pin) {
+    document.querySelectorAll(`.map-pin-path`).forEach(function(pin) {
 
         // Region activation
         function handleModal(event) {
 
             // For keyboard events, only proceed if Enter key was pressed
-            if (event.type === 'keydown' && event.key !== 'Enter' && event.key !== ' ') {
+            if (event.type === `keydown` && event.key !== `Enter` && event.key !== ` `) {
                 return;
             }
             
@@ -162,57 +162,82 @@ document.addEventListener(`DOMContentLoaded`,function(){
             modal.style.visibility = `visible`; 
             modal.setAttribute(`aria-hidden`, `false`); 
 
-            // Position modal on desktop viewports 
-            // width INCLUDES scrollbars
+            // Clear nubbin
+            let modalNubbin = document.getElementById(`modal-nubbin`); 
+            modalNubbin.setAttribute(`class`, ``); 
+
+            // Viewport size? 
             let windowW = window.innerWidth; 
 
-            if (windowW >= 600) {             
+            // If user is zoomed in -OR- on small viewport then no nubbin
+            if (windowW < 600 ) {
+                return; 
+            }
+            
+            
+            let clinicOnMap = document.getElementById(siteId); 
+            var rect = clinicOnMap.getBoundingClientRect();
 
-                let clinicOnMap = document.getElementById(siteId); 
-                var rect = clinicOnMap.getBoundingClientRect();
+            // Get Modal Dimenions 
+            let modalInner = document.getElementById(`clinic-data`);
+            let modalInnerH = modalInner.offsetHeight;
+            let modalInnerW = modalInner.offsetWidth; 
+            let topStr = `0px`;
+            let rightStr = `0px`; 
 
-                // Get Modal Dimenions 
-                let modalInner = document.getElementById(`clinic-data`);
-                let modalInnerH = modalInner.offsetHeight;
-                let modalInnerW = modalInner.offsetWidth; 
-                let topStr = `0px`;
-                let rightStr = `0px`; 
+            if( (rect.top - modalInnerH).toString() > 64 )  {
+                topStr = (rect.top - modalInnerH - 16).toString() + `px`; 
+            }
+            else {
+                topStr = (rect.top + 46).toString() + `px`;                 
+            }
 
-                let modalNubbin = document.getElementById(`modal-nubbin`); 
-                    modalNubbin.setAttribute(`class`, ``); 
+            let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0); 
 
-                if( (rect.top - modalInnerH).toString() > 64 )  {
-                    topStr = (rect.top - modalInnerH - 16).toString() + `px`; 
-                    modalNubbin.classList.add(`points-down`); 
-                    topStrNubbin = (rect.top - 26).toString() + `px`;
-                }
-                else {
-                    topStr = (rect.top + 46).toString() + `px`;                 
-                    modalNubbin.classList.add(`points-up`); 
-                    topStrNubbin = (rect.top + 38).toString() + `px`;
-                }
+            let rightEdge = modalInnerW - vw + 24; 
+            let rightFormula = (-1 * rect.right) + ( modalInnerW / 2) + 20; 
 
-                let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0); 
+            if(rightFormula < rightEdge) {
+                rightStr = rightEdge.toString() + `px`;
+            }
+            else if(rightFormula > -12) {
+                rightStr = `-12px`; 
+            }
+            else {
+                rightStr = rightFormula.toString() + `px`; 
+            }
 
-                let rightEdge = modalInnerW - vw + 24; 
-                let rightFormula = (-1 * rect.right) + ( modalInnerW / 2) + 20; 
+            modalInner.style.top =  topStr;
+            modalInner.style.right = rightStr;  
 
-                if(rightFormula < rightEdge) {
-                    rightStr = rightEdge.toString() + `px`;
-                }
-                else if(rightFormula > -12) {
-                    rightStr = `-12px`; 
-                }
-                else {
-                    rightStr = rightFormula.toString() + `px`; 
-                }
-    
-                modalInner.style.top =  topStr;
-                modalInner.style.right = rightStr;  
 
-                modalNubbin.style.top = topStrNubbin;
-                modalNubbin.style.left = (rect.left + 3).toString() + `px`; 
-            } // end Position modal on tablet-and-wider >= 600px   
+            // Zoom? 
+            const mapElem = document.getElementById(`us-map`);
+            const instance = mapElem._panzoomInstance;
+            const scale = instance ? instance.getTransform().scale : 1;
+            const isZoomed = scale > 1.05 || scale < .95;
+
+            
+
+            if(isZoomed) {
+                return;
+            }
+            
+            
+
+            if( (rect.top - modalInnerH).toString() > 64 )  {
+                modalNubbin.classList.add(`points-down`); 
+                topStrNubbin = (rect.top - 26).toString() + `px`;
+            }
+            else {
+                modalNubbin.classList.add(`points-up`); 
+                topStrNubbin = (rect.top + 38).toString() + `px`;
+            }
+
+
+            modalNubbin.style.top = topStrNubbin;
+            modalNubbin.style.left = (rect.left + 3).toString() + `px`; 
+
 
         }
 
