@@ -99,7 +99,7 @@ html:has(.modal) {
 
 // body scroll lock when modal is open  ... 
 html:has(.modal[open]) {
-    //overflow: hidden;
+    overflow: hidden;
 }
 
 
@@ -108,7 +108,8 @@ html:has(.modal[open]) {
     max-height: 100vh;
     width: 100%;
     height: 100%;
-    position: fixed;
+    //position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     z-index: 1001;
@@ -122,9 +123,17 @@ html:has(.modal[open]) {
 
 // selected pin moves to front 
 .map-pin:has(.map-pin-path[aria-pressed="true"]) {
-    z-index: 1000;
+    //z-index: 1000;
 }
 
+
+.modal[open] {
+    position: fixed;
+}
+
+.modal[open]:focus-visible {
+    outline: none;
+}
 
 #modal-nubbin {
     z-index: 1002;
@@ -134,39 +143,7 @@ html:has(.modal[open]) {
     display: none;
 }
 
-/* 
-@keyframes modal-bg-on {
-    0% {
-        background-color: transparent;
-    }
 
-    100% {
-        background-color: rgba(0, 0, 0, 0.5);
-    }
-}
-
-html:has(.modal:not([style*="hidden"])) {
-    @include has-after;
-
-    &:after {
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        animation-name: modal-bg-on;
-        animation-duration: .24s;
-        animation-iteration-count: 1;
-        animation-fill-mode: forwards;
-        z-index: 0;
-    }
-}
-*/
-
-/* 
-.modal[open]:focus-visible {
-    outline: none;
-}
-*/
 
 
 
@@ -207,7 +184,7 @@ html:has(.modal:not([style*="hidden"])) {
 
     .modal[open] {
         @include has-before;
-        position: fixed;
+
 
         &:before {
             width: 100%;

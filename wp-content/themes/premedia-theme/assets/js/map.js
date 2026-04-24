@@ -17,7 +17,6 @@ document.addEventListener(`DOMContentLoaded`,function(){
         if (wpAdminBar) {
             wpAdminBar.inert = value;
         }
-
     }
 
     // Special CASE for Case Western and Case MetroHealth
@@ -116,7 +115,7 @@ document.addEventListener(`DOMContentLoaded`,function(){
             // TECH DEBT: allow admins to access #wpadminbar after keyboard interaction with the map
             if (event.type === 'keydown') {
                 setAdminBarInert(true);
-            }    
+            }       
             showDataModal(siteId);
             modal.setAttribute(`tabindex`, `0`); 
             modal.focus(); 
@@ -214,8 +213,14 @@ document.addEventListener(`DOMContentLoaded`,function(){
             // Zoom? 
             const mapElem = document.getElementById(`us-map`);
             const instance = mapElem._panzoomInstance;
+            const scale = instance ? instance.getScale() : 1;
+            const isZoomed = scale > 1.05 || scale < .95;;
+/* 
+            const mapElem = document.getElementById(`us-map`);
+            const instance = mapElem._panzoomInstance;
             const scale = instance ? instance.getTransform().scale : 1;
             const isZoomed = scale > 1.05 || scale < .95;
+            */ 
 
             
 

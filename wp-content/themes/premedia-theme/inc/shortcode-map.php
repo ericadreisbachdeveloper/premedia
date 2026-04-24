@@ -426,9 +426,10 @@ function map_shortcode_fxn()
 
     wp_enqueue_script(
         'panzoom',
-        'https://unpkg.com/panzoom@9.4.3/dist/panzoom.min.js',
+        //'https://unpkg.com/panzoom@9.4.3/dist/panzoom.min.js',
+        'https://unpkg.com/@panzoom/panzoom@4.6.1/dist/panzoom.min.js',
         [],
-        '9.4.3',
+        '4.6.1',
         true
     );
 
@@ -436,7 +437,7 @@ function map_shortcode_fxn()
         'panzoom-init',
         TDIR . '/assets/js/panzoom-init.js',
         ['panzoom'],
-        '1.0.5',
+        '1.0.7',
         true
     );
 
