@@ -194,5 +194,10 @@
                 }
             }
         }
+    },
+    "styles": {
+        "spacing": {
+            "blockGap": "0px"
+        }
     }
 }

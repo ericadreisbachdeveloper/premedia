@@ -7,12 +7,13 @@
 
 @media (max-width: $narrower-than-tablet) {
     .wp-block-media-text>.wp-block-media-text__content {
-        padding: 0;
+        padding: 0 8%;
     }
 
     .wp-block-media-text>.wp-block-media-text__media {
-        width: 100vw;
-        margin-left: -8vw;
+        width: 100%;
+        //width: 100vw;
+        //   margin-left: -8vw;
     }
 }
 
@@ -36,20 +37,12 @@
 
 
 
-@media (min-width: $tablet) {
-
-    .wp-block-media-text.has-media-on-the-right .wp-block-media-text__content {
-        padding-right: 3rem;
-    }
-
-    .wp-block-media-text.has-media-on-the-left .wp-block-media-text__content {
-        padding-left: 3rem;
-    }
-}
-
-
-
 @media (min-width: $tablet) and (max-width: $narrower-than-desktop) {
+
+    .wp-block-media-text {
+        padding-left: 0;
+        padding-right: 0;
+    }
 
     .wp-block-media-text.has-media-on-the-right .wp-block-media-text__content {
         padding-right: 3rem;

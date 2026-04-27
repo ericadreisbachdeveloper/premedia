@@ -1,19 +1,38 @@
 // nav.scss
 
 
-@media (max-width: $narrower-than-laptop) {
+$navh: calc(122rem / 16);
 
-    .wp-block-navigation__responsive-container .wp-block-navigation__responsive-container-content {
-        padding-left: 2rem;
-        padding-bottom: 3rem;
-        @include translate(0, 5rem);
-        background-color: white;
+:where(.wp-site-blocks)>header {
+
+    .wp-block-image {
+        min-height: $navh;
+        @include flex;
+        @include align-items-center;
     }
 
+}
+
+
+
+@media (max-width: $narrower-than-laptop) {
+
+    header {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: white;
+        z-index: 9999;
+    }
+
+
+    // the  close x button
     .wp-block-navigation__responsive-container-close {
         background-color: white;
         right: 2.5rem;
-        top: 1.5rem;
+        top: 3.5rem;
+        outline: 2px solid pink;
     }
 
     .wp-block-navigation:not(.has-background) .wp-block-navigation__responsive-container.is-menu-open {
@@ -21,21 +40,58 @@
     }
 
 
-}
-
-@media (min-width: $thin-admin-bar) and (max-width: $narrower-than-laptop) {
-    body.admin-bar .wp-block-navigation__responsive-container.is-menu-open {
-        top: calc(32px);
-    }
-}
-
-@media (max-width: $thick-admin-bar) {
-
-    body.admin-bar .wp-block-navigation__responsive-container.is-menu-open {
-        top: calc(46px);
+    // fighting Wordpress - <div>
+    .wp-block-navigation__responsive-container.is-menu-open div.wp-block-navigation__responsive-container-content {
+        padding-top: 0;
+        padding-bottom: 2rem;
+        @include translate(0, calc(#{$navh}));
+        background-color: white;
     }
 
+    // fighting Wordpress - <ul> 
+    .wp-block-navigation__responsive-container.is-menu-open div.wp-block-navigation__responsive-container-content ul.wp-block-navigation {
+        width: 100%;
+        gap: 0;
+    }
+
+    // fighting Wordpress - <li> 
+    .wp-block-navigation .wp-block-navigation-item {
+        width: 100%;
+    }
+
+    // fighting WordPress - [href]
+    .wp-block-navigation .wp-block-navigation-item__content {
+        width: 100%;
+        height: 4rem;
+        @include flex;
+        @include align-items-center;
+
+        background-color: yellow;
+        margin: 0;
+        border-bottom: calc(1rem / 16) solid $lightgray;
+    }
+
+    .wp-block-navigation .wp-block-navigation-item__content[href] {
+        background-color: transparent;
+        @include transition(background-color .2s ease-in-out, color .2s ease-in-out);
+
+        &:hover,
+        &:active {
+            background-color: $lightgray;
+            color: $teal;
+        }
+    }
+
+    .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__responsive-container-content .wp-block-navigation-item__content {
+        padding: 0 1rem 0 2rem;
+    }
+
 }
+
+
+
+
+
 
 @media (min-width: $laptop) {
 
@@ -82,6 +138,18 @@
 
     [href].wp-block-navigation-item__content[aria-current="page"]:after {
         background-color: $teal;
+    }
+
+}
+
+
+
+
+@media (max-width: $narrower-than-desktop) {
+
+    .wp-block-group:is(header > .wp-block-group) {
+        padding-left: 1rem;
+        padding-right: 2.5rem;
     }
 
 }
