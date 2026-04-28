@@ -3,13 +3,11 @@
 
 
 .wp-block-button__link[href] {
-
+    font-family: roboto-bold, sans-serif;
     @include transition(background-color .2s ease-in-out);
 
     @include hover {
         cursor: pointer;
-
-
     }
 
     // yellow
@@ -33,8 +31,6 @@
 .wp-block-buttons {
     padding-top: 1rem;
 }
-
-
 
 
 

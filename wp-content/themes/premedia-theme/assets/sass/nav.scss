@@ -14,6 +14,10 @@ $navh: calc(122rem / 16);
 }
 
 
+.wp-block-navigation>.wp-block-navigation-item.mobile-nav-only:is(:not(.mobile-nav-only ~ .mobile-nav-only)):before {
+    @extend %small;
+}
+
 
 @media (max-width: $narrower-than-laptop) {
 
@@ -44,8 +48,7 @@ $navh: calc(122rem / 16);
 
     // fighting Wordpress - <div>
     .wp-block-navigation__responsive-container.is-menu-open div.wp-block-navigation__responsive-container-content {
-        padding-top: 0;
-        padding-bottom: 2rem;
+        padding: 0;
         @include translate(0, calc(#{$navh}));
         background-color: white;
     }
@@ -61,37 +64,129 @@ $navh: calc(122rem / 16);
     }
 
     // fighting Wordpress - <li> 
-    .wp-block-navigation .wp-block-navigation-item {
+    .wp-block-navigation .wp-block-navigation-item:not(.mobile-nav-only) {
         width: 100%;
     }
 
     // fighting WordPress - [href]
-    .wp-block-navigation .wp-block-navigation-item__content {
+    .wp-block-navigation>.wp-block-navigation-item:not(.mobile-nav-only)>.wp-block-navigation-item__content {
         width: 100%;
         height: 4rem;
         @include flex;
         @include align-items-center;
-
-        background-color: yellow;
         margin: 0;
         border-bottom: calc(1rem / 16) solid $lightgray;
-    }
 
-    .wp-block-navigation .wp-block-navigation-item__content[href] {
-        background-color: transparent;
-        @include transition(background-color .2s ease-in-out, color .2s ease-in-out);
+        &[href] {
+            background-color: transparent;
+            @include transition(background-color .2s ease-in-out, color .2s ease-in-out);
 
-        &:hover,
-        &:active {
-            background-color: $lightgray;
-            color: $teal;
+            &:hover,
+            &:active {
+                background-color: $lightgray;
+                color: $teal;
+            }
         }
     }
 
-    .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__responsive-container-content .wp-block-navigation-item__content {
-        padding: 0 1rem 0 3rem;
+    // using text-indent instead of padding to position nav text
+    .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__responsive-container-content .wp-block-navigation-item:not(.mobile-nav-only)>.wp-block-navigation-item__content {
+        width: 100%;
+        text-indent: 2rem;
+        padding: 0;
     }
 
+
+    // mobile-nav-only background 
+    .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item.mobile-nav-only {
+        width: 100%;
+        font-family: 'roboto-bold', sans-serif;
+        background-color: $lightestgray !important;
+    }
+
+    // .mobile-nav-only styling 
+    .wp-block-navigation>.wp-block-navigation-item.mobile-nav-only {
+        width: calc(100% - 4rem);
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+        background-color: $lightgray;
+        text-align: center;
+
+        &>.wp-block-navigation-item__content {
+            width: calc(100% - 4rem);
+            margin-left: 2rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+
+            &[href] {
+                border-radius: .5rem;
+                @include transition (background-color .2s ease-in-out,
+                    color .2s ease-in-out);
+
+            }
+
+            &[href*="contact"] {
+                background-color: $golden;
+                color: $darkgray;
+
+                @include hover {
+                    background-color: $golden-hover;
+                }
+
+            }
+
+
+            &[href*="location"] {
+                background-color: white;
+                border: calc(2rem / 16) solid $navy;
+                color: $navy;
+
+                @include hover {
+                    background-color: $lightaqua;
+                }
+
+            }
+
+        }
+
+    }
+
+    // first mobile-nav-only link - "Ready to participate?" text 
+    .wp-block-navigation>.wp-block-navigation-item.mobile-nav-only:is(:not(.mobile-nav-only ~ .mobile-nav-only)) {
+        margin-top: 10vh;
+
+        @include has-before;
+
+        &:before {
+            position: relative;
+            margin-top: 1rem;
+            left: 2rem;
+            padding-top: 0;
+            padding-bottom: 1rem;
+            color: $text;
+            content: 'Ready to participate?';
+            font-family: 'roboto', sans-serif;
+        }
+    }
+
+    .wp-block-navigation>.wp-block-navigation-item.mobile-nav-only:last-of-type {
+        padding-bottom: 2rem;
+    }
+
+    // little shadow at the bottom of the mobile nav
+    .wp-block-navigation__responsive-container-content {
+        @include has-after;
+
+        &:after {
+            width: 100%;
+            height: calc(1rem / 16);
+            bottom: 0;
+            left: 0;
+            background-color: $darkgray;
+            filter: blur(calc(3rem / 16));
+            z-index: -1;
+        }
+    }
 }
 
 
@@ -101,7 +196,11 @@ $navh: calc(122rem / 16);
 
 @media (min-width: $laptop) {
 
-    .wp-block-navigation .wp-block-navigation__container>.wp-block-navigation-item {
+    .wp-block-navigation>.wp-block-navigation-item.mobile-nav-only {
+        display: none;
+    }
+
+    .wp-block-navigation>.wp-block-navigation-item {
         padding-top: 0;
         padding-bottom: 0;
         padding-left: .67rem;
