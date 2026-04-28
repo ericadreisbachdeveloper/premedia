@@ -52,6 +52,7 @@ wp-content/plugins/index.php
 
 !wp-content/plugins/schema-faq-block
 wp-content/plugins/schema-faq-block/*
+!wp-content/plugins/schema-faq-block/readme.txt
 !wp-content/plugins/schema-faq-block/schema-faq-block.php
 !wp-content/plugins/schema-faq-block/build
 
