@@ -2,7 +2,7 @@ const elem = document.getElementById('us-map');
 const instance = Panzoom(elem, {  // note: capital P in v4
     maxScale: 3,
     minScale: .8,
-    step: 0.2,  // controls how much each wheel tick zooms
+    step: 0.4,  // controls how much each wheel tick zooms
 });
 
 elem.parentElement.addEventListener('wheel', instance.zoomWithWheel);
