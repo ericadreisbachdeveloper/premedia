@@ -67,6 +67,10 @@
         max-width: 17rem;
     }
 
+    .wp-block-buttons:is(.wp-block-media-text__content > .wp-block-buttons) {
+        @include justify-content-center;
+    }
+
     .wp-block-buttons:is(.wp-block-media-text__content > .wp-block-buttons)>.wp-block-button+.wp-block-button {
         margin-top: 1rem;
     }
