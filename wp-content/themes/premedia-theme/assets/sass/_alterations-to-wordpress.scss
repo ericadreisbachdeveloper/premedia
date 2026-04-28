@@ -6,6 +6,10 @@ html.has-modal-open {
 }
 
 
+[class*="wp-block-"] p:has(+ *) {
+    padding-bottom: .9rem;
+}
+
 
 // neutralize the wp default for 600px 
 @media (min-width: calc(600rem / 16)) {

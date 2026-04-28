@@ -28,7 +28,38 @@
 
 
 
+.wp-block-buttons {
+    padding-top: 1rem;
+}
 
+
+@media (max-width: $narrower-than-laptop) {
+    .wp-block-buttons:is(.wp-block-media-text__content > .wp-block-buttons)>.wp-block-button {
+        width: 100%;
+        max-width: 17rem;
+    }
+
+    .wp-block-buttons:is(.wp-block-media-text__content > .wp-block-buttons)>.wp-block-button+.wp-block-button {
+        margin-top: 1rem;
+
+    }
+
+}
+
+@media (min-width: $laptop) {
+    .wp-block-buttons:is(.wp-block-media-text__content > .wp-block-buttons)>.wp-block-button+.wp-block-button {
+        margin-left: 1rem;
+    }
+}
+
+@media (min-width: $tablet) {
+
+
+    .wp-block-buttons:not(.wp-block-media-text__content > .wp-block-buttons)>.wp-block-button+.wp-block-button {
+        margin-left: 1rem;
+
+    }
+}
 
 
 :where(.wp-block-button__link)[href] {

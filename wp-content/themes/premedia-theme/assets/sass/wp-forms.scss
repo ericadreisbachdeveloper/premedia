@@ -34,3 +34,27 @@ div.wpforms-container-full button[type=submit] {
         padding: .8rem 2rem;
     }
 }
+
+div.wpforms-container-full legend,
+div.wpforms-container-full label {
+    &.wpforms-field-label {
+        margin-bottom: .5em;
+    }
+}
+
+[class*="wpforms-"] input[type="checkbox"]+label.wpforms-field-label-inline {
+    font-family: roboto-bold, sans-serif;
+    @include has-after;
+
+    &:after {
+        color: var(--wpforms-label-error-color);
+        content: '*';
+        display: inline-block;
+        padding-left: .2em;
+    }
+}
+
+.wpforms-field-checkbox.wpforms-has-error .wpforms-field-required {
+    outline: calc(1rem/16) solid var(--wpforms-label-error-color);
+    outline-offset: calc(10rem / 16);
+}

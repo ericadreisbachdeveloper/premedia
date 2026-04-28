@@ -95,6 +95,19 @@ $navh: calc(122rem / 16);
 
 @media (min-width: $laptop) {
 
+    .wp-block-navigation .wp-block-navigation__container>.wp-block-navigation-item {
+        padding-top: 0;
+        padding-bottom: 0;
+        padding-left: .67rem;
+
+        &:has(+.wp-block-navigation-item) {
+            padding-right: .67rem;
+
+        }
+    }
+
+
+
     [href].wp-block-navigation-item__content {
         @include has-after;
         padding: 1rem .5rem;

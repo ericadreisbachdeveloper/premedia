@@ -130,6 +130,50 @@ h6 {
 }
 
 
+.has-x-large-font-size,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-bottom: 0;
+
+}
+
+.has-x-large-font-size,
+h1 {
+    padding-bottom: .25em;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+    padding-bottom: .5em;
+}
+
+
+ul.wp-block-list,
+p {
+
+    &+.has-x-large-font-size,
+    &+h1,
+    &+h2,
+    &+h3,
+    &+h4,
+    &+h5,
+    &+h6 {
+        padding-top: 1em;
+    }
+
+}
+
+
+ul.wp-block-list {
+    padding-bottom: 1em;
+}
 
 // Extra Large 
 %h1 {
@@ -200,7 +244,7 @@ p.has-medium-font-size,
 }
 
 p,
-li {
+.wp-block-list li {
     &:not(.has-text-color) {
         color: $text;
     }
@@ -210,4 +254,8 @@ li {
 p:not([class*="-font-size"]),
 li:not([class*="-font-size"]):not(.wp-block-navigation-link) {
     @extend %text;
+}
+
+.wp-block-list li+li {
+    margin-top: 1em;
 }
