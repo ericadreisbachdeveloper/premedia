@@ -16,3 +16,13 @@
 
 
 }
+
+
+
+@media (min-width: $laptop) and (max-width: $narrower-than-desktop) {
+
+    .entry-content>.wp-block-group .wp-block-columns {
+        max-width: calc(100% - 4rem);
+    }
+
+}
