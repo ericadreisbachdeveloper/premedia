@@ -7,6 +7,9 @@
 }
 
 
+
+
+
 // sticky footer
 @media (min-width: $tablet) {
 
@@ -19,6 +22,9 @@
     }
 
 }
+
+
+
 
 
 
@@ -35,12 +41,24 @@
 }
 
 
+@media (min-width: $wordpress-tablet) and (max-width: $narrower-than-desktop) {
 
-@media (min-width: $tablet) and (max-width: $narrower-than-desktop) {
+    .footer-section .wp-block-columns:not(.is-not-stacked-on-mobile)>div:not(:first-of-type) {
+        flex-basis: 50% !important;
+    }
+
+}
+
+
+@media (max-width: $narrower-than-desktop) {
 
     .wp-block-group.footer-section {
         padding-right: 8%;
         padding-left: 8%;
+    }
+
+    .footer-section .wp-block-columns:not(.is-not-stacked-on-mobile)>div:not(:first-of-type) {
+        padding-top: 2rem;
     }
 
 }

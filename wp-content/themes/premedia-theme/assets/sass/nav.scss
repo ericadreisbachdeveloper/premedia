@@ -26,13 +26,15 @@ $navh: calc(122rem / 16);
         z-index: 9999;
     }
 
+    html:not(.admin-bar) main.entry-content {
+        padding-top: $navh;
+    }
 
-    // the  close x button
+    // the x button - the close x button
     .wp-block-navigation__responsive-container-close {
-        background-color: white;
+        top: 3.2rem;
         right: 2.5rem;
-        top: 3.5rem;
-        outline: 2px solid pink;
+        background-color: white;
     }
 
     .wp-block-navigation:not(.has-background) .wp-block-navigation__responsive-container.is-menu-open {
@@ -52,6 +54,10 @@ $navh: calc(122rem / 16);
     .wp-block-navigation__responsive-container.is-menu-open div.wp-block-navigation__responsive-container-content ul.wp-block-navigation {
         width: 100%;
         gap: 0;
+
+        &>li:first-of-type>.wp-block-navigation-item__content {
+            border-top: calc(1rem / 16) solid $lightgray;
+        }
     }
 
     // fighting Wordpress - <li> 
@@ -83,7 +89,7 @@ $navh: calc(122rem / 16);
     }
 
     .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__responsive-container-content .wp-block-navigation-item__content {
-        padding: 0 1rem 0 2rem;
+        padding: 0 1rem 0 3rem;
     }
 
 }

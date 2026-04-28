@@ -1,5 +1,7 @@
 // wp-block-button.scss
 
+
+
 .wp-block-button__link[href] {
 
     @include transition(background-color .2s ease-in-out);
@@ -33,7 +35,37 @@
 }
 
 
+
+
+
+
+// buttons that AREN'T in Text/Media block 
+@media (max-width: $narrower-than-tablet) {
+
+    .wp-block-buttons:not(.wp-block-media-text__content > .wp-block-buttons)>.wp-block-button {
+        width: 100%;
+        max-width: 17rem;
+    }
+
+    .wp-block-buttons:not(.wp-block-media-text__content > .wp-block-buttons)>.wp-block-button+.wp-block-button {
+        margin-top: 1rem;
+    }
+
+}
+
+@media (min-width: $tablet) {
+
+    .wp-block-buttons:not(.wp-block-media-text__content > .wp-block-buttons)>.wp-block-button+.wp-block-button {
+        margin-left: 1rem;
+    }
+
+}
+
+
+
+// buttons that ARE in Text/Media block and have an earlier breakpoint 
 @media (max-width: $narrower-than-laptop) {
+
     .wp-block-buttons:is(.wp-block-media-text__content > .wp-block-buttons)>.wp-block-button {
         width: 100%;
         max-width: 17rem;
@@ -41,25 +73,19 @@
 
     .wp-block-buttons:is(.wp-block-media-text__content > .wp-block-buttons)>.wp-block-button+.wp-block-button {
         margin-top: 1rem;
-
     }
 
 }
 
+
 @media (min-width: $laptop) {
+
     .wp-block-buttons:is(.wp-block-media-text__content > .wp-block-buttons)>.wp-block-button+.wp-block-button {
         margin-left: 1rem;
     }
 }
 
-@media (min-width: $tablet) {
 
-
-    .wp-block-buttons:not(.wp-block-media-text__content > .wp-block-buttons)>.wp-block-button+.wp-block-button {
-        margin-left: 1rem;
-
-    }
-}
 
 
 :where(.wp-block-button__link)[href] {

@@ -147,7 +147,7 @@ h1 {
 }
 
 h2,
-h3,
+h3:not(.wp-block-accordion-heading),
 h4,
 h5,
 h6 {
@@ -200,7 +200,7 @@ h2:not([class*="-font-size"]) {
 
 
 %h3 {
-    font-size: clamp(1.15rem, 1.15rem + 1.3333vw, 1.5rem);
+    font-size: clamp(1rem, 1rem + 1.3333vw, 1.5rem);
 }
 
 #clinic-site-name,
