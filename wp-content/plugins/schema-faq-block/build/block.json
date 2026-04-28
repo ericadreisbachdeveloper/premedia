@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/schema-faq-block",
+  "version": "0.1.0",
+  "title": "Schema FAQ Block",
+  "category": "widgets",
+  "description": "FAQ block with JSON-LD Schema markup",
+  "attributes": {
+    "faqs": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "answer": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "supports": {
+    "html": false,
+    "anchor": true
+  },
+  "editorScript": "file:./index.js"
+}
