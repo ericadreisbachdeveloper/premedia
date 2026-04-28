@@ -42,7 +42,16 @@ div.wpforms-container-full label {
     }
 }
 
-[class*="wpforms-"] input[type="checkbox"]+label.wpforms-field-label-inline {
+
+.wpforms-field-checkbox legend.wpforms-field-label.wpforms-field-label {
+    height: 0;
+    overflow: hidden;
+    margin: 0;
+    visibility: hidden;
+}
+
+
+.wpforms-field-checkbox input[type="checkbox"]+label.wpforms-field-label-inline {
     font-family: roboto-bold, sans-serif;
     @include has-after;
 

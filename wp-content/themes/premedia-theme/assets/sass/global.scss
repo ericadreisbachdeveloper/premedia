@@ -75,6 +75,15 @@
 
 
 // little icons on the contact page 
+p:has(.email),
+p:has(.time) {
+    padding-left: 1.4rem;
+
+    .email,
+    .time {
+        margin-left: -1.4rem;
+    }
+}
 
 .email,
 .time {
@@ -87,7 +96,6 @@
         height: 100%;
         left: 0;
         top: 0;
-        background-position: 0 .2rem;
         background-size: contain;
         background-repeat: no-repeat;
     }
@@ -99,6 +107,27 @@
 
 .time:before {
     background-image: url('../img/clock.svg');
+}
+
+@media (min-width: $tablet) {
+
+    .email,
+    .time {
+        &:before {
+            background-position: 0 .2rem;
+        }
+    }
+}
+
+
+@media (max-width: $narrower-than-tablet) {
+
+    .email,
+    .time {
+        &:before {
+            background-position: 0 .14rem;
+        }
+    }
 }
 
 
