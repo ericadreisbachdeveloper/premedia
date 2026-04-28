@@ -108,7 +108,6 @@ html:has(.modal[open]) {
     max-height: 100vh;
     width: 100%;
     height: 100%;
-    //position: fixed;
     position: absolute;
     top: 0;
     left: 0;
@@ -118,6 +117,9 @@ html:has(.modal[open]) {
 .modal:not([open]) {
     visibility: hidden;
 }
+
+
+
 
 
 
@@ -184,7 +186,7 @@ html:has(.modal[open]) {
 
     .modal[open] {
         @include has-before;
-
+        position: fixed;
 
         &:before {
             width: 100%;
