@@ -259,3 +259,10 @@ li:not([class*="-font-size"]):not(.wp-block-navigation-link) {
 .wp-block-list li+li {
     margin-top: 1em;
 }
+
+
+// Small (NOW ENROLING)  
+%small {
+    font-size: clamp(0.5rem, 0.5rem + 0.3077vw, .8rem);
+    line-height: 1em;
+}

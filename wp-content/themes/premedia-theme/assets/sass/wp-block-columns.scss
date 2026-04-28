@@ -26,3 +26,30 @@
     }
 
 }
+
+
+@media (max-width: $narrower-than-laptop) {
+
+    // .wp-block-columns:not(.is-not-stacked-on-mobile)>.wp-block-column[style*=flex-basis]
+
+    %wp-block-columns-stack-on-laptop-and-narrower {
+        &:not(.is-not-stacked-on-mobile) {
+            flex-wrap: wrap !important;
+            gap: unset;
+
+            &>.wp-block-column[style*=flex-basis] {
+                flex-basis: 100% !important;
+                flex-grow: 1 !important;
+            }
+
+        }
+
+    }
+
+}
+
+
+body.page-id-15 .entry-content>.wp-block-group>.wp-block-columns {
+    @extend %wp-block-columns-stack-on-laptop-and-narrower;
+
+}
