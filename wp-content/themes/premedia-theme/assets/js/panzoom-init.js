@@ -3,20 +3,14 @@ const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
 const isMac = navigator.userAgent.includes('Mac') && !navigator.userAgent.includes('Mobile');
 const step = isTouchDevice ? 0.5 : 0.1;
 
-let currentTouchCount = 0;
-
 const instance = Panzoom(elem, {
     maxScale: 2,
     minScale: 1,
     step,
-    handleStartEvent: (e) => {
-        if (e.pointerType === 'touch' && currentTouchCount < 2) {
-            // Single finger — do not claim the event, let browser scroll
-            return;
-        }
-        e.preventDefault();
-        e.stopPropagation();
-    },
+    // Disable Panzoom's built-in touch handling entirely on mobile
+    // We will drive pan/zoom manually via touch events below
+    disablePan: isTouchDevice,
+    disableZoom: isTouchDevice,
 });
 
 elem._panzoomInstance = instance;
@@ -54,23 +48,69 @@ function showHint(message) {
 }
 
 if (isTouchDevice) {
-    // touchstart fires before pointerdown, so currentTouchCount
-    // is always up to date when handleStartEvent reads it
+    let lastTouchX = 0, lastTouchY = 0;
+    let lastPinchDist = null;
+
     elem.addEventListener('touchstart', (e) => {
-        currentTouchCount = e.touches.length;
-    }, { passive: true });
-
-    elem.addEventListener('touchend', (e) => {
-        currentTouchCount = e.touches.length;
-    }, { passive: true });
-
-    elem.addEventListener('touchcancel', (e) => {
-        currentTouchCount = e.touches.length;
+        if (e.touches.length === 1) {
+            // Single finger — record position but don't pan
+            lastTouchX = e.touches[0].clientX;
+            lastTouchY = e.touches[0].clientY;
+            lastPinchDist = null;
+        } else if (e.touches.length === 2) {
+            // Two fingers — record pinch distance
+            lastPinchDist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            // Also record midpoint for panning during pinch
+            lastTouchX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+            lastTouchY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+        }
     }, { passive: true });
 
     elem.addEventListener('touchmove', (e) => {
         if (e.touches.length === 1) {
+            // Single finger — show hint, do nothing else
             showHint('Use two fingers to move the map');
+            return;
+        }
+
+        if (e.touches.length === 2) {
+            e.preventDefault(); // prevent page scroll during two-finger gesture
+
+            const newDist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+            const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+
+            // Pan
+            const dx = midX - lastTouchX;
+            const dy = midY - lastTouchY;
+            if (dx !== 0 || dy !== 0) {
+                instance.pan(dx, dy, { relative: true, force: true });
+            }
+
+            // Pinch zoom
+            if (lastPinchDist) {
+                const currentScale = instance.getScale();
+                const newScale = Math.min(2, Math.max(1, currentScale * (newDist / lastPinchDist)));
+                instance.zoom(newScale, { force: true });
+            }
+
+            lastTouchX = midX;
+            lastTouchY = midY;
+            lastPinchDist = newDist;
+        }
+    }, { passive: false }); // passive: false needed for e.preventDefault()
+
+    elem.addEventListener('touchend', (e) => {
+        lastPinchDist = null;
+        if (e.touches.length === 1) {
+            lastTouchX = e.touches[0].clientX;
+            lastTouchY = e.touches[0].clientY;
         }
     }, { passive: true });
 
