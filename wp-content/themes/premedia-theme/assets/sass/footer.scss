@@ -8,10 +8,15 @@
 
 
 
+$navh: calc(122rem / 16);
+$footerh-narrower-than-desktop: calc(416rem / 16); // $thick-admin-bar: calc(782rem / 16);
+$footerh-desktop: calc(316rem / 16); // $thin-admin-bar: calc(783rem / 16);
+
 
 
 // sticky footer
-@media (min-width: $tablet) {
+@media (min-width: $thin-admin-bar) {
+
 
     body:not(.logged-in) .wp-site-blocks>.entry-content {
         min-height: calc(100vh - calc(138rem / 16) - calc(390rem / 16));
@@ -20,6 +25,8 @@
     body.logged-in .wp-site-blocks>.entry-content {
         min-height: calc(100vh - calc(138rem / 16) - calc(390rem / 16) - calc(32rem / 16));
     }
+
+
 
 }
 

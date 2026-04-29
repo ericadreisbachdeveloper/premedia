@@ -19,6 +19,24 @@ $navh: calc(122rem / 16);
 }
 
 
+@media (max-width: $thick-admin-bar) {
+
+    html.admin-bar main {
+        padding-top: calc(#{$navh} + #{#thick-admin-bar});
+    }
+
+}
+
+
+@media (min-width: $thin-admin-bar) and (max-width: $narrower-than-laptop) {
+
+    html.admin-bar main {
+        padding-top: calc(#{$navh} + #{#thin-admin-bar});
+    }
+
+}
+
+
 @media (max-width: $narrower-than-laptop) {
 
     header {
@@ -30,7 +48,7 @@ $navh: calc(122rem / 16);
         z-index: 9999;
     }
 
-    html:not(.admin-bar) main.entry-content {
+    html:not(.admin-bar) main {
         padding-top: $navh;
     }
 

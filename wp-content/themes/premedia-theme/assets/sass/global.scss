@@ -145,3 +145,16 @@ p:has(.time) {
 
     }
 }
+
+@media (max-width: $narrower-than-desktop) {
+    .page-template-page-w-programmatic-title .wp-block-post-title {
+        max-width: 84%;
+    }
+
+}
+
+@media (min-width: desktop) {
+    .page-template-page-w-programmatic-title .wp-block-post-title {
+        max-width: calc(1200rem / 16);
+    }
+}
