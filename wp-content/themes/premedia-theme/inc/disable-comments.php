@@ -1,5 +1,10 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}    // Exit if accessed directly
+
+
 /**
  * Completely disable WordPress comments system and block endpoints
  */

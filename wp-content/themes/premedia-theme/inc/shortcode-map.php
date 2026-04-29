@@ -21,7 +21,7 @@ function map_shortcode_fxn()
 
     $post_id = $post->ID;
 
-    $map_shortcode_used = true; // Set flag when shortcode is called - used for wp_footer() hook to generate modal
+    $map_shortcode_used = true; // Set flag when shortcode is called - used for wp_footer() hook below to generate modal
 
     // Save string to output buffer
     ob_start();
@@ -30,22 +30,17 @@ function map_shortcode_fxn()
 
     $map_output .= '<div id="map-container" class="map-container">';
 
-
-    // Note: TDIR constant set in functions.php
-    //$map_output .= '<img id="us-map" class="us-map" src="' . TDIR . '/assets/img/us-map.svg" alt="United States map">';
-
-
     // Pull distributors data from ACF repeater field
     if (function_exists('get_field')) {
         $rows = get_field('sites', $post_id);
     } else {
-        // Allow for graceful failure if ACF is disabled
+        // Allow graceful failure if ACF is disabled
         $rows = array();
     }
 
     if (!empty($rows)) {
 
-        // Initialize final array
+        // Initialize array of clinical sites
         $clinical_site_info = array();
 
         // Loop through clinical sites to generate data array
@@ -73,19 +68,13 @@ function map_shortcode_fxn()
 
     }
 
-    //print_r($clinical_site_info['ucsd']['site_name']);
-
     $map_output .= '<svg id="us-map" preserveAspectRatio="xMaxYMin" class="us-map" xmlns="http://www.w3.org/2000/svg" style="width:959px; height: 593px;" viewBox="0 0 959 593">
-
     <defs>
-
     <style>
     .state path { fill: lightgray; } 
     .borders path { stroke: white; } 
     </style>
-
     </defs>';
-
 
     $map_output .= '<g class="state">
 
@@ -355,6 +344,7 @@ function map_shortcode_fxn()
     <path class="va-wv" d="m 722.7,296.9 .7,.6 -.8,1.2 1.5,.7 .1,1.5 4.4,2.3 2.3,-.1 1.9,-1.8 .8,-1.7 3,1.8 5.5,-2.4 .5,-.9 -.8,-.5 .6,-1.4 1.5,1 4.3,-3.1 .7,1.1 2.3,-2 -.1,-1.4 1.5,-1.9 -1.5,-1.2 1,-3.3 3.7,-6.3 -.4,-1.9 2.1,-2.2 -.4,-1.5 1.4,-1.7 .1,-4.7 2.3,.7 1.3,1.9 2.8,.5 1.3,-1.6 2.3,-8.5 2.4,1.1 1,-2.5 .9,-.8 1.4,-1.8 .9,-.8 .5,-2.1 1.2,-.8 -.1,-2.9 .8,-2.3 -.9,-1.6 .2,-.9 10,5.2 .5,-2.3 .4,-1.6 .4,-.7"/>
     </g>';
 
+    /* clinical sites positioned within map SVG - edit SVG image file to add a new site - array key MUST correspond to ACF clinical site slug entered into WordPress back end - this allows for clients to easily change physician names and photos */
     $map_output .= '<g>
 		<path id="ucsd" class="s2 map-pin-path" role="button" aria-pressed="false" aria-label="' . $clinical_site_info['ucsd']['site_name'] . ' physicians" tabindex="0" d="m96.26 342.03c-5.62 0-10.2 4.58-10.2 10.2 0 6.84 9.35 18.03 9.75 18.5q0.18 0.2 0.45 0.21 0.27 0 0.44-0.21c0.4-0.46 9.76-11.46 9.76-18.5 0-5.62-4.57-10.2-10.2-10.2z"/>
 		<path id="Layer 3" fill-rule="evenodd" class="s3" d="m106.46 352.23c0 7.04-9.36 18.04-9.76 18.5q-0.17 0.21-0.44 0.21-0.27-0.01-0.45-0.21c-0.4-0.47-9.75-11.66-9.75-18.5 0-5.62 4.58-10.2 10.2-10.2 5.63 0 10.2 4.58 10.2 10.2zm-1.18 0c0-4.98-4.05-9.03-9.02-9.03-4.98 0-9.02 4.05-9.02 9.03 0 5.6 7.14 14.86 9.02 17.2 1.89-2.31 9.02-11.44 9.02-17.2zm-9.02 4.14c-2.4 0-4.34-1.94-4.34-4.34 0-2.39 1.94-4.33 4.34-4.33 2.4 0 4.33 1.94 4.33 4.33 0 2.4-1.93 4.34-4.33 4.34z"/>
@@ -426,7 +416,6 @@ function map_shortcode_fxn()
 
     wp_enqueue_script(
         'panzoom',
-        //'https://unpkg.com/panzoom@9.4.3/dist/panzoom.min.js',
         'https://unpkg.com/@panzoom/panzoom@4.6.1/dist/panzoom.min.js',
         [],
         '4.6.1',
@@ -476,7 +465,7 @@ function add_clinic_data_modal()
 {
     global $map_shortcode_used;
 
-    // Only output if the shortcode was used on this page
+    // Only output modal if the shortcode was used on this page
     if (!isset($map_shortcode_used) || !$map_shortcode_used) {
         return;
     }
@@ -489,15 +478,15 @@ function add_clinic_data_modal()
 
         <div id="modal-nubbin"></div>
 
-        <div class="modal-content" id="clinic-data">        
+        <div id="clinic-data" class="modal-content">        
             <div id="clinic-site-name"></div>
             <p id="clinic-site-city-state"></p>
             <div id="clinic-site-physicians"></div>
             <button class="modal-close" 
                     data-close-modal 
                     aria-label="Close dialog">&times;</button>
-        </div>
+        </div><?php /* /#clinic-data.modal-content */ ?>
 
-    </div>
+    </div><?php /* /#data-modal */ ?>
     <?php
 }

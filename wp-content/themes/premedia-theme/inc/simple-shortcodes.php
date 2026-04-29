@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}    // Exit if accessed directly
+
 
 /**
  * Simple shortcodes that don't warrant a standalone PHP file

@@ -3,7 +3,6 @@
 
 
 .wp-block-button__link[href] {
-    font-family: roboto-bold, sans-serif;
     @include transition(background-color .2s ease-in-out);
 
     @include hover {
@@ -35,7 +34,7 @@
 
 
 
-// buttons that AREN'T in Text/Media block 
+// buttons that AREN'T in Text/Media block and have the $tablet breakpoint
 @media (max-width: $narrower-than-tablet) {
 
     .wp-block-buttons:not(.wp-block-media-text__content > .wp-block-buttons)>.wp-block-button {
@@ -59,7 +58,7 @@
 
 
 
-// buttons that ARE in Text/Media block and have an earlier breakpoint 
+// buttons that ARE in Text/Media block and have an wider breakpoint 
 @media (max-width: $narrower-than-laptop) {
 
     .wp-block-buttons:is(.wp-block-media-text__content > .wp-block-buttons)>.wp-block-button {
@@ -83,6 +82,7 @@
     .wp-block-buttons:is(.wp-block-media-text__content > .wp-block-buttons)>.wp-block-button+.wp-block-button {
         margin-left: 1rem;
     }
+
 }
 
 
