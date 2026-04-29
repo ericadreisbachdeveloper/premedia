@@ -54,6 +54,13 @@ function hideHint() {
     hint.style.opacity = '0';
 }
 
+// hide hint if it displays when user clicks / touches 
+const onPointerDown = () => hideHint();
+
+[elem, elem.parentElement].forEach(el => {
+    el.addEventListener('pointerdown', onPointerDown);
+});
+
 function startCooldown() {
     twoFingerCooldown = true;
     clearTimeout(cooldownTimer);
