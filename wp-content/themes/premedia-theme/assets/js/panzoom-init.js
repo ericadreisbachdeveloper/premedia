@@ -4,7 +4,7 @@ const isMac = navigator.userAgent.includes('Mac') && !navigator.userAgent.includ
 const step = isTouchDevice ? 0.5 : 0.1;
 
 const instance = Panzoom(elem, {
-    maxScale: 2,
+    maxScale: 3,
     minScale: 1,
     step,
     disablePan: isTouchDevice,
@@ -90,7 +90,7 @@ if (isTouchDevice) {
 
     elem.addEventListener('touchmove', (e) => {
         if (e.touches.length === 1) {
-            showHint('Use two fingers to move the map');
+            showHint('Use two fingers to move and zoom the map');
             return;
         }
 
