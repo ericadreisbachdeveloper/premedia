@@ -3,20 +3,15 @@ const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
 const isMac = navigator.userAgent.includes('Mac') && !navigator.userAgent.includes('Mobile');
 const step = isTouchDevice ? 0.5 : 0.1;
 
-// Track active touches BEFORE Panzoom initialises
-let activePointers = new Set();
-let hintTimer;
+let currentTouchCount = 0;
 
 const instance = Panzoom(elem, {
     maxScale: 2,
     minScale: 1,
     step,
-    // Leave touchAction at default ('none') so Panzoom owns touch events
-    // We'll gate single-finger moves ourselves via handleStartEvent
     handleStartEvent: (e) => {
-        // For touch, only let Panzoom proceed if 2+ fingers are down
-        if (e.pointerType === 'touch' && activePointers.size < 2) {
-            // Don't preventDefault — let the browser scroll the page
+        if (e.pointerType === 'touch' && currentTouchCount < 2) {
+            // Single finger — do not claim the event, let browser scroll
             return;
         }
         e.preventDefault();
@@ -59,32 +54,23 @@ function showHint(message) {
 }
 
 if (isTouchDevice) {
-    // Maintain pointer count BEFORE Panzoom's own handlers fire (capture phase)
-    elem.addEventListener('pointerdown', (e) => {
-        activePointers.add(e.pointerId);
-    }, { capture: true, passive: true });
+    // touchstart fires before pointerdown, so currentTouchCount
+    // is always up to date when handleStartEvent reads it
+    elem.addEventListener('touchstart', (e) => {
+        currentTouchCount = e.touches.length;
+    }, { passive: true });
 
-    elem.addEventListener('pointerup', (e) => {
-        activePointers.delete(e.pointerId);
-    }, { capture: true, passive: true });
+    elem.addEventListener('touchend', (e) => {
+        currentTouchCount = e.touches.length;
+    }, { passive: true });
 
-    elem.addEventListener('pointercancel', (e) => {
-        activePointers.delete(e.pointerId);
-    }, { capture: true, passive: true });
+    elem.addEventListener('touchcancel', (e) => {
+        currentTouchCount = e.touches.length;
+    }, { passive: true });
 
-    // Show hint on single-finger move, debounced to avoid false positives
-    // when second finger is just about to land
-    elem.addEventListener('pointermove', (e) => {
-        if (e.pointerType !== 'touch') return;
-        if (activePointers.size === 1) {
-            clearTimeout(hintTimer);
-            hintTimer = setTimeout(() => {
-                if (activePointers.size === 1) {
-                    showHint('Use two fingers to move the map');
-                }
-            }, 80);
-        } else {
-            clearTimeout(hintTimer);
+    elem.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 1) {
+            showHint('Use two fingers to move the map');
         }
     }, { passive: true });
 
