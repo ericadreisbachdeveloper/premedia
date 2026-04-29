@@ -7,6 +7,13 @@ const instance = Panzoom(elem, {
     maxScale: 2,
     minScale: 1,
     step,
+    handleStartEvent: (e) => {
+        if (e.touches && e.touches.length < 2) {
+            return;
+        }
+        e.preventDefault();
+        e.stopPropagation();
+    },
 });
 
 elem._panzoomInstance = instance;
@@ -44,16 +51,13 @@ function showHint(message) {
 }
 
 if (isTouchDevice) {
-    // Single finger pan on mobile:: show hint, allow the page to scroll
-    // Two finger touch: Panzoom handles natively (pinch/pan)
-    elem.parentElement.addEventListener('touchstart', (e) => {
+    elem.parentElement.addEventListener('touchmove', (e) => {
         if (e.touches.length === 1) {
             showHint('Use two fingers to move the map');
         }
     }, { passive: true });
 
 } else {
-    // Desktop: require ⌘ or Ctrl to zoom
     elem.parentElement.addEventListener('wheel', (e) => {
         const modifierHeld = isMac ? e.metaKey : e.ctrlKey;
         if (modifierHeld) {
