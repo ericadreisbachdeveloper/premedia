@@ -3,11 +3,25 @@ const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
 const isMac = navigator.userAgent.includes('Mac') && !navigator.userAgent.includes('Mobile');
 const step = isTouchDevice ? 0.5 : 0.1;
 
+// Track active touches BEFORE Panzoom initialises
+let activePointers = new Set();
+let hintTimer;
+
 const instance = Panzoom(elem, {
     maxScale: 2,
     minScale: 1,
     step,
-    touchAction: 'pan-x pan-y',
+    // Leave touchAction at default ('none') so Panzoom owns touch events
+    // We'll gate single-finger moves ourselves via handleStartEvent
+    handleStartEvent: (e) => {
+        // For touch, only let Panzoom proceed if 2+ fingers are down
+        if (e.pointerType === 'touch' && activePointers.size < 2) {
+            // Don't preventDefault — let the browser scroll the page
+            return;
+        }
+        e.preventDefault();
+        e.stopPropagation();
+    },
 });
 
 elem._panzoomInstance = instance;
@@ -41,29 +55,28 @@ function showHint(message) {
     clearTimeout(hideTimer);
     hideTimer = setTimeout(() => {
         hint.style.opacity = '0';
-    }, 800);
+    }, 1500);
 }
 
 if (isTouchDevice) {
-    let activePointers = new Set();
-    let hintTimer;
-
+    // Maintain pointer count BEFORE Panzoom's own handlers fire (capture phase)
     elem.addEventListener('pointerdown', (e) => {
         activePointers.add(e.pointerId);
-    }, { passive: true });
+    }, { capture: true, passive: true });
 
     elem.addEventListener('pointerup', (e) => {
         activePointers.delete(e.pointerId);
-    }, { passive: true });
+    }, { capture: true, passive: true });
 
     elem.addEventListener('pointercancel', (e) => {
         activePointers.delete(e.pointerId);
-    }, { passive: true });
+    }, { capture: true, passive: true });
 
+    // Show hint on single-finger move, debounced to avoid false positives
+    // when second finger is just about to land
     elem.addEventListener('pointermove', (e) => {
         if (e.pointerType !== 'touch') return;
         if (activePointers.size === 1) {
-            e.stopImmediatePropagation();
             clearTimeout(hintTimer);
             hintTimer = setTimeout(() => {
                 if (activePointers.size === 1) {
@@ -73,7 +86,7 @@ if (isTouchDevice) {
         } else {
             clearTimeout(hintTimer);
         }
-    }, { capture: true, passive: true });
+    }, { passive: true });
 
 } else {
     elem.parentElement.addEventListener('wheel', (e) => {
