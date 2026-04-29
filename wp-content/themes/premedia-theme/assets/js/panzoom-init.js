@@ -7,13 +7,8 @@ const instance = Panzoom(elem, {
     maxScale: 2,
     minScale: 1,
     step,
-    handleStartEvent: (e) => {
-        if (e.touches && e.touches.length < 2) {
-            return;
-        }
-        e.preventDefault();
-        e.stopPropagation();
-    },
+    // Tell Panzoom NOT to set touch-action:none — let the browser handle single-finger scroll
+    touchAction: 'pan-x pan-y',
 });
 
 elem._panzoomInstance = instance;
@@ -51,10 +46,34 @@ function showHint(message) {
 }
 
 if (isTouchDevice) {
-    elem.parentElement.addEventListener('touchmove', (e) => {
+    // Block Panzoom's own pointer handlers for single-finger touch
+    elem.addEventListener('pointerdown', (e) => {
+        if (e.isPrimary && !e.touches) return; // mouse, ignore
+        // Count current touches
+        const touchCount = e.currentTarget._touchCount || 0;
+        elem._touchCount = touchCount + 1;
+    });
+
+    // Simpler and more bulletproof: intercept at the pointermove level
+    elem.addEventListener('pointermove', (e) => {
+        if (e.pointerType === 'touch') {
+            // If only one touch point active, stop Panzoom from panning
+            const activeTouches = document.querySelectorAll(':active').length;
+            if (elem._singleTouch) {
+                e.stopImmediatePropagation();
+            }
+        }
+    }, { capture: true });
+
+    elem.addEventListener('touchstart', (e) => {
+        elem._singleTouch = e.touches.length === 1;
+    }, { passive: true });
+
+    elem.addEventListener('touchmove', (e) => {
         if (e.touches.length === 1) {
             showHint('Use two fingers to move the map');
         }
+        elem._singleTouch = e.touches.length === 1;
     }, { passive: true });
 
 } else {
