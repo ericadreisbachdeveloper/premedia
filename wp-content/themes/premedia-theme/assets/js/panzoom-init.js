@@ -4,12 +4,16 @@ const isMac = navigator.userAgent.includes('Mac') && !navigator.userAgent.includ
 const step = isTouchDevice ? 0.5 : 0.1;
 
 const instance = Panzoom(elem, {
-    maxScale: 3,
+    maxScale: 2,
     minScale: 1,
     step,
     disablePan: isTouchDevice,
     disableZoom: isTouchDevice,
 });
+
+// Override anything Panzoom sets on the parent that blocks page scroll
+elem.parentElement.style.overflow = 'visible';
+elem.parentElement.style.touchAction = 'auto';
 
 elem._panzoomInstance = instance;
 
