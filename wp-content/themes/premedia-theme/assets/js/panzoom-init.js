@@ -7,7 +7,6 @@ const instance = Panzoom(elem, {
     maxScale: 2,
     minScale: 1,
     step,
-    // Tell Panzoom NOT to set touch-action:none — let the browser handle single-finger scroll
     touchAction: 'pan-x pan-y',
 });
 
@@ -42,39 +41,39 @@ function showHint(message) {
     clearTimeout(hideTimer);
     hideTimer = setTimeout(() => {
         hint.style.opacity = '0';
-    }, 1500);
+    }, 800);
 }
 
 if (isTouchDevice) {
-    // Block Panzoom's own pointer handlers for single-finger touch
+    let activePointers = new Set();
+    let hintTimer;
+
     elem.addEventListener('pointerdown', (e) => {
-        if (e.isPrimary && !e.touches) return; // mouse, ignore
-        // Count current touches
-        const touchCount = e.currentTarget._touchCount || 0;
-        elem._touchCount = touchCount + 1;
-    });
+        activePointers.add(e.pointerId);
+    }, { passive: true });
 
-    // Simpler and more bulletproof: intercept at the pointermove level
+    elem.addEventListener('pointerup', (e) => {
+        activePointers.delete(e.pointerId);
+    }, { passive: true });
+
+    elem.addEventListener('pointercancel', (e) => {
+        activePointers.delete(e.pointerId);
+    }, { passive: true });
+
     elem.addEventListener('pointermove', (e) => {
-        if (e.pointerType === 'touch') {
-            // If only one touch point active, stop Panzoom from panning
-            const activeTouches = document.querySelectorAll(':active').length;
-            if (elem._singleTouch) {
-                e.stopImmediatePropagation();
-            }
+        if (e.pointerType !== 'touch') return;
+        if (activePointers.size === 1) {
+            e.stopImmediatePropagation();
+            clearTimeout(hintTimer);
+            hintTimer = setTimeout(() => {
+                if (activePointers.size === 1) {
+                    showHint('Use two fingers to move the map');
+                }
+            }, 80);
+        } else {
+            clearTimeout(hintTimer);
         }
-    }, { capture: true });
-
-    elem.addEventListener('touchstart', (e) => {
-        elem._singleTouch = e.touches.length === 1;
-    }, { passive: true });
-
-    elem.addEventListener('touchmove', (e) => {
-        if (e.touches.length === 1) {
-            showHint('Use two fingers to move the map');
-        }
-        elem._singleTouch = e.touches.length === 1;
-    }, { passive: true });
+    }, { capture: true, passive: true });
 
 } else {
     elem.parentElement.addEventListener('wheel', (e) => {
