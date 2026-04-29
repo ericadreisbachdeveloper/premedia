@@ -36,7 +36,11 @@ elem.parentElement.style.position = 'relative';
 elem.parentElement.appendChild(hint);
 
 let hideTimer;
+let twoFingerCooldown = false;
+let cooldownTimer;
+
 function showHint(message) {
+    if (twoFingerCooldown) return; // suppress hint briefly after two-finger gesture
     hint.textContent = message;
     hint.style.opacity = '1';
     clearTimeout(hideTimer);
@@ -48,6 +52,14 @@ function showHint(message) {
 function hideHint() {
     clearTimeout(hideTimer);
     hint.style.opacity = '0';
+}
+
+function startCooldown() {
+    twoFingerCooldown = true;
+    clearTimeout(cooldownTimer);
+    cooldownTimer = setTimeout(() => {
+        twoFingerCooldown = false;
+    }, 400); // 400ms after last two-finger move, hint is allowed again
 }
 
 if (isTouchDevice) {
@@ -77,8 +89,8 @@ if (isTouchDevice) {
 
         if (e.touches.length === 2) {
             e.preventDefault();
-
             hideHint();
+            startCooldown(); // reset cooldown on every two-finger frame
 
             const newDist = Math.hypot(
                 e.touches[0].clientX - e.touches[1].clientX,
