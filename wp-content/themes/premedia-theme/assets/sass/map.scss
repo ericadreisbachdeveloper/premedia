@@ -193,26 +193,12 @@ body:has(.modal[open]) #us-map g:not(:has(path[aria-pressed="true"])) {
 }
 
 
-@media (max-width: $narrower-than-tablet) {
+@media (max-width: $narrower-than-tablet) or (max-height: calc(1000rem / 16)) {
 
     .modal[open] {
         @include has-before;
         position: fixed;
 
-        /* 
-        &:before {  
-            width: 100%;
-            height: 100vh;
-            top: 0;
-            left: 0;
-            background-color: rgba(0, 0, 0, .7);
-        }
-            */
-
-    }
-
-    #modal-nubbin {
-        //display: none;
     }
 
     .modal-content {
@@ -223,8 +209,8 @@ body:has(.modal[open]) #us-map g:not(:has(path[aria-pressed="true"])) {
         @include translate(0, -50%);
     }
 
-
 }
+
 
 
 

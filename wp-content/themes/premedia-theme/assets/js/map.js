@@ -43,31 +43,6 @@ document.addEventListener(`DOMContentLoaded`,function(){
     }   
 
 
-    // scale SVG map
-    /* 
-    const svg = document.getElementById(`us-map`);
-    let scale = 1;
-    let panX = 0, panY = 0;
-
-    // Touch/mouse zoom
-    svg.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        scale += e.deltaY * -0.001;
-        scale = Math.min(Math.max(1, scale), 5);
-        updateTransform();
-    });
-
-    // Pinch zoom for mobile
-    // Pan with drag
-    // etc.
-
-    function updateTransform() {
-        svg.style.transform = `scale(${scale}) translate(${panX}px, ${panY}px)`;
-    }
-    */ 
-        
-
-
     // Keyboard focus trap for modal
     modal.addEventListener('keydown', function(e) {
 
@@ -171,9 +146,10 @@ document.addEventListener(`DOMContentLoaded`,function(){
 
             // Viewport size? 
             let windowW = window.innerWidth; 
+            let windowH = window.innerHeight;
 
             // If user is zoomed in -OR- on small viewport then no nubbin
-            if (windowW < 600 ) {
+            if (windowW < 600 || windowH < 1000) {
                 return; 
             }
             
@@ -219,21 +195,11 @@ document.addEventListener(`DOMContentLoaded`,function(){
             const instance = mapElem._panzoomInstance;
             const scale = instance ? instance.getScale() : 1;
             const isZoomed = scale > 1.05 || scale < .95;;
-/* 
-            const mapElem = document.getElementById(`us-map`);
-            const instance = mapElem._panzoomInstance;
-            const scale = instance ? instance.getTransform().scale : 1;
-            const isZoomed = scale > 1.05 || scale < .95;
-            */ 
-
-            
 
             if(isZoomed) {
                 return;
             }
             
-            
-
             if( (rect.top - modalInnerH).toString() > 64 )  {
                 modalNubbin.classList.add(`points-down`); 
                 topStrNubbin = (rect.top - 26).toString() + `px`;
@@ -242,7 +208,6 @@ document.addEventListener(`DOMContentLoaded`,function(){
                 modalNubbin.classList.add(`points-up`); 
                 topStrNubbin = (rect.top + 38).toString() + `px`;
             }
-
 
             modalNubbin.style.top = topStrNubbin;
             modalNubbin.style.left = (rect.left + 3).toString() + `px`; 
