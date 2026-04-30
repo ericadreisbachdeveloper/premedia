@@ -30,14 +30,16 @@ function map_shortcode_fxn()
 
 
     // Map controls
-    $map_output .= '<div class="map-controls" role="group" aria-label="Map controls">
-    <button class="map-control-btn" id="map-zoom-in" aria-label="Zoom in">+</button>
-    <button class="map-control-btn" id="map-zoom-out" aria-label="Zoom out">−</button>
-    <button class="map-control-btn" id="map-pan-up" aria-label="Pan up">↑</button>
-    <button class="map-control-btn" id="map-pan-down" aria-label="Pan down">↓</button>
-    <button class="map-control-btn" id="map-pan-left" aria-label="Pan left">←</button>
-    <button class="map-control-btn" id="map-pan-right" aria-label="Pan right">→</button>
-    <button class="map-control-btn" id="map-reset" aria-label="Reset map">Reset</button></div>';
+    $map_output .= '<div class="map-controls tablet-hide" role="group" aria-label="Map controls">';
+    $map_output .= '<div class="map-zoom">
+    <button class="map-control-btn" id="map-zoom-in" aria-label="Zoom in"><svg class="map-zoom-in-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M256 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 160-160 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l160 0 0 160c0 17.7 14.3 32 32 32s32-14.3 32-32l0-160 160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-160 0 0-160z"/></svg></button>';
+    $map_output .= '<button class="map-control-btn" id="map-zoom-out" aria-label="Zoom out"><svg class="map-zoom-out-svg"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32z"/></svg></button>
+    </div>';
+    $map_output .= '<div class="map-pan"><button class="map-control-btn" id="map-pan-up" aria-label="Pan up"><svg class="map-pan-up-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M214.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 109.3 160 480c0 17.7 14.3 32 32 32s32-14.3 32-32l0-370.7 105.4 105.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></svg></button>';
+    $map_output .= '<button class="map-control-btn" id="map-pan-right" aria-label="Pan right"><svg class="map-pan-right-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-105.4 105.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></svg></button>';
+    $map_output .= '<button class="map-control-btn" id="map-pan-down" aria-label="Pan down"><svg class="map-pan-down-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7-105.4-105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg></button>';
+    $map_output .= '<button class="map-control-btn" id="map-pan-left" aria-label="Pan left"><svg class="map-pan-left-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 105.4-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></button></div>';
+    $map_output .= '<div><button class="map-control-btn" id="map-reset" aria-label="Reset map"><svg class="map-reset-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 64c-56.8 0-107.9 24.7-143.1 64l47.1 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 192c-17.7 0-32-14.3-32-32L0 32C0 14.3 14.3 0 32 0S64 14.3 64 32l0 54.7C110.9 33.6 179.5 0 256 0 397.4 0 512 114.6 512 256S397.4 512 256 512c-87 0-163.9-43.4-210.1-109.7-10.1-14.5-6.6-34.4 7.9-44.6s34.4-6.6 44.6 7.9c34.8 49.8 92.4 82.3 157.6 82.3 106 0 192-86 192-192S362 64 256 64z"/></svg></button></div></div>';
 
 
     $map_output .= '<div id="map-container" class="map-container">';

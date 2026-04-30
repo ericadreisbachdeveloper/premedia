@@ -5,7 +5,7 @@ const step = isTouchDevice ? 0.5 : 0.05;
 
 const instance = Panzoom(elem, {
     maxScale: 3,
-    minScale: 1,
+    minScale: .8,
     step,
     duration: 300,        // milliseconds, default is 200
     easing: 'ease-in-out', // any valid CSS easing, default is 'ease-in-out'
