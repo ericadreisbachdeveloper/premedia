@@ -1,6 +1,12 @@
 // map-controls.scss
 
-@media (min-width: $laptop) {
+
+.map-controls {
+    display: none;
+}
+
+
+@media (min-width: $laptop) and (pointer: fine) {
 
     .map-controls {
         position: absolute;
