@@ -7,8 +7,11 @@ $tablet: calc(601rem / 16);
 
 $narrower-than-tablet: calc(600rem / 16);
 
+$thick-admin-bar-h: calc(46rem / 16);
 $thick-admin-bar: calc(782rem / 16);
 
+// thin admin bar height is 32px
+$thin-admin-bar-h: calc(32rem / 16);
 $thin-admin-bar: calc(783rem / 16);
 
 

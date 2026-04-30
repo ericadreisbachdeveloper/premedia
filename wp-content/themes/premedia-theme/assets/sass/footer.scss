@@ -23,9 +23,22 @@ $footerh-desktop: calc(316rem / 16); // $thin-admin-bar: calc(783rem / 16);
     }
 
     body.admin-bar main {
-        //        min-height: calc(100vh - calc(138rem / 16) - calc(390rem / 16) - calc(32rem / 16));
+        min-height: calc(100vh - #{$thin-admin-bar-h} - #{$navh} - #{$footerh-desktop});
+
     }
 
+}
+
+
+@media (min-width: $laptop) and (max-width: $narrower-than-desktop) {
+
+    body:not(.admin-bar) main {
+        min-height: calc(100vh - #{$navh} - #{$footerh-narrower-than-desktop});
+    }
+
+    body.admin-bar main {
+        min-height: calc(100vh - #{$thin-admin-bar-h} - #{$navh} - #{$footerh-narrower-than-desktop});
+    }
 
 }
 

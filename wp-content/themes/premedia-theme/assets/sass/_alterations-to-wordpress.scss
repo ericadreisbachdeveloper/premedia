@@ -5,6 +5,11 @@ html.has-modal-open {
     overflow: auto;
 }
 
+// Complements the rule in theme.json that removes margin on .is-layout-flow > * elements 
+// ... but thus misses <p> children in accordions
+:root :where(.is-layout-flow)>* p {
+    margin: 0;
+}
 
 [class*="wp-block-"] p:has(+ *) {
     padding-bottom: .9rem;
