@@ -41,9 +41,7 @@ function map_shortcode_fxn()
     $map_output .= '<button class="map-control-btn" id="map-pan-left" aria-label="Pan left"><svg class="map-pan-left-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 105.4-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></button></div>';
     $map_output .= '<div><button class="map-control-btn" id="map-reset" aria-label="Reset map"><svg class="map-reset-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 64c-56.8 0-107.9 24.7-143.1 64l47.1 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 192c-17.7 0-32-14.3-32-32L0 32C0 14.3 14.3 0 32 0S64 14.3 64 32l0 54.7C110.9 33.6 179.5 0 256 0 397.4 0 512 114.6 512 256S397.4 512 256 512c-87 0-163.9-43.4-210.1-109.7-10.1-14.5-6.6-34.4 7.9-44.6s34.4-6.6 44.6 7.9c34.8 49.8 92.4 82.3 157.6 82.3 106 0 192-86 192-192S362 64 256 64z"/></svg></button></div></div>';
 
-
     $map_output .= '<div id="map-container" class="map-container">';
-
 
 
 
@@ -443,7 +441,7 @@ function map_shortcode_fxn()
         'panzoom-init',
         TDIR . '/assets/js/panzoom-init.js',
         ['panzoom'],
-        '1.0.35',
+        '1.0.36',
         true
     );
 
