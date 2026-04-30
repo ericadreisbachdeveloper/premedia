@@ -31,16 +31,16 @@
 
 
 @media (min-width: $laptop) {
+
     .hide-on-desktop {
         position: absolute;
         line-height: 0;
         overflow: hidden;
         -webkit-clip-path: polygon(0 0, calc(1rem / 16) 0, calc(1rem / 16) calc(1rem / 16), 0 calc(1rem / 16));
         clip-path: polygon(0 0, calc(1rem / 16) 0, calc(1rem / 16) calc(1rem / 16), 0 calc(1rem / 16));
-        //top: -9999px; /* leave vertical position intact for smooth scroll to anchors */ 
         left: -99999px;
-
     }
+
 }
 
 
@@ -51,13 +51,14 @@
 
         &>.wp-block-accordion,
         &>.wp-block-heading,
-        &>p {
+        &>p,
+        &>.wp-block-list {
             max-width: 84%;
             margin-right: 8%;
             margin-left: 8%;
         }
-    }
 
+    }
 
 }
 
