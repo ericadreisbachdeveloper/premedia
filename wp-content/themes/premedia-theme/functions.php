@@ -19,7 +19,7 @@ define('THEMEPATH', get_stylesheet_directory());
  * used to juke browser cache
  */
 global $style_vsn;
-$style_vsn = '1.0.38';
+$style_vsn = '1.0.39';
 
 
 /**
@@ -70,7 +70,7 @@ function enqueue_css_js()
     wp_register_style('main', TDIR.'/assets/css/style.css', '', $style_vsn);
     wp_enqueue_style('main');
 
-    wp_register_script('skiplink', TDIR.'/assets/js/skiplink.js', '', '1.0.1', true);
+    wp_register_script('skiplink', TDIR.'/assets/js/skiplink.js', '', '1.0.3', true);
     wp_enqueue_script('skiplink');
 
 }

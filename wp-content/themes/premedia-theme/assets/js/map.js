@@ -111,6 +111,10 @@ document.addEventListener(`DOMContentLoaded`,function(){
             this.setAttribute(`aria-pressed`, `true`); 
             const siteId = this.id;
 
+            if (!CSS.supports('scrollbar-gutter: stable')) {
+                document.body.style.paddingRight = window.innerWidth - document.documentElement.clientWidth + 'px';
+            }
+
             // if navigating via keyboard, set #wpadminbar[inert] 
             // TECH DEBT: allow admins to access #wpadminbar after keyboard interaction with the map
             if (event.type === 'keydown') {
@@ -267,6 +271,10 @@ document.addEventListener(`DOMContentLoaded`,function(){
             modal.style.visibility = `hidden`; 
         }
 
+        if (!CSS.supports('scrollbar-gutter: stable')) {
+            document.body.style.paddingRight = '0px';
+        }
+
         // If the event wasn't actually a 'click' but instead was a keystroke like Enter
         // add :focus to the relevant map region after dismissing via Close button       
         if (e.detail === 0 && mapRegion) { 
@@ -286,6 +294,10 @@ document.addEventListener(`DOMContentLoaded`,function(){
             
             if(siteId) {
                 this.document.getElementById(siteId).setAttribute(`aria-pressed`, `false`); 
+            }
+
+            if (!CSS.supports('scrollbar-gutter: stable')) {
+                document.body.style.paddingRight = '0px';
             }
 
             if(modal) {
@@ -310,6 +322,10 @@ document.addEventListener(`DOMContentLoaded`,function(){
             if (mapRegion)  {
                 mapRegion.setAttribute(`aria-pressed`, `false`);
                 mapRegion.focus();
+            }
+
+            if (!CSS.supports('scrollbar-gutter: stable')) {
+                document.body.style.paddingRight = '0px';
             }
 
             if(modal) {

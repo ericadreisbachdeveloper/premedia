@@ -1,22 +1,17 @@
 // map.scss
 
-
 :root :where(.is-layout-constrained)>.map-container {
     margin-top: 0;
 }
-
 
 .wp-block-group:has(.us-map) {
     background-color: #f9f9f9;
 }
 
-
 #map-container {
     overflow: hidden !important;
     background-color: white;
-    //touch-action: none;
     user-select: none;
-    //overflow: visible !important;
     touch-action: auto !important;
 }
 
@@ -110,28 +105,29 @@ html:has(.modal[open]) {
 
 
 // modal
-.modal {
-    max-height: 100vh;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 9999;
+body #us-map g {
+    opacity: 1;
+    @include transition(opacity .1s ease-in-out);
 }
+
+body:has(.modal[open]) #us-map g:not(:has(path[aria-pressed="true"])) {
+    opacity: .7;
+}
+
+
 
 .modal:not([open]) {
     visibility: hidden;
 }
 
-
-
-
-
-
-
 .modal[open] {
+    height: 100vh;
+    width: 100%;
+    overflow: visible;
     position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
 }
 
 .modal[open]:focus-visible {
@@ -203,18 +199,20 @@ html:has(.modal[open]) {
         @include has-before;
         position: fixed;
 
-        &:before {
+        /* 
+        &:before {  
             width: 100%;
             height: 100vh;
             top: 0;
             left: 0;
             background-color: rgba(0, 0, 0, .7);
         }
+            */
 
     }
 
     #modal-nubbin {
-        display: none;
+        //display: none;
     }
 
     .modal-content {
