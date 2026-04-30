@@ -1,12 +1,14 @@
 const elem = document.getElementById('us-map');
 const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
 const isMac = navigator.userAgent.includes('Mac') && !navigator.userAgent.includes('Mobile');
-const step = isTouchDevice ? 0.5 : 0.1;
+const step = isTouchDevice ? 0.5 : 0.05;
 
 const instance = Panzoom(elem, {
-    maxScale: 2,
+    maxScale: 3,
     minScale: 1,
     step,
+    duration: 300,        // milliseconds, default is 200
+    easing: 'ease-in-out', // any valid CSS easing, default is 'ease-in-out'
     disablePan: isTouchDevice,
     disableZoom: isTouchDevice,
 });
@@ -147,3 +149,34 @@ if (isTouchDevice) {
         }
     });
 }
+
+
+const PAN_STEP = 100; // pixels per button press
+
+document.getElementById('map-zoom-in').addEventListener('click', () => {
+    instance.zoomIn({step: .5});
+});
+
+document.getElementById('map-zoom-out').addEventListener('click', () => {
+    instance.zoomOut({step: .5});
+});
+
+document.getElementById('map-pan-up').addEventListener('click', () => {
+    instance.pan(0, PAN_STEP, { relative: true, force: true, animate: true });
+});
+
+document.getElementById('map-pan-down').addEventListener('click', () => {
+    instance.pan(0, -PAN_STEP, { relative: true, force: true, animate: true });
+});
+
+document.getElementById('map-pan-left').addEventListener('click', () => {
+    instance.pan(PAN_STEP, 0, { relative: true, force: true, animate: true });
+});
+
+document.getElementById('map-pan-right').addEventListener('click', () => {
+    instance.pan(-PAN_STEP, 0, { relative: true, force: true, animate: true });
+});
+
+document.getElementById('map-reset').addEventListener('click', () => {
+    instance.reset();
+});

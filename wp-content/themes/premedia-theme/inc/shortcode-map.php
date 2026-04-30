@@ -28,7 +28,22 @@ function map_shortcode_fxn()
 
     $map_output = '';
 
+
+    // Map controls
+    $map_output .= '<div class="map-controls" role="group" aria-label="Map controls">
+    <button class="map-control-btn" id="map-zoom-in" aria-label="Zoom in">+</button>
+    <button class="map-control-btn" id="map-zoom-out" aria-label="Zoom out">−</button>
+    <button class="map-control-btn" id="map-pan-up" aria-label="Pan up">↑</button>
+    <button class="map-control-btn" id="map-pan-down" aria-label="Pan down">↓</button>
+    <button class="map-control-btn" id="map-pan-left" aria-label="Pan left">←</button>
+    <button class="map-control-btn" id="map-pan-right" aria-label="Pan right">→</button>
+    <button class="map-control-btn" id="map-reset" aria-label="Reset map">Reset</button></div>';
+
+
     $map_output .= '<div id="map-container" class="map-container">';
+
+
+
 
     // Pull distributors data from ACF repeater field
     if (function_exists('get_field')) {
@@ -426,7 +441,7 @@ function map_shortcode_fxn()
         'panzoom-init',
         TDIR . '/assets/js/panzoom-init.js',
         ['panzoom'],
-        '1.0.32',
+        '1.0.35',
         true
     );
 
