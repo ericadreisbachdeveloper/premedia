@@ -147,9 +147,10 @@ document.addEventListener(`DOMContentLoaded`,function(){
             // Viewport size? 
             let windowW = window.innerWidth; 
             let windowH = window.innerHeight;
+            //alert(windowH); 
 
             // If user is zoomed in -OR- on small viewport then no nubbin
-            if (windowW < 600 || windowH < 1000) {
+            if (windowW < 600 || windowH < 900) {
                 return; 
             }
             

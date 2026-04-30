@@ -193,13 +193,9 @@ body:has(.modal[open]) #us-map g:not(:has(path[aria-pressed="true"])) {
 }
 
 
-@media (max-width: $narrower-than-tablet) or (max-height: calc(1000rem / 16)) {
 
-    .modal[open] {
-        @include has-before;
-        position: fixed;
 
-    }
+@media (max-width: $narrower-than-tablet) or (max-height: calc(900rem / 16)) {
 
     .modal-content {
         max-width: calc(360rem / 16);
