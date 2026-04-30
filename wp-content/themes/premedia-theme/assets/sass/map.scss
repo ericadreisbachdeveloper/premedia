@@ -129,11 +129,6 @@ html:has(.modal[open]) {
 
 
 
-// selected pin moves to front 
-.map-pin:has(.map-pin-path[aria-pressed="true"]) {
-    //z-index: 1000;
-}
-
 
 .modal[open] {
     position: fixed;
@@ -147,9 +142,23 @@ html:has(.modal[open]) {
     z-index: 1002;
 }
 
-#modal-nubbin:not([class*="points"]) {
+#modal-nubbin {
     display: none;
 }
+
+@media (min-width: $laptop) and (pointer:fine) {
+
+    #modal-nubbin {
+        display: block;
+
+        &:not([class*="points"]) {
+            display: none;
+        }
+
+    }
+
+}
+
 
 
 
