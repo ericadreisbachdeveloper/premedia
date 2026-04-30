@@ -148,14 +148,10 @@ document.addEventListener(`DOMContentLoaded`,function(){
             let windowW = window.innerWidth; 
             let windowH = window.innerHeight;
 
-            alert(windowH); 
-
             // If user is zoomed in -OR- on small viewport then no nubbin
             if (windowW < 600 || windowH < 1000) {
                 return; 
             }
-            
-            
             
             let clinicOnMap = document.getElementById(siteId); 
             var rect = clinicOnMap.getBoundingClientRect();

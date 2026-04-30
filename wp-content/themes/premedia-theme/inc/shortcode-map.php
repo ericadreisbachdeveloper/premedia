@@ -449,7 +449,7 @@ function map_shortcode_fxn()
         'map-js',
         TDIR . '/assets/js/map.js',
         ['panzoom', 'panzoom-init'],
-        '1.0.45',
+        '1.0.46',
         true
     );
 
