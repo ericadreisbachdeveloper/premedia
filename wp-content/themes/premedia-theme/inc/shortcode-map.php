@@ -433,64 +433,119 @@ function map_shortcode_fxn()
     $map_output .= '</div>'; // #map-container.map-container
 
 
-    // Physicians for LLM and robots to cache
-    $map_output .= '<div class="schema-wrapper">';
+    // Sites and physicians for markdown to cache/catch
+    if (!empty($clinical_site_info)) {
+        $clinics_for_markdown = '';
+        $map_output .= '<div class="hidden">';
+        $map_output .= '<h1>Study Sites and Clinicians</h1>';
 
-    $map_output .= '<div itemscope itemtype="https://schema.org/MedicalOrganization">
-        <meta itemprop="name" content="PREMEDIA Clinical Trial - Precision Medicine in Achalasia" />
-        <meta itemprop="url" content="https://premediatrial.com" />
-        <meta itemprop="description" content="The PREcision MEDicine In Achalasia (PREMEDIA) study is the largest and most rigorous multicenter evaluation of achalasia treatment to date." />
-        <meta itemprop="medicalSpecialty" content="Gastroenterologic" />
-        </div>'; /* /MedicalOrganization */
+        foreach ($clinical_site_info as $site) {
+            $clinics_for_markdown .= '<h2>' . $site['site_name'] . '</h2>';
+            $clinics_for_markdown .= '<p>' . $site['display_city'] . ', ' . $site['state'] . '</p>';
+
+            if (!empty($site['physicians'])) {
+                foreach ($site['physicians'] as $physician) {
+                    $clinics_for_markdown .= '<p>' . $physician['name'];
+                    if (!str_contains($physician['img_src'], 'stethoscope')) {
+                        $clinics_for_markdown .= '<img src="' . $physician['img_src'] . '" alt="photo of ' . $physician['name'] . '"></p>';
+                    } else {
+                        $clinics_for_markdown .= '</p>';
+                    }
+                }
+            }
+        }
+
+        $map_output .= $clinics_for_markdown;
+
+        $map_output .= '</div>';
+    }
+    // END Sites and physicians for markdown
+
+
+    // Sites and physicians for LLMs and robots to cache/catch
+    $map_output .= '<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "MedicalOrganization",
+    "name": "PREMEDIA Clinical Trial - Precision Medicine in Achalasia",
+    "url": "https://premediatrial.com",
+    "description": "The PREcision MEDicine In Achalasia (PREMEDIA) study is the largest and most rigorous multicenter evaluation of achalasia treatment to date.",
+    "medicalSpecialty": "Gastroenterologic"
+    }</script>'; /* /MedicalOrganization */
 
     if (!empty($clinical_site_info)) {
 
-        $clinic_schema = '';
+        $clinic_schema = '<script type="application/ld+json">';
 
+        $clinic_schema .= '{';
+        $clinic_schema .= '"@context": "https://schema.org",';
+        $clinic_schema .= '"@graph": [
+                          ';
         foreach ($clinical_site_info as $site) {
 
-            $clinic_schema .= '<div itemscope itemtype="https://schema.org/MedicalClinic">';
-
-            $clinic_schema .= '<h2 itemprop="name">' . $site['site_name'] . '</h2>';
-
-            $clinic_schema .= '<div itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">';
-            $clinic_schema .= '<span itemprop="streetAddress">' . $site['street_address'] . '</span>, ';
-            $clinic_schema .= '<span itemprop="addressLocality">' . $site['address_locality'] . '</span>, ';
-            $clinic_schema .= '<span itemprop="addressRegion">' . $site['state'] . '</span> ';
-            $clinic_schema .= '<span itemprop="postalCode">' . $site['zip_code'] . '</span>';
-            $clinic_schema .= '<meta itemprop="addressCountry" content="US" />';
-            $clinic_schema .= '</div>'; /* /PostalAddress */
-
-            $clinic_schema .= '<meta itemprop="medicalSpecialty" content="Gastroenterologic" />';
-
-            $clinic_schema .= '<div itemprop="parentOrganization" itemscope itemtype="https://schema.org/MedicalOrganization">
-            <meta itemprop="name" content="PREMEDIA Clinical Trial - Precision Medicine in Achalasia" />
-            <meta itemprop="url" content="https://premediatrial.com" />
-            </div>';
+            $clinic_schema .= '{
+                               "@type": "MedicalClinic", 
+                               "name": "' . $site['site_name'] . '", 
+                               "address": {
+                                    "@type": "PostalAddress", 
+                                    "streetAddress": "' . $site['street_address'] . '", 
+                                    "addressLocality": "' . $site['address_locality'] . '",
+                                    "addressRegion": "' . $site['state'] . '",
+                                    "postalCode": "' . $site['zip_code'] . '",
+                                    "addressCountry": "US"
+                               }, 
+                               "medicalSpecialty": "Gastroenterologic", 
+                               "parentOrganization": {
+                                    "@type": "MedicalOrganization", 
+                                    "name": "PREMEDIA Clinical Trial - Precision Medicine in Achalasia", 
+                                    "url": "https://premediatrial.com"
+                               }';
 
             if (!empty($site['physicians'])) {
 
+                $clinic_schema .= ',
+                                  "employee": [
+                                  ';
+
                 foreach ($site['physicians'] as $physician) {
 
-                    $clinic_schema .= '<div itemprop="employee" itemscope itemtype="https://schema.org/Person">';
+                    $clinic_schema .= '{
+                                       "@type": "Person", 
+                                       "name": "' . $physician['name'] . '"';
 
                     if (!str_contains($physician['img_src'], 'stethoscope')) {
-                        $clinic_schema .= '<img itemprop="image" src="' . $physician['img_src'] . '" alt="' . $physician['name'] . '" />';
+                        $clinic_schema .= ', 
+                                       "@id": "' . $physician['img_src'] . '"';
                     }
 
-                    $clinic_schema .= '<span itemprop="name">' . $physician['name'] .'</span></div>';
+                    $clinic_schema .= '
+                                  }';
+
+                    if (end($site['physicians']) !== $physician) {
+                        $clinic_schema .= ', ';
+                    }
 
                 }
+
+                $clinic_schema .= ']'; /* employee(s) */
             }
 
-            $clinic_schema .= '</div>'; /* /MedicalClinic */
+            $clinic_schema .= '}'; /* /MedicalClinic */
+
+            if (end($clinical_site_info) !== $site) {
+                $clinic_schema .= ', 
+                ';
+            }
 
         }
 
+        $clinic_schema .= ']'; /* / @graph */
+
+        $clinic_schema .= '} ';
+
+        $clinic_schema .= '</script>';
+
         $map_output .= $clinic_schema;
     }
-
-    $map_output .= '</div>'; /* .schema-wrapper */
 
 
     wp_enqueue_script(
