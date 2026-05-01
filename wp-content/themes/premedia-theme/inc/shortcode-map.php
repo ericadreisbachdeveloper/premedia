@@ -434,7 +434,7 @@ function map_shortcode_fxn()
 
 
     // Physicians for LLM and robots to cache
-    $map_output .= '<div class="schema-wrapper" style="display: none;">';
+    $map_output .= '<div class="schema-wrapper">';
 
     $map_output .= '<div itemscope itemtype="https://schema.org/MedicalOrganization">
         <meta itemprop="name" content="PREMEDIA Clinical Trial - Precision Medicine in Achalasia" />
@@ -454,9 +454,9 @@ function map_shortcode_fxn()
             $clinic_schema .= '<h2 itemprop="name">' . $site['site_name'] . '</h2>';
 
             $clinic_schema .= '<div itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">';
-            $clinic_schema .= '<span itemprop="streetAddress">' . $site['street_address'] . '</span>,';
-            $clinic_schema .= '<span itemprop="addressLocality">' . $site['address_locality'] . '</span>,';
-            $clinic_schema .= '<span itemprop="addressRegion">' . $site['state'] . '</span>';
+            $clinic_schema .= '<span itemprop="streetAddress">' . $site['street_address'] . '</span>, ';
+            $clinic_schema .= '<span itemprop="addressLocality">' . $site['address_locality'] . '</span>, ';
+            $clinic_schema .= '<span itemprop="addressRegion">' . $site['state'] . '</span> ';
             $clinic_schema .= '<span itemprop="postalCode">' . $site['zip_code'] . '</span>';
             $clinic_schema .= '<meta itemprop="addressCountry" content="US" />';
             $clinic_schema .= '</div>'; /* /PostalAddress */
@@ -472,9 +472,13 @@ function map_shortcode_fxn()
 
                 foreach ($site['physicians'] as $physician) {
 
-                    $clinic_schema .= '<div itemprop="employee" itemscope itemtype="https://schema.org/Person">
-                    <img itemprop="image" src="' . $physician['img_src'] . '" alt="' . $physician['name'] . '" />
-                    <span itemprop="name">' . $physician['name'] .'</span></div>';
+                    $clinic_schema .= '<div itemprop="employee" itemscope itemtype="https://schema.org/Person">';
+
+                    if (!str_contains($physician['img_src'], 'stethoscope')) {
+                        $clinic_schema .= '<img itemprop="image" src="' . $physician['img_src'] . '" alt="' . $physician['name'] . '" />';
+                    }
+
+                    $clinic_schema .= '<span itemprop="name">' . $physician['name'] .'</span></div>';
 
                 }
             }
