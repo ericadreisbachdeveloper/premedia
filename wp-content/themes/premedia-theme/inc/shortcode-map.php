@@ -44,7 +44,6 @@ function map_shortcode_fxn()
     $map_output .= '<div id="map-container" class="map-container">';
 
 
-
     // Pull distributors data from ACF repeater field
     if (function_exists('get_field')) {
         $rows = get_field('sites', $post_id);
@@ -63,7 +62,11 @@ function map_shortcode_fxn()
 
             $clinical_site_info[$site['slug']] = [
                 'site_name' => $site['site_name'],
-                'city_state' => $site['city_state']
+                'street_address' => $site['street_address'],
+                'display_city' => $site['display_city'],
+                'address_locality' => $site['address_locality'],
+                'state' => $site['state'],
+                'zip_code' => $site['zip_code']
             ];
 
             if (!empty($site['physicians'])) {
@@ -429,6 +432,63 @@ function map_shortcode_fxn()
 
     $map_output .= '</div>'; // #map-container.map-container
 
+
+    // Physicians for LLM and robots to cache
+    $map_output .= '<div class="schema-wrapper" style="display: none;">';
+
+    $map_output .= '<div itemscope itemtype="https://schema.org/MedicalOrganization">
+        <meta itemprop="name" content="PREMEDIA Clinical Trial - Precision Medicine in Achalasia" />
+        <meta itemprop="url" content="https://premediatrial.com" />
+        <meta itemprop="description" content="The PREcision MEDicine In Achalasia (PREMEDIA) study is the largest and most rigorous multicenter evaluation of achalasia treatment to date." />
+        <meta itemprop="medicalSpecialty" content="Gastroenterologic" />
+        </div>'; /* /MedicalOrganization */
+
+    if (!empty($clinical_site_info)) {
+
+        $clinic_schema = '';
+
+        foreach ($clinical_site_info as $site) {
+
+            $clinic_schema .= '<div itemscope itemtype="https://schema.org/MedicalClinic">';
+
+            $clinic_schema .= '<h2 itemprop="name">' . $site['site_name'] . '</h2>';
+
+            $clinic_schema .= '<div itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">';
+            $clinic_schema .= '<span itemprop="streetAddress">' . $site['street_address'] . '</span>,';
+            $clinic_schema .= '<span itemprop="addressLocality">' . $site['address_locality'] . '</span>,';
+            $clinic_schema .= '<span itemprop="addressRegion">' . $site['state'] . '</span>';
+            $clinic_schema .= '<span itemprop="postalCode">' . $site['zip_code'] . '</span>';
+            $clinic_schema .= '<meta itemprop="addressCountry" content="US" />';
+            $clinic_schema .= '</div>'; /* /PostalAddress */
+
+            $clinic_schema .= '<meta itemprop="medicalSpecialty" content="Gastroenterologic" />';
+
+            $clinic_schema .= '<div itemprop="parentOrganization" itemscope itemtype="https://schema.org/MedicalOrganization">
+            <meta itemprop="name" content="PREMEDIA Clinical Trial - Precision Medicine in Achalasia" />
+            <meta itemprop="url" content="https://premediatrial.com" />
+            </div>';
+
+            if (!empty($site['physicians'])) {
+
+                foreach ($site['physicians'] as $physician) {
+
+                    $clinic_schema .= '<div itemprop="employee" itemscope itemtype="https://schema.org/Person">
+                    <img itemprop="image" src="' . $physician['img_src'] . '" alt="' . $physician['name'] . '" />
+                    <span itemprop="name">' . $physician['name'] .'</span></div>';
+
+                }
+            }
+
+            $clinic_schema .= '</div>'; /* /MedicalClinic */
+
+        }
+
+        $map_output .= $clinic_schema;
+    }
+
+    $map_output .= '</div>'; /* .schema-wrapper */
+
+
     wp_enqueue_script(
         'panzoom',
         'https://unpkg.com/@panzoom/panzoom@4.6.1/dist/panzoom.min.js',
@@ -449,7 +509,7 @@ function map_shortcode_fxn()
         'map-js',
         TDIR . '/assets/js/map.js',
         ['panzoom', 'panzoom-init'],
-        '1.0.47',
+        '1.0.48',
         true
     );
 

@@ -110,7 +110,7 @@ document.addEventListener(`DOMContentLoaded`,function(){
             let clinic = clinicData.clinical_site_info[siteId]; 
 
             document.getElementById(`clinic-site-name`).innerText = clinic.site_name;
-            document.getElementById(`clinic-site-city-state`).innerText = clinic.city_state;
+            document.getElementById(`clinic-site-city-state`).innerText = clinic.display_city + `, ` + clinic.state;
 
             if(!clinic.physicians || clinic.physicians.length === 0) { }
 
@@ -122,13 +122,11 @@ document.addEventListener(`DOMContentLoaded`,function(){
                 physicians.forEach(function(phys) {
                     physicians_html += `<div class="physician-div">`;
                     physicians_html += `<img width="86" height="86" alt="Photo of ` + phys.name + `" class="physician-src" src="` + phys.img_src + `">`;
-
                     physicians_html += `<p class="physician-name has-text-color"><strong>` + phys.name + `</strong></p>`;
                     if(phys.institution) {
                         physicians_html += `<p class="physician-institution has-text-color">` + phys.institution + `</p>`;
                     }
                     physicians_html += `</div>`; 
-
                 }); 
 
                 document.getElementById(`clinic-site-physicians`).innerHTML = physicians_html; 
