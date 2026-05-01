@@ -117,6 +117,8 @@ body:has(.modal[open]) #us-map g:not(:has(path[aria-pressed="true"])) {
 
 
 .modal:not([open]) {
+    height: 0;
+    overflow: hidden;
     visibility: hidden;
 }
 
@@ -197,7 +199,7 @@ body:has(.modal[open]) #us-map g:not(:has(path[aria-pressed="true"])) {
 
 @media (max-width: $narrower-than-tablet) or (max-height: calc(900rem / 16)) {
 
-    .modal-content {
+    .modal[open] .modal-content {
         max-width: calc(360rem / 16);
         width: calc(90% - calc(50rem / 16));
         margin: 0 auto;
@@ -234,20 +236,6 @@ body:has(.modal[open]) #us-map g:not(:has(path[aria-pressed="true"])) {
     }
 
 }
-
-
-// landscape phone - approximate height of form is 700px
-/* 
-@media (min-width: $tablet) and (max-height: calc(699rem / 16)) {
-    .modal-content {
-        width: 80%;
-        margin: 4rem auto 0;
-    }
-}
-*/
-
-
-
 
 
 // close button
