@@ -145,7 +145,6 @@ document.addEventListener(`DOMContentLoaded`,function(){
             // Viewport size? 
             let windowW = window.innerWidth; 
             let windowH = window.innerHeight;
-            //alert(windowH); 
 
             // If user is zoomed in -OR- on small viewport then no nubbin
             if (windowW < 600 || windowH < 800) {
@@ -187,14 +186,17 @@ document.addEventListener(`DOMContentLoaded`,function(){
             modalInner.style.top =  topStr;
             modalInner.style.right = rightStr;  
 
-
             // Zoom? 
             const mapElem = document.getElementById(`us-map`);
             const instance = mapElem._panzoomInstance;
             const scale = instance ? instance.getScale() : 1;
             const isZoomed = scale > 1.05 || scale < .95;;
 
-            if(isZoomed) {
+            if(!isZoomed) {
+                modal.classList.remove(`zoomed`);
+            }
+            else{
+                modal.classList.add(`zoomed`);
                 return;
             }
             

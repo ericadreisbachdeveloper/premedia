@@ -144,6 +144,8 @@ body:has(.modal[open]) #us-map g:not(:has(path[aria-pressed="true"])) {
     display: none;
 }
 
+
+
 @media (min-width: $laptop) and (pointer:fine) {
 
     #modal-nubbin {
@@ -197,17 +199,17 @@ body:has(.modal[open]) #us-map g:not(:has(path[aria-pressed="true"])) {
 
 
 
-@media (max-width: $narrower-than-tablet) or (max-height: calc(900rem / 16)) {
+//@media (max-width: $narrower-than-tablet) or (max-height: calc(900rem / 16)) {
 
-    .modal[open] .modal-content {
-        max-width: calc(360rem / 16);
-        width: calc(90% - calc(50rem / 16));
-        margin: 0 auto;
-        top: 50%;
-        @include translate(0, -50%);
-    }
-
+.modal[open]:not(.zoomed):not(:has(#modal-nubbin[class*="points"])) .modal-content {
+    max-width: calc(360rem / 16);
+    width: calc(90% - calc(50rem / 16));
+    margin: 0 auto;
+    top: 50%;
+    @include translate(0, -50%);
 }
+
+//}
 
 
 
