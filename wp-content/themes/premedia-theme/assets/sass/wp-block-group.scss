@@ -18,17 +18,14 @@
 
 @media (max-width: $narrower-than-laptop) {
 
-
     // to have "full bleed" media in the wp-block-media-text block
     // undid left-right-padding on .wp-block-group:has(.wp-block-text-media)
     // ... thus re-adding left-right-padding to the sibling blocks to
     // .wp-block-text-media 
-
-    .wp-block-group:has(.wp-block-media-text)>[class*="wp-block-"]:not(.wp-block-media-text) {
-        padding-left: 8%;
+    .entry-content>.wp-block-group>[class*="wp-block-"]:not(.wp-block-media-text) {
         padding-right: 8%;
+        padding-left: 8%;
     }
-
 
 
 }

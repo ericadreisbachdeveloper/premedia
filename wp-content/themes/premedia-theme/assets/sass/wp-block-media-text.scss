@@ -60,8 +60,8 @@
 @media (min-width: $tablet) and (max-width: $narrower-than-desktop) {
 
     .wp-block-media-text {
-        padding-left: 0;
-        padding-right: 0;
+        //padding-left: 0;
+        //padding-right: 0;
     }
 
     .wp-block-media-text.has-media-on-the-right .wp-block-media-text__content {

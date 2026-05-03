@@ -79,6 +79,8 @@
     animation-timing-function: $timing;
     animation-iteration-count: $count;
     animation-duration: $duration;
+
+    animation-fill-mode: forwards;
 }
 
 // animation part 4 of 4: copy and repurpose the below                    
