@@ -100,20 +100,32 @@ html:has(.modal) {
 
 // body scroll lock when modal is open  ... 
 html:has(.modal[open]) {
-    overflow: hidden;
+    //overflow: hidden;
 }
 
 
 // modal
+/* 
 body #us-map g {
     opacity: 1;
     @include transition(opacity .1s ease-in-out);
 }
+    */
 
+/* 
 body:has(.modal[open]) #us-map g:not(:has(path[aria-pressed="true"])) {
     opacity: .7;
 }
+*/
 
+.modal[open]+#modal-backdrop {
+    width: 100%;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .5);
+}
 
 
 .modal:not([open]) {
@@ -122,19 +134,34 @@ body:has(.modal[open]) #us-map g:not(:has(path[aria-pressed="true"])) {
     visibility: hidden;
 }
 
-.modal[open] {
-    height: 100vh;
+.modal {
     width: 100%;
-    overflow: visible;
-    position: fixed;
     top: 0;
     left: 0;
-    z-index: 9999;
+    position: absolute;
+    outline: 10px red;
+}
+
+
+.modal[open] {
+    /* 
+    height: 100vh;
+    */
+    width: 100%;
+    /* 
+    overflow: visible;
+    position: fixed;
+    */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9000;
 }
 
 .modal[open]:focus-visible {
     outline: none;
 }
+
 
 #modal-nubbin {
     z-index: 1002;

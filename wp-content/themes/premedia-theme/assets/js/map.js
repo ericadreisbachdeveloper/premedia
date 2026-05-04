@@ -87,7 +87,7 @@ document.addEventListener(`DOMContentLoaded`,function(){
             const siteId = this.id;
 
             if (!CSS.supports('scrollbar-gutter: stable')) {
-                document.body.style.paddingRight = window.innerWidth - document.documentElement.clientWidth + 'px';
+                //document.body.style.paddingRight = window.innerWidth - document.documentElement.clientWidth + 'px';
             }
 
             // if navigating via keyboard, set #wpadminbar[inert] 
@@ -235,10 +235,12 @@ document.addEventListener(`DOMContentLoaded`,function(){
             modal.setAttribute(`data-site`, ``); 
             modal.style.visibility = `hidden`; 
         }
-
+        
+        /* 
         if (!CSS.supports('scrollbar-gutter: stable')) {
             document.body.style.paddingRight = '0px';
         }
+        */ 
 
         // If the event wasn't actually a 'click' but instead was a keystroke like Enter
         // add :focus to the relevant map region after dismissing via Close button       
@@ -253,22 +255,29 @@ document.addEventListener(`DOMContentLoaded`,function(){
     // Close 2 of 3 - close on outside click - .modal covers entire viewport
     window.addEventListener(`click`, function(e) {
 
-        if (e.target.classList.contains(`modal`)) {
+        if (e.target.classList.contains(`modal-dismiss`)) {
 
-            const siteId = e.target.getAttribute(`data-site`); 
+            const siteId = modal.getAttribute(`data-site`);
+            const mapRegion = document.getElementById(siteId); 
             
             if(siteId) {
                 this.document.getElementById(siteId).setAttribute(`aria-pressed`, `false`); 
             }
 
+            /* 
             if (!CSS.supports('scrollbar-gutter: stable')) {
                 document.body.style.paddingRight = '0px';
             }
+            */ 
 
             if(modal) {
                 modal.removeAttribute(`open`); 
                 modal.setAttribute(`data-site`, ``); 
                 modal.style.visibility = `hidden`; 
+            }
+
+            if (mapRegion) {
+                mapRegion.setAttribute(`aria-pressed`, `false`);
             }
 
         }
@@ -289,9 +298,11 @@ document.addEventListener(`DOMContentLoaded`,function(){
                 mapRegion.focus();
             }
 
+            /* 
             if (!CSS.supports('scrollbar-gutter: stable')) {
                 document.body.style.paddingRight = '0px';
             }
+            */ 
 
             if(modal) {
                 modal.removeAttribute(`open`); 
