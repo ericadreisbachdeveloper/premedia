@@ -1,10 +1,8 @@
 // map-controls.scss
 
-
 .map-controls {
     display: none;
 }
-
 
 @media (min-width: $laptop) and (pointer: fine) {
 
@@ -14,7 +12,7 @@
         @include flex;
         @include flex-direction-col;
         @include align-items-center;
-        z-index: 100;
+        z-index: 1;
 
         &>div+div {
             margin-top: 1rem;
@@ -109,15 +107,15 @@
 
 
 
-@media (min-width: $laptop) and (max-width: $narrower-than-desktop) {
+@media (min-width: $laptop) and (max-width: calc(1199rem / 16)) {
     .map-controls {
-        right: 2vw;
+        right: 1rem;
     }
 }
 
 
 
-@media(min-width: $desktop) {
+@media(min-width:calc(1200rem / 16)) {
     .map-controls {
         right: calc(50vw - calc(584rem / 16));
     }

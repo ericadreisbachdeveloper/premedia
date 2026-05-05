@@ -29,6 +29,10 @@ function map_shortcode_fxn()
     $map_output = '';
 
 
+    // Modal backdrop used to dismiss upon interaction when modal is open
+    $map_output .= '<div id="modal-backdrop" class="modal-dismiss" tabindex="-1"></div>';
+
+
     // Map controls
     $map_output .= '<div class="map-controls" role="group" aria-label="Map controls">';
     $map_output .= '<div class="map-zoom">
@@ -568,7 +572,7 @@ function map_shortcode_fxn()
         'map-js',
         TDIR . '/assets/js/map.js',
         ['panzoom', 'panzoom-init'],
-        '1.0.64',
+        '1.0.66',
         true
     );
 
@@ -607,15 +611,10 @@ function add_clinic_data_modal()
     ?>
 
 
-    <div id="modal-backdrop" class="modal-dismiss" tabindex="-1"></div>
-
-
     <div id="data-modal" 
          class="modal modal-dismiss" 
          role="dialog" 
          aria-labelledby="clinic-site-name">
-
-        <div id="modal-nubbin"></div>
 
         <?php /* ref:https://github.com/gdkraus/accessible-modal-dialog/blob/master/index.html */ ?>
         <div id="clinic-data" class="modal-content" role="document">

@@ -54,15 +54,19 @@ $navh: calc(122rem / 16);
 
     // the x button - the close x button
     .wp-block-navigation__responsive-container-close {
-        top: 3.2rem;
-        right: 2.5rem;
+        width: 3rem;
+        height: 3rem;
+        top: 2.4rem;
+        right: 2rem;
+        @include flex;
+        @include justify-content-center;
+        @include align-items-center;
         background-color: white;
     }
 
     .wp-block-navigation:not(.has-background) .wp-block-navigation__responsive-container.is-menu-open {
         background-color: transparent !important;
     }
-
 
     // fighting Wordpress - <div>
     .wp-block-navigation__responsive-container.is-menu-open div.wp-block-navigation__responsive-container-content {

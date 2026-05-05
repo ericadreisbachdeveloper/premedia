@@ -1,24 +1,29 @@
 // map.scss
 
+
+// remove WordPress default margin
 :root :where(.is-layout-constrained)>.map-container {
     margin-top: 0;
 }
 
+// programmatically assign bg color 
 .wp-block-group:has(.us-map) {
-    background-color: #f9f9f9;
+    background-color: $lightestgray;
 }
 
 #map-container {
     overflow: hidden !important;
-    background-color: white;
     user-select: none;
     touch-action: auto !important;
+    background-color: white;
 }
 
+// override panzoom library on map SVG using the ID for strongest rule
 #us-map {
     touch-action: auto !important;
 }
 
+// style map SVG usinga more reasonable, civilized class
 .us-map {
     max-width: 100%;
     height: auto;
@@ -27,13 +32,14 @@
     margin: 0 auto;
 
     &:has(.svg-pan-zoom_viewport) {
-        filter: blur(0rem) !important;
+        //filter: blur(0rem) !important;
     }
 }
 
 
+// style states svg
 .state path {
-    fill: lightgray;
+    fill: $lightgray;
 }
 
 .borders path {
@@ -41,6 +47,7 @@
 }
 
 
+// style pins
 .map-pin-svg {
     pointer-events: none;
     filter: drop-shadow(-2px 5px 8px rgba(0, 0, 0, .3));
@@ -48,7 +55,7 @@
     @include transition(filter .2s ease-in-out);
 }
 
-// massaging the special case of case western 
+// massaging the special case of Case Western 
 .map-pin-svg:has(#case-western-metrohealth[aria-pressed="true"]),
 .map-pin-svg:has(#case-western-metrohealth:hover),
 .map-pin-svg:has(#case-western-metrohealth:active),
@@ -95,37 +102,18 @@
 
 
 html:has(.modal) {
-    scrollbar-gutter: stable;
-}
-
-// body scroll lock when modal is open  ... 
-html:has(.modal[open]) {
-    //overflow: hidden;
+    //    scrollbar-gutter: stable;
 }
 
 
-// modal
-/* 
-body #us-map g {
-    opacity: 1;
-    @include transition(opacity .1s ease-in-out);
-}
-    */
-
-/* 
-body:has(.modal[open]) #us-map g:not(:has(path[aria-pressed="true"])) {
-    opacity: .7;
-}
-*/
-
-
-#modal-backdrop:has(+.modal[open]) {
+html:has(.modal[open]) #modal-backdrop {
+    max-width: unset;
     width: 100%;
-    min-height: 100vh;
-    position: fixed;
+    height: 100%;
+    position: absolute;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, .5);
+    z-index: 100;
 }
 
 
@@ -140,56 +128,18 @@ body:has(.modal[open]) #us-map g:not(:has(path[aria-pressed="true"])) {
     top: 0;
     left: 0;
     position: absolute;
-    outline: 10px red;
+
+    &:focus {
+        outline: none;
+    }
 }
 
 
 .modal[open] {
-    /* 
-    height: 100vh;
-    */
     width: 100%;
-    /* 
-    overflow: visible;
-    position: fixed;
-    */
     position: absolute;
-    //top: 0;
-    //left: 0;
     z-index: 9000;
 }
-
-.modal[open]:focus-visible {
-    //outline: none;
-}
-
-
-#modal-nubbin {
-    z-index: 1002;
-}
-
-#modal-nubbin {
-    display: none;
-}
-
-
-
-@media (min-width: $laptop) and (pointer:fine) {
-
-    #modal-nubbin {
-        //display: block;
-        display: none;
-
-        &:not([class*="points"]) {
-            display: none;
-        }
-
-    }
-
-}
-
-
-
 
 
 
@@ -203,97 +153,27 @@ body:has(.modal[open]) #us-map g:not(:has(path[aria-pressed="true"])) {
     filter: drop-shadow(-2px 5px 8px rgba(0, 0, 0, .3));
 
     &:after {
+        display: block;
         width: calc(100% - calc(4rem / 16));
         height: calc(100% - calc(4rem / 16));
         position: absolute;
-        background-color: transparent;
-        border: calc(2rem / 16) solid $navy;
-        content: '';
-        display: block;
-        border-radius: .5rem;
         top: 0;
         left: 0;
+
+        background-color: transparent;
+        border: calc(2rem / 16) solid $navy;
+        border-radius: .5rem;
+        content: '';
         pointer-events: none;
     }
 
 }
 
 
-@media (min-width: $tablet) {
-    .modal-content {
-        //width: calc(360rem / 16);
-    }
-}
-
-
-@include keyframes(darken) {
-    0% {
-        background-color: rgba(0, 0, 0, .1);
-    }
-
-    100% {
-        background-color: rgba(0, 0, 0, .5);
-    }
-}
-
-
-.modal[open] .modal-content {
-    //max-width: calc(360rem / 16);
-    //width: calc(90% - calc(50rem / 16));
-    //width: 100%;
-    margin: 0 auto;
-
-}
-
 .modal[open] {
-
     max-width: calc(360rem / 16);
     width: calc(90% - calc(50rem / 16));
     position: absolute;
-    outline: 10px solid red;
-    //top: 50%;
-    //@include translate(0, -50%);
-}
-
-
-
-/* 
-.modal[open]:not(:has(#modal-nubbin[class*="points"])):before {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    @include animation(darken, ease-in-out, 1, .1s);
-}
-*/
-
-
-
-#modal-nubbin {
-    width: 1rem;
-    height: 1rem;
-    position: absolute;
-
-    background-color: white;
-    @include rotate(45deg);
-
-    &.points-up {
-        border-top: calc(2rem / 16) solid $navy;
-        border-right: none;
-        border-bottom: none;
-        border-left: calc(2rem / 16) solid $navy;
-    }
-
-    &.points-down {
-        border-top: none;
-        border-right: calc(2rem / 16) solid $navy;
-        border-bottom: calc(2rem / 16) solid $navy;
-        border-left: none;
-    }
-
 }
 
 
@@ -324,8 +204,6 @@ button.modal-close:active,
 button.modal-close:focus {
     color: $teal;
 }
-
-
 
 
 // modal content - physician data

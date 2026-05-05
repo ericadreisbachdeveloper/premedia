@@ -94,6 +94,7 @@ document.addEventListener(`DOMContentLoaded`,function(){
             if (event.type === 'keydown') {
                 setAdminBarInert(true);
             }       
+
             showDataModal(siteId);
             modal.setAttribute(`tabindex`, `0`); 
             modal.focus(); 
@@ -137,92 +138,79 @@ document.addEventListener(`DOMContentLoaded`,function(){
             modal.style.visibility = `visible`; 
             modal.setAttribute(`aria-hidden`, `false`); 
 
-            // Clear nubbin
-            let modalNubbin = document.getElementById(`modal-nubbin`); 
-            modalNubbin.setAttribute(`class`, ``); 
-
-            // Viewport size? 
-            let windowW = window.innerWidth; 
-            let windowH = window.innerHeight;
-
-            // If user is zoomed in -OR- on small viewport then no nubbin
-            if (windowW < 600 || windowH < 800) {
-                return; 
-            }
-            
-            let clinicOnMap = document.getElementById(siteId); 
-            var rect = clinicOnMap.getBoundingClientRect();
-            
-
             // Get Modal Dimenions 
             let modalInner = document.getElementById(`data-modal`);
             let modalInnerH = modalInner.offsetHeight;
             let modalInnerW = modalInner.offsetWidth; 
             let topStr = `0px`;
             let leftStr = `16px`; 
-            //let rightStr = `0px`; 
 
+            // Get Scroll Position 
             let windowScrollY = window.scrollY; 
-            //alert(windowScrollY); 
 
+            // Viewport height? 
+            let windowH = window.innerHeight;
+
+            // Visible mobile nav? 
+            // - using mobile nav visibility to account for pixel differences between browsers
+            const hamburger = document.querySelector(`.wp-block-navigation__responsive-container-open`); 
+
+            // If window is "short" or if mobile nav is visible
+            // modal is center-positioned
+            if (windowH < 800 || hamburger.checkVisibility() == true ) {
+
+                // Horizontal center 
+                modalInner.style.left = `50%`;
+                modalInner.style.transform = `translateX(-50%)`; 
+
+                // Vertical center below the nav 
+                const tippyTop = windowScrollY + 122;
+                const modalMargin = Math.round(( windowH - 122 - modalInnerH ) / 2); 
+
+                if(modalMargin > 2) { 
+                    topStr = ( tippyTop + modalMargin ).toString() + `px` ;  
+                }
+                else {
+                    topStr = (windowScrollY + 127).toString() + `px`; 
+                }
+                
+                modalInner.style.top = topStr; 
+
+                return; 
+            }
+            
+            let clinicOnMap = document.getElementById(siteId); 
+            var rect = clinicOnMap.getBoundingClientRect();
+            
             // If vertical position of the pin in the viewport
             // minus the height of the modal 
             // is greater than 24
             // ... position the modal ABOVE the pin 
             if( (rect.top - modalInnerH).toString() > 24 )  {
-                topStr = (rect.top + windowScrollY - modalInnerH - 24).toString() + `px`; 
+                topStr = (rect.top + windowScrollY - modalInnerH - 12).toString() + `px`; 
             }
-            // else
-            // ... position the modal BELOW the pin 
+            // ... else position the modal BELOW the pin 
             else {
-                topStr = (rect.bottom + windowScrollY + 24).toString() + `px`;
+                topStr = (rect.bottom + windowScrollY + 12).toString() + `px`;
             }
 
+            // Get window width
             let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0); 
-
-            
 
             // If horizontal position of the pin in the viewport
             // minus the 1/2 width of the modal 
             // is greater than 16 
             // ... peg the horizontal position to the pin 
-            console.log( rect.left - (modalInnerW / 2), vw - 24 - modalInnerW); 
             if( (rect.left - (modalInnerW / 2) ) > 16 && rect.left - (modalInnerW / 2) < (vw - 24 - modalInnerW) ) {
                 leftStr = (rect.left - (modalInnerW / 2)).toString() + `px`; 
             }
             else if (rect.left - (modalInnerW / 2) > (vw - 23 - modalInnerW)) {
                 leftStr = (vw - 23 - modalInnerW).toString() + `px`; 
             }
-            
     
+            // Set modal position accordingly :) 
             modalInner.style.top = topStr;
             modalInner.style.left = leftStr;  
-
-            // Zoom? if yes, then no nubbin
-            const mapElem = document.getElementById(`us-map`);
-            const instance = mapElem._panzoomInstance;
-            const scale = instance ? instance.getScale() : 1;
-            const isZoomed = scale > 1.05 || scale < .95;;
-
-            if(!isZoomed) {
-                modal.classList.remove(`zoomed`);
-            }
-            else{
-                modal.classList.add(`zoomed`);
-                return;
-            }
-            
-            if( (rect.top - modalInnerH).toString() > 64 )  {
-                modalNubbin.classList.add(`points-down`); 
-                topStrNubbin = (rect.top - 26).toString() + `px`;
-            }
-            else {
-                modalNubbin.classList.add(`points-up`); 
-                topStrNubbin = (rect.top + 38).toString() + `px`;
-            }
-
-            modalNubbin.style.top = topStrNubbin;
-            modalNubbin.style.left = (rect.left + 3).toString() + `px`; 
 
         }
 
