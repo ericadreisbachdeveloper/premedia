@@ -100,12 +100,6 @@
     pointer-events: none;
 }
 
-
-html:has(.modal) {
-    //    scrollbar-gutter: stable;
-}
-
-
 html:has(.modal[open]) #modal-backdrop {
     max-width: unset;
     width: 100%;
