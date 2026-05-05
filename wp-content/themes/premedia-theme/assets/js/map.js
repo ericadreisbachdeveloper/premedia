@@ -78,17 +78,16 @@ document.addEventListener(`DOMContentLoaded`,function(){
         // Region activation
         function handleModal(event) {
 
+            // prevent Jump to Top 
+            event.preventDefault; 
+
             // For keyboard events, only proceed if Enter key was pressed
             if (event.type === `keydown` && event.key !== `Enter` && event.key !== ` `) {
                 return;
             }
             
-            this.setAttribute(`aria-pressed`, `true`); 
-            const siteId = this.id;
-
-            if (!CSS.supports('scrollbar-gutter: stable')) {
-                //document.body.style.paddingRight = window.innerWidth - document.documentElement.clientWidth + 'px';
-            }
+            this.setAttribute(`aria-pressed`, `true`);  // set map pin [aria-pressed="true"] attribute
+            const siteId = this.id; // store siteId
 
             // if navigating via keyboard, set #wpadminbar[inert] 
             // TECH DEBT: allow admins to access #wpadminbar after keyboard interaction with the map
@@ -105,7 +104,7 @@ document.addEventListener(`DOMContentLoaded`,function(){
 
 
         // Populate modal window with clinic + physicial data built in inc/shortcode-map.php
-        function showDataModal(siteId) {            
+        function showDataModal(siteId) {           
 
             let clinic = clinicData.clinical_site_info[siteId]; 
 
@@ -153,40 +152,53 @@ document.addEventListener(`DOMContentLoaded`,function(){
             
             let clinicOnMap = document.getElementById(siteId); 
             var rect = clinicOnMap.getBoundingClientRect();
+            
 
             // Get Modal Dimenions 
-            let modalInner = document.getElementById(`clinic-data`);
+            let modalInner = document.getElementById(`data-modal`);
             let modalInnerH = modalInner.offsetHeight;
             let modalInnerW = modalInner.offsetWidth; 
             let topStr = `0px`;
-            let rightStr = `0px`; 
+            let leftStr = `16px`; 
+            //let rightStr = `0px`; 
 
-            if( (rect.top - modalInnerH).toString() > 64 )  {
-                topStr = (rect.top - modalInnerH - 16).toString() + `px`; 
+            let windowScrollY = window.scrollY; 
+            //alert(windowScrollY); 
+
+            // If vertical position of the pin in the viewport
+            // minus the height of the modal 
+            // is greater than 24
+            // ... position the modal ABOVE the pin 
+            if( (rect.top - modalInnerH).toString() > 24 )  {
+                topStr = (rect.top + windowScrollY - modalInnerH - 24).toString() + `px`; 
             }
+            // else
+            // ... position the modal BELOW the pin 
             else {
-                topStr = (rect.top + 46).toString() + `px`;                 
+                topStr = (rect.bottom + windowScrollY + 24).toString() + `px`;
             }
 
             let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0); 
 
-            let rightEdge = modalInnerW - vw + 24; 
-            let rightFormula = (-1 * rect.right) + ( modalInnerW / 2) + 20; 
+            
 
-            if(rightFormula < rightEdge) {
-                rightStr = rightEdge.toString() + `px`;
+            // If horizontal position of the pin in the viewport
+            // minus the 1/2 width of the modal 
+            // is greater than 16 
+            // ... peg the horizontal position to the pin 
+            console.log( rect.left - (modalInnerW / 2), vw - 24 - modalInnerW); 
+            if( (rect.left - (modalInnerW / 2) ) > 16 && rect.left - (modalInnerW / 2) < (vw - 24 - modalInnerW) ) {
+                leftStr = (rect.left - (modalInnerW / 2)).toString() + `px`; 
             }
-            else if(rightFormula > -12) {
-                rightStr = `-12px`; 
+            else if (rect.left - (modalInnerW / 2) > (vw - 23 - modalInnerW)) {
+                leftStr = (vw - 23 - modalInnerW).toString() + `px`; 
             }
-            else {
-                rightStr = rightFormula.toString() + `px`; 
-            }
+            
+    
+            modalInner.style.top = topStr;
+            modalInner.style.left = leftStr;  
 
-            modalInner.style.top =  topStr;
-            modalInner.style.right = rightStr;  
-
-            // Zoom? 
+            // Zoom? if yes, then no nubbin
             const mapElem = document.getElementById(`us-map`);
             const instance = mapElem._panzoomInstance;
             const scale = instance ? instance.getScale() : 1;
@@ -212,7 +224,6 @@ document.addEventListener(`DOMContentLoaded`,function(){
             modalNubbin.style.top = topStrNubbin;
             modalNubbin.style.left = (rect.left + 3).toString() + `px`; 
 
-
         }
 
     }); 
@@ -235,12 +246,6 @@ document.addEventListener(`DOMContentLoaded`,function(){
             modal.setAttribute(`data-site`, ``); 
             modal.style.visibility = `hidden`; 
         }
-        
-        /* 
-        if (!CSS.supports('scrollbar-gutter: stable')) {
-            document.body.style.paddingRight = '0px';
-        }
-        */ 
 
         // If the event wasn't actually a 'click' but instead was a keystroke like Enter
         // add :focus to the relevant map region after dismissing via Close button       
@@ -298,19 +303,12 @@ document.addEventListener(`DOMContentLoaded`,function(){
                 mapRegion.focus();
             }
 
-            /* 
-            if (!CSS.supports('scrollbar-gutter: stable')) {
-                document.body.style.paddingRight = '0px';
-            }
-            */ 
-
             if(modal) {
                 modal.removeAttribute(`open`); 
                 modal.setAttribute(`data-site`, ``); 
                 modal.style.visibility = `hidden`;
             }
-            
-              
+                 
         }
 
     });

@@ -568,7 +568,7 @@ function map_shortcode_fxn()
         'map-js',
         TDIR . '/assets/js/map.js',
         ['panzoom', 'panzoom-init'],
-        '1.0.53',
+        '1.0.64',
         true
     );
 
@@ -606,6 +606,10 @@ function add_clinic_data_modal()
 
     ?>
 
+
+    <div id="modal-backdrop" class="modal-dismiss" tabindex="-1"></div>
+
+
     <div id="data-modal" 
          class="modal modal-dismiss" 
          role="dialog" 
@@ -625,7 +629,6 @@ function add_clinic_data_modal()
 
     </div><?php /* /#data-modal */ ?>
 
-    <div id="modal-backdrop" class="modal-dismiss" tabindex="-1"></div>
 
     <?php
 }
