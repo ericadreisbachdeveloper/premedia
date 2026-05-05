@@ -144,3 +144,66 @@ add_action('wp_head', function () {
 
 // If Rank Math is re-adding them, disable via filter
 add_filter('rank_math/frontend/feed_link', '__return_false');
+
+
+
+// Convert &nbsp; to space for use in meta descriptions
+add_action('wp_head', 'clean_all_meta_descriptions_dbllc', 999);
+function clean_all_meta_descriptions_dbllc()
+{
+    ob_start('filter_meta_description_output_dbllc');
+}
+
+function filter_meta_description_output_dbllc($buffer)
+{
+    // Match any meta description tag
+    $buffer = preg_replace_callback(
+        '/<meta\s+name=["\']description["\']\s+content=["\'](.*?)["\']\s*\/?>/i',
+        function ($matches) {
+            $content = $matches[1];
+
+            // Convert &nbsp; to regular space
+            $content = str_replace('&nbsp;', ' ', $content);
+
+            // Handle actual non-breaking space character
+            $content = str_replace("\xc2\xa0", ' ', $content);
+
+            // Clean up double spaces
+            $content = preg_replace('/\s+/', ' ', $content);
+
+            // Trim
+            $content = trim($content);
+
+            return '<meta name="description" content="' . $content . '" />';
+        },
+        $buffer
+    );
+
+    return $buffer;
+}
+
+// Also filter at common plugin hooks
+add_filter('rank_math/frontend/description', 'clean_meta_content_dbllc');
+add_filter('rank_math/opengraph/facebook/og_description', 'clean_meta_content_dbllc');
+add_filter('rank_math/opengraph/twitter/twitter_description', 'clean_meta_content_dbllc');
+add_filter('wpseo_metadesc', 'clean_meta_content_dbllc'); // Yoast
+add_filter('aioseop_description', 'clean_meta_content_dbllc'); // All in One SEO
+add_filter('wp_trim_words', 'clean_meta_content_dbllc'); // WordPress core
+
+function clean_meta_content_dbllc($content)
+{
+    if (empty($content)) {
+        return $content;
+    }
+
+    // Convert &nbsp; to regular space
+    $content = str_replace('&nbsp;', ' ', $content);
+
+    // Handle actual non-breaking space character
+    $content = str_replace("\xc2\xa0", ' ', $content);
+
+    // Clean up double spaces
+    $content = preg_replace('/\s+/', ' ', $content);
+
+    return trim($content);
+}
