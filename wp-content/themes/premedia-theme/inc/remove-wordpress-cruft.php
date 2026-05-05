@@ -108,3 +108,39 @@ remove_action('wp_head', 'wlwmanifest_link');
  */
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
+
+
+
+/**
+ * Removes RSS feed endpoints
+ */
+// Remove ALL feed links from head - run later to override theme/plugins
+add_action('after_setup_theme', 'disable_all_feeds_dbllc');
+function disable_all_feeds_dbllc()
+{
+    // Remove default feed links
+    remove_action('wp_head', 'feed_links', 2);
+    remove_action('wp_head', 'feed_links_extra', 3);
+
+    // Remove oEmbed links
+    remove_action('wp_head', 'wp_oembed_add_discovery_links');
+    remove_action('wp_head', 'wp_oembed_add_host_js');
+
+    // Redirect feed requests
+    add_action('template_redirect', function () {
+        if (is_feed()) {
+            wp_redirect(home_url(), 301);
+            exit;
+        }
+    }, 1);
+}
+
+// Nuclear option: remove any remaining feed links that slip through
+add_action('wp_head', function () {
+    remove_action('wp_head', 'feed_links', 2);
+    remove_action('wp_head', 'feed_links_extra', 3);
+    remove_action('wp_head', 'wp_oembed_add_discovery_links');
+}, 1); // Very early priority
+
+// If Rank Math is re-adding them, disable via filter
+add_filter('rank_math/frontend/feed_link', '__return_false');
