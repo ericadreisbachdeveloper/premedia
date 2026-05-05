@@ -74,3 +74,39 @@ function enqueue_css_js()
     wp_enqueue_script('skiplink');
 
 }
+
+
+/**
+ * Modify <head>
+ * 1. Google Analytics
+ * 2. Reference markdown mirrors - cf /plugins/markdown-mirror-dbllc
+ */
+add_action('wp_head', 'add_to_head_dbllc');
+
+function add_to_head_dbllc()
+{
+    global $post;
+
+    ?>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8EX4823B06"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8EX4823B06');
+    </script>
+
+    <?php
+    $slug = '';
+
+    if ($post->post_name == 'home') {
+        $slug = 'index';
+    } else {
+        $slug = $post->post_name;
+    }
+    ?>
+<link rel="alternate" type="text/markdown" href="<?php echo esc_url(SITE . '/' . $slug . '.md'); ?>">
+
+    <?php
+}
