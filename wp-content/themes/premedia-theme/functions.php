@@ -71,7 +71,10 @@ function enqueue_css_js()
     wp_register_style('main', TDIR.'/assets/css/style.css', '', $style_vsn);
     wp_enqueue_style('main');
 
-    wp_register_script('skiplink', TDIR.'/assets/js/skiplink.js', '', '1.0.3', true);
+    wp_register_script('scroll', TDIR.'/assets/js/scroll-min.js', '', '1.0.4', true);
+    wp_enqueue_script('scroll');
+
+    wp_register_script('skiplink', TDIR.'/assets/js/skiplink-min.js', '', '1.0.4', true);
     wp_enqueue_script('skiplink');
 
 }
@@ -79,7 +82,7 @@ function enqueue_css_js()
 
 
 /**
- * Admin styles
+ * Admin styles - as of 6 May 2026 adding .sr-only to Homepage Gutenberg editor ONLY
  */
 add_action('enqueue_block_assets', 'customize_css_in_gutenberg_back_end');
 
@@ -87,11 +90,31 @@ function customize_css_in_gutenberg_back_end()
 {
     if (is_admin()) {
 
-        wp_enqueue_style(
-            'admin-only',
-            TDIR . '/assets/css/admin.css'
-        );
+        global $post;
+
+        if ($post->ID == 2) {
+            wp_enqueue_style(
+                'admin-only',
+                TDIR . '/assets/css/admin.css'
+            );
+
+        }
+
     }
+
+}
+
+
+
+
+/**
+ * Add viewport detector for use with CSS animations entering and existing viewport
+ */
+add_action('wp_body_open', 'add_viewport_detector_dbllc');
+
+function add_viewport_detector_dbllc()
+{
+    echo '<div class="-scroll" data-role="viewport-detector"></div>';
 }
 
 

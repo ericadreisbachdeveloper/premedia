@@ -1,0 +1,1 @@
+/* jshint esversion: 6, expr: true, -W033 */ document.addEventListener("DOMContentLoaded",(function(){const e=document.querySelectorAll(".skip-link");void 0!==e&&e.forEach((e=>{e.addEventListener("click",(function(t){let n=e.getAttribute("href");n&&document.querySelector(n).setAttribute("tabindex","-1"),document.querySelector(n).focus(),t.preventDefault()}))}))}));
