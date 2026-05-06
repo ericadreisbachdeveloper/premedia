@@ -77,6 +77,25 @@ function enqueue_css_js()
 }
 
 
+
+/**
+ * Admin styles
+ */
+add_action('enqueue_block_assets', 'customize_css_in_gutenberg_back_end');
+
+function customize_css_in_gutenberg_back_end()
+{
+    if (is_admin()) {
+
+        wp_enqueue_style(
+            'admin-only',
+            TDIR . '/assets/css/admin.css'
+        );
+    }
+}
+
+
+
 /**
  * Modify <head>
  * 1. Google Analytics
