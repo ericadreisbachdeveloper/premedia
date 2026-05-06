@@ -3,8 +3,10 @@ const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
 const isMac = navigator.userAgent.includes('Mac') && !navigator.userAgent.includes('Mobile');
 const step = isTouchDevice ? 0.5 : 0.05;
 
+const maxScale = isTouchDevice ? 8 : 3;
+
 const instance = Panzoom(elem, {
-    maxScale: 8,
+    maxScale,
     minScale: .8,
     step,
     duration: 300,        // milliseconds, default is 200
@@ -120,7 +122,8 @@ if (isTouchDevice) {
 
             if (lastPinchDist) {
                 const currentScale = instance.getScale();
-                const newScale = Math.min(2, Math.max(1, currentScale * (newDist / lastPinchDist)));
+                //const newScale = Math.min(2, Math.max(1, currentScale * (newDist / lastPinchDist)));
+                const newScale = Math.min(maxScale, Math.max(1, currentScale * (newDist / lastPinchDist)));
                 instance.zoom(newScale, { force: true });
             }
 

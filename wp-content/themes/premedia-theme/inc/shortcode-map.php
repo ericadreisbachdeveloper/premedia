@@ -564,7 +564,7 @@ function map_shortcode_fxn()
         'panzoom-init',
         TDIR . '/assets/js/panzoom-init.js',
         ['panzoom'],
-        '1.0.39',
+        '1.0.40',
         true
     );
 
