@@ -4,7 +4,7 @@ const isMac = navigator.userAgent.includes('Mac') && !navigator.userAgent.includ
 const step = isTouchDevice ? 0.5 : 0.05;
 
 const instance = Panzoom(elem, {
-    maxScale: 5,
+    maxScale: 8,
     minScale: .8,
     step,
     duration: 300,        // milliseconds, default is 200
