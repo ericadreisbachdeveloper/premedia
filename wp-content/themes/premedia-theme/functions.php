@@ -131,7 +131,6 @@ function add_to_head_dbllc()
     global $post;
 
     ?>
-
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8EX4823B06"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -150,6 +149,27 @@ function add_to_head_dbllc()
     }
     ?>
 <link rel="alternate" type="text/markdown" href="<?php echo esc_url(SITE . '/' . $slug . '.md'); ?>">
+<?php
 
-    <?php
 }
+
+
+/**
+ * Add Google Analytics conversion event upon successful WPForms submission
+ */
+add_action('wp_footer', function () {
+    if (! function_exists('wpforms') || ! wpforms()->frontend->forms) {
+        return;
+    }
+    ?>
+  <script>
+    window.addEventListener('wpformsAjaxSubmitSuccess', function (event) {
+      gtag('event', 'form_submission', {
+        event_category: 'WPForms',
+        event_label: 'Contact Form',
+        form_id: event.detail?.formId ?? 'unknown'
+      });
+    });
+  </script>
+  <?php
+});
