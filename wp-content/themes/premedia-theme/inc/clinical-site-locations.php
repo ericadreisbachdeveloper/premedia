@@ -97,3 +97,41 @@ function premedia_bust_geo_cache($post_id)
 // temporarily remove the transient via WP CLI (wp transient delete
 // premedia_geo_placenames) or save the locations page once to trigger the
 // bust and rebuild.
+
+
+
+// For use in inc/shortcode-map.php
+function state_abbreviation($state_name)
+{
+    $states = [
+        'Alabama'        => 'AL', 'Alaska'         => 'AK',
+        'Arizona'        => 'AZ', 'Arkansas'       => 'AR',
+        'California'     => 'CA', 'Colorado'       => 'CO',
+        'Connecticut'    => 'CT', 'Delaware'       => 'DE',
+        'Florida'        => 'FL', 'Georgia'        => 'GA',
+        'Hawaii'         => 'HI', 'Idaho'          => 'ID',
+        'Illinois'       => 'IL', 'Indiana'        => 'IN',
+        'Iowa'           => 'IA', 'Kansas'         => 'KS',
+        'Kentucky'       => 'KY', 'Louisiana'      => 'LA',
+        'Maine'          => 'ME', 'Maryland'       => 'MD',
+        'Massachusetts'  => 'MA', 'Michigan'       => 'MI',
+        'Minnesota'      => 'MN', 'Mississippi'    => 'MS',
+        'Missouri'       => 'MO', 'Montana'        => 'MT',
+        'Nebraska'       => 'NE', 'Nevada'         => 'NV',
+        'New Hampshire'  => 'NH', 'New Jersey'     => 'NJ',
+        'New Mexico'     => 'NM', 'New York'       => 'NY',
+        'North Carolina' => 'NC', 'North Dakota'   => 'ND',
+        'Ohio'           => 'OH', 'Oklahoma'       => 'OK',
+        'Oregon'         => 'OR', 'Pennsylvania'   => 'PA',
+        'Rhode Island'   => 'RI', 'South Carolina' => 'SC',
+        'South Dakota'   => 'SD', 'Tennessee'      => 'TN',
+        'Texas'          => 'TX', 'Utah'           => 'UT',
+        'Vermont'        => 'VT', 'Virginia'       => 'VA',
+        'Washington'     => 'WA', 'West Virginia'  => 'WV',
+        'Wisconsin'      => 'WI', 'Wyoming'        => 'WY',
+        'District of Columbia' => 'DC',
+    ];
+
+    $state_name = trim($state_name);
+    return $states[ $state_name ] ?? $state_name;
+}

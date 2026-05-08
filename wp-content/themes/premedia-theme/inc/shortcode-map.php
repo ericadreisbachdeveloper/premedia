@@ -70,6 +70,7 @@ function map_shortcode_fxn()
                 'display_city' => $site['display_city'],
                 'address_locality' => $site['address_locality'],
                 'state' => $site['state'],
+                'state_abbrev' => state_abbreviation($site['state']),
                 'zip_code' => $site['zip_code']
             ];
 
@@ -468,7 +469,6 @@ function map_shortcode_fxn()
 
 
     // Generate an alpha list of states served
-
     $area_served = '';
     if (!empty($clinical_site_info)) {
 
@@ -480,12 +480,16 @@ function map_shortcode_fxn()
         sort($unique_states);
 
         foreach ($unique_states as $state) {
-            $area_served .= '{"@type": "State", "name": "' . $state . '"}';
+            $area_served .= '
+            {   
+                "@type": "State", 
+                "name": "' . $state . '"
+            }';
+            if ($state !== end($unique_states)) {
+                $area_served .= ',';
+            }
         }
-        if (!end($site)) {
-            $area_served .= ',
-        ';
-        }
+
     }
 
 
@@ -504,7 +508,8 @@ function map_shortcode_fxn()
         {"@type": "PropertyValue", "name": "ClinicalTrials.gov ID", "value": "NCT07293689"}
     ],
     "areaServed": [' . $area_served .
-    ']';
+    ']
+    }';
     /* /MedicalOrganization */
 
     if (!empty($clinical_site_info)) {
@@ -524,16 +529,14 @@ function map_shortcode_fxn()
                                     "@type": "PostalAddress", 
                                     "streetAddress": "' . $site['street_address'] . '", 
                                     "addressLocality": "' . $site['address_locality'] . '",
-                                    "addressRegion": "' . $site['state'] . '",
+                                    "addressRegion": "' . $site['state_abbrev'] . '",
                                     "postalCode": "' . $site['zip_code'] . '",
                                     "addressCountry": "US"
                                }, 
                                "medicalSpecialty": "Gastroenterologic", 
                                "parentOrganization": {
                                     "@type": ["MedicalOrganization", "MedicalTrial"], 
-                                    "@id": "https://premediatrial.com/#organization", 
-                                    "name": "PREMEDIA Clinical Trial - Precision Medicine in Achalasia", 
-                                    "url": "https://premediatrial.com"
+                                    "@id": "https://premediatrial.com/#organization"
                                }';
 
             if (!empty($site['physicians'])) {
@@ -551,7 +554,7 @@ function map_shortcode_fxn()
                     if (!str_contains($physician['img_src'], 'stethoscope')) {
                         $clinic_schema .= ', 
                                        "image": {
-                                            "@type": "Image/Object",
+                                            "@type": "ImageObject",
                                             "url": "' . $physician['img_src'] . '", 
                                             "contentUrl": "' . $physician['img_src'] . '"
                                        }';
