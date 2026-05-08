@@ -56,10 +56,10 @@ function map_shortcode_fxn()
         $rows = array();
     }
 
-    if (!empty($rows)) {
+    // Initialize array of clinical sites
+    $clinical_site_info = array();
 
-        // Initialize array of clinical sites
-        $clinical_site_info = array();
+    if (!empty($rows)) {
 
         // Loop through clinical sites to generate data array
         foreach ($rows as $site) {
@@ -466,15 +466,46 @@ function map_shortcode_fxn()
     // END Sites and physicians for markdown
 
 
+
+    // Generate an alpha list of states served
+
+    $area_served = '';
+    if (!empty($clinical_site_info)) {
+
+        foreach ($clinical_site_info as $site) {
+            $all_states [] = $site['state'];
+        }
+
+        $unique_states = array_unique($all_states);
+        sort($unique_states);
+
+        foreach ($unique_states as $state) {
+            $area_served .= '{"@type": "State", "name": "' . $state . '"}';
+        }
+        if (!end($site)) {
+            $area_served .= ',
+        ';
+        }
+    }
+
+
     // Sites and physicians for LLMs and robots to cache/catch
     $map_output .= '<script type="application/ld+json">{
     "@context": "https://schema.org",
-    "@type": "MedicalOrganization",
+    "@type": ["MedicalOrganization", "MedicalTrial"], 
+    "@id": "https://premediatrial.com/#organization",
     "name": "PREMEDIA Clinical Trial - Precision Medicine in Achalasia",
     "url": "https://premediatrial.com",
     "description": "The PREcision MEDicine In Achalasia (PREMEDIA) study is the largest and most rigorous multicenter evaluation of achalasia treatment to date.",
-    "medicalSpecialty": "Gastroenterologic"
-    }</script>'; /* /MedicalOrganization */
+    "medicalSpecialty": "Gastroenterologic",
+    "sameAs": "https://clinicaltrials.gov/study/NCT07293650",
+    "identifier": [
+        {"@type": "PropertyValue", "name": "ClinicalTrials.gov ID", "value": "NCT07293650"},            
+        {"@type": "PropertyValue", "name": "ClinicalTrials.gov ID", "value": "NCT07293689"}
+    ],
+    "areaServed": [' . $area_served .
+    ']';
+    /* /MedicalOrganization */
 
     if (!empty($clinical_site_info)) {
 
@@ -499,7 +530,8 @@ function map_shortcode_fxn()
                                }, 
                                "medicalSpecialty": "Gastroenterologic", 
                                "parentOrganization": {
-                                    "@type": "MedicalOrganization", 
+                                    "@type": ["MedicalOrganization", "MedicalTrial"], 
+                                    "@id": "https://premediatrial.com/#organization", 
                                     "name": "PREMEDIA Clinical Trial - Precision Medicine in Achalasia", 
                                     "url": "https://premediatrial.com"
                                }';
@@ -518,7 +550,11 @@ function map_shortcode_fxn()
 
                     if (!str_contains($physician['img_src'], 'stethoscope')) {
                         $clinic_schema .= ', 
-                                       "@id": "' . $physician['img_src'] . '"';
+                                       "image": {
+                                            "@type": "Image/Object",
+                                            "url": "' . $physician['img_src'] . '", 
+                                            "contentUrl": "' . $physician['img_src'] . '"
+                                       }';
                     }
 
                     $clinic_schema .= '

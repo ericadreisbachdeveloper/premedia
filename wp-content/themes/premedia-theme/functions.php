@@ -27,6 +27,7 @@ $style_vsn = '1.0.56';
  */
 require_once(THEMEPATH . '/inc/accordion-faq-schema.php');
 require_once(THEMEPATH . '/inc/button-aria-label.php');
+require_once(THEMEPATH . '/inc/clinical-site-locations.php');
 require_once(THEMEPATH . '/inc/disable-comments.php');
 require_once(THEMEPATH . '/inc/remove-wordpress-cruft.php');
 require_once(THEMEPATH . '/inc/simple-shortcodes.php'); /* includes query functions and references to template partials       */
