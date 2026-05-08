@@ -509,7 +509,8 @@ function map_shortcode_fxn()
     ],
     "areaServed": [' . $area_served .
     ']
-    }';
+    } 
+    </script>';
     /* /MedicalOrganization */
 
     if (!empty($clinical_site_info)) {
