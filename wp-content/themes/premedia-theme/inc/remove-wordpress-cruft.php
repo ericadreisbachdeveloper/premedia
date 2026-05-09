@@ -110,6 +110,20 @@ remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
 
 
+/**
+ * Remove unnecessary WordPress head tags and HTTP headers
+ */
+
+
+remove_action('wp_head', 'rsd_link');
+remove_action('wp_head', 'rest_output_link_wp_head');
+remove_action('wp_head', 'wp_oembed_add_discovery_links');
+remove_action('wp_head', 'wp_generator');
+remove_action('wp_head', 'wp_shortlink_wp_head');
+
+remove_action('template_redirect', 'rest_output_link_header', 11);
+remove_action('template_redirect', 'wp_shortlink_header', 11);
+
 
 /**
  * Removes RSS feed endpoints

@@ -7,14 +7,18 @@ if (!defined('ABSPATH')) {
 
 
 /**
- * Get list of unique City, State pairs to add to <meta name="geo.placename" content="...">
- * for improved surfaceability in searches of "achalasia study near me"
+ * Global location metadata for <head>
  */
 
 
 
-// Function to generate unique array of City, State pairs
-// from Locations page ACF repeater
+/**
+ * 1. Add <meta name="geo.placename" content="...">
+ *    for improved surfaceability in searches of "achalasia study near me"
+ */
+
+
+// 1a. Generate unique array of City, State pairs from Locations page ACF repeater
 function premedia_get_geo_placenames()
 {
     $cached = get_transient('premedia_geo_placenames');
@@ -64,8 +68,7 @@ function premedia_get_geo_placenames()
 
 
 
-// Run function defined above
-// and output as <meta> tag in <head> of all pages
+// 1b. Output City, State pairs as <meta> tag in <head>
 add_action('wp_head', 'premedia_geo_meta_tag');
 
 function premedia_geo_meta_tag()
@@ -79,81 +82,20 @@ function premedia_geo_meta_tag()
 
 
 
-// Bust cached transient when Locations page is saved
-add_action('acf/save_post', 'premedia_bust_geo_cache');
-
-function premedia_bust_geo_cache($post_id)
-{
-    if ((int) $post_id === 13) {
-        delete_transient('premedia_geo_placenames');
-    }
-}
+/**
+ * 2. Generate MedicalOrganization parent Schema including alpha-sorted list of states for areaServed
+ */
 
 
-
-// NOTE from Claude:
-// If you ever need to force a rebuild outside of a save — for example
-// after a server migration or database restore — you can either
-// temporarily remove the transient via WP CLI (wp transient delete
-// premedia_geo_placenames) or save the locations page once to trigger the
-// bust and rebuild.
-
-
-
-// For use in inc/shortcode-map.php
-function state_abbreviation($state_name)
-{
-    $states = [
-        'Alabama'        => 'AL', 'Alaska'         => 'AK',
-        'Arizona'        => 'AZ', 'Arkansas'       => 'AR',
-        'California'     => 'CA', 'Colorado'       => 'CO',
-        'Connecticut'    => 'CT', 'Delaware'       => 'DE',
-        'Florida'        => 'FL', 'Georgia'        => 'GA',
-        'Hawaii'         => 'HI', 'Idaho'          => 'ID',
-        'Illinois'       => 'IL', 'Indiana'        => 'IN',
-        'Iowa'           => 'IA', 'Kansas'         => 'KS',
-        'Kentucky'       => 'KY', 'Louisiana'      => 'LA',
-        'Maine'          => 'ME', 'Maryland'       => 'MD',
-        'Massachusetts'  => 'MA', 'Michigan'       => 'MI',
-        'Minnesota'      => 'MN', 'Mississippi'    => 'MS',
-        'Missouri'       => 'MO', 'Montana'        => 'MT',
-        'Nebraska'       => 'NE', 'Nevada'         => 'NV',
-        'New Hampshire'  => 'NH', 'New Jersey'     => 'NJ',
-        'New Mexico'     => 'NM', 'New York'       => 'NY',
-        'North Carolina' => 'NC', 'North Dakota'   => 'ND',
-        'Ohio'           => 'OH', 'Oklahoma'       => 'OK',
-        'Oregon'         => 'OR', 'Pennsylvania'   => 'PA',
-        'Rhode Island'   => 'RI', 'South Carolina' => 'SC',
-        'South Dakota'   => 'SD', 'Tennessee'      => 'TN',
-        'Texas'          => 'TX', 'Utah'           => 'UT',
-        'Vermont'        => 'VT', 'Virginia'       => 'VA',
-        'Washington'     => 'WA', 'West Virginia'  => 'WV',
-        'Wisconsin'      => 'WI', 'Wyoming'        => 'WY',
-        'District of Columbia' => 'DC',
-    ];
-
-    $state_name = trim($state_name);
-    return $states[ $state_name ] ?? $state_name;
-}
-
-
-
-
-
-
-// For use on every page in <head>
-// generate an alpha list of states served
+// 2a. Generate alpha-sorted list of states and parent MedicalOrganization Schema
 function generate_parent_schema()
 {
 
-
-    /*
     $cached = get_transient('parent_schema_transient');
 
     if ($cached !== false) {
         return $cached;
     }
-        */
 
     $medical_organization_schema = '';
 
@@ -218,22 +160,19 @@ function generate_parent_schema()
     $medical_organization_schema .= '};  
     </script>';
 
-    set_transient('parent_schema_transient', $result, 0);
+    set_transient('parent_schema_transient', $medical_organization_schema, 0);
 
     return $medical_organization_schema;
 
 }
 
 
-// Run function defined above
-// and output as <meta> tag in <head> of all pages
+// 2b. Output parent Schema in <head> of all pages
 add_action('wp_head', 'output_parent_schema');
 
 function output_parent_schema()
 {
     $parent_schema = generate_parent_schema();
-
-    //wp_die($parent_schema);
 
     if (! empty($parent_schema)) {
         echo $parent_schema;
@@ -243,12 +182,67 @@ function output_parent_schema()
 
 
 
-// Bust cached transient when Locations page is saved
-add_action('acf/save_post', 'bust_parent_schema_cache');
+/**
+ *  3. Bust cached transients when Locations page is saved
+ *
+ *     NOTE from Claude:
+ *     One transient per function, but a single shared bust function that clears both.
+ */
+add_action('acf/save_post', 'premedia_bust_locations_cache');
 
-function bust_parent_schema_cache($post_id)
+function premedia_bust_locations_cache($post_id)
 {
     if ((int) $post_id === 13) {
+        delete_transient('premedia_geo_placenames');
         delete_transient('parent_schema_transient');
     }
+}
+
+
+// NOTE from Claude:
+// If you ever need to force a rebuild outside of a save — for example
+// after a server migration or database restore — you can either
+// temporarily remove the transient via WP CLI (wp transient delete
+// premedia_geo_placenames) or save the locations page once to trigger the
+// bust and rebuild.
+
+
+
+/**
+ *  4. Map state names to postal abbreviations
+ *    for use in inc/shortcode-map.php
+ */
+function state_abbreviation($state_name)
+{
+    $states = [
+        'Alabama'        => 'AL', 'Alaska'         => 'AK',
+        'Arizona'        => 'AZ', 'Arkansas'       => 'AR',
+        'California'     => 'CA', 'Colorado'       => 'CO',
+        'Connecticut'    => 'CT', 'Delaware'       => 'DE',
+        'Florida'        => 'FL', 'Georgia'        => 'GA',
+        'Hawaii'         => 'HI', 'Idaho'          => 'ID',
+        'Illinois'       => 'IL', 'Indiana'        => 'IN',
+        'Iowa'           => 'IA', 'Kansas'         => 'KS',
+        'Kentucky'       => 'KY', 'Louisiana'      => 'LA',
+        'Maine'          => 'ME', 'Maryland'       => 'MD',
+        'Massachusetts'  => 'MA', 'Michigan'       => 'MI',
+        'Minnesota'      => 'MN', 'Mississippi'    => 'MS',
+        'Missouri'       => 'MO', 'Montana'        => 'MT',
+        'Nebraska'       => 'NE', 'Nevada'         => 'NV',
+        'New Hampshire'  => 'NH', 'New Jersey'     => 'NJ',
+        'New Mexico'     => 'NM', 'New York'       => 'NY',
+        'North Carolina' => 'NC', 'North Dakota'   => 'ND',
+        'Ohio'           => 'OH', 'Oklahoma'       => 'OK',
+        'Oregon'         => 'OR', 'Pennsylvania'   => 'PA',
+        'Rhode Island'   => 'RI', 'South Carolina' => 'SC',
+        'South Dakota'   => 'SD', 'Tennessee'      => 'TN',
+        'Texas'          => 'TX', 'Utah'           => 'UT',
+        'Vermont'        => 'VT', 'Virginia'       => 'VA',
+        'Washington'     => 'WA', 'West Virginia'  => 'WV',
+        'Wisconsin'      => 'WI', 'Wyoming'        => 'WY',
+        'District of Columbia' => 'DC',
+    ];
+
+    $state_name = trim($state_name);
+    return $states[ $state_name ] ?? $state_name;
 }
