@@ -138,48 +138,57 @@ function state_abbreviation($state_name)
 
 
 
+
+
+
 // For use on every page in <head>
 // generate an alpha list of states served
 function generate_parent_schema()
 {
 
+
+    /*
     $cached = get_transient('parent_schema_transient');
 
     if ($cached !== false) {
         return $cached;
     }
+        */
 
     $medical_organization_schema = '';
 
     // Allow graceful failure if ACF is disabled
     if (function_exists('get_field')) {
         $clinic_sites = get_field('sites', 13);
+    } else {
+        $clinic_sites = array();
+    }
 
-        if (!empty($clinic_sites)) {
-            $state_arr = array();
-            foreach ($clinic_sites['state'] as $state) {
-                $state_arr [] = $clinic_sites['state'];
-            }
-            $state_arr = array_unique($state_arr);
-            sort($state_arr);
+    if (empty($clinic_sites)) {
+        return '';
+    }
 
-            $area_served = '';
-            foreach ($state_arr as $state_key) {
-                $area_served .= '{   
+    $state_arr = array();
+
+    foreach ($clinic_sites as $site) {
+        $state_arr [] = $site['state'];
+    }
+
+    $state_arr = array_unique($state_arr);
+    sort($state_arr);
+
+    $area_served = '';
+
+    foreach ($state_arr as $state_key) {
+        $area_served .= '{   
                 "@type": "State", 
                 "name": "' . $state_key . '"
                 }';
-                if ($state_key !== end($state_arr)) {
-                    $area_served .= ',
+        if ($state_key !== end($state_arr)) {
+            $area_served .= ',
                     ';
-                }
-
-            }
-
         }
 
-    } else {
-        $clinic_sites = array();
     }
 
     // Sites and physicians for LLMs and robots to cache/catch
@@ -191,14 +200,17 @@ function generate_parent_schema()
     "url": "https://premediatrial.com",
     "description": "The PREcision MEDicine In Achalasia (PREMEDIA) study is the largest and most rigorous multicenter evaluation of achalasia treatment to date.",
     "medicalSpecialty": "Gastroenterologic",
-    "sameAs": "https://clinicaltrials.gov/study/NCT07293650",
+    "sameAs": [
+        "https://clinicaltrials.gov/study/NCT07293650",
+        "https://clinicaltrials.gov/study/NCT07293689"
+    ],
     "identifier": [
         {"@type": "PropertyValue", "name": "ClinicalTrials.gov ID", "value": "NCT07293650"},            
         {"@type": "PropertyValue", "name": "ClinicalTrials.gov ID", "value": "NCT07293689"}
     ]';
 
     if (!empty($clinic_sites)) {
-        $medical_organiation .= ',
+        $medical_organization_schema .= ',
         "areaServed": [' . $area_served .
         ']';
     }
