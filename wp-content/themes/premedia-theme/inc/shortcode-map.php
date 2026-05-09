@@ -467,52 +467,6 @@ function map_shortcode_fxn()
     // END Sites and physicians for markdown
 
 
-
-    // Generate an alpha list of states served
-    $area_served = '';
-    if (!empty($clinical_site_info)) {
-
-        foreach ($clinical_site_info as $site) {
-            $all_states [] = $site['state'];
-        }
-
-        $unique_states = array_unique($all_states);
-        sort($unique_states);
-
-        foreach ($unique_states as $state) {
-            $area_served .= '
-            {   
-                "@type": "State", 
-                "name": "' . $state . '"
-            }';
-            if ($state !== end($unique_states)) {
-                $area_served .= ',';
-            }
-        }
-
-    }
-
-
-    // Sites and physicians for LLMs and robots to cache/catch
-    $map_output .= '<script type="application/ld+json">{
-    "@context": "https://schema.org",
-    "@type": ["MedicalOrganization", "MedicalTrial"], 
-    "@id": "https://premediatrial.com/#organization",
-    "name": "PREMEDIA Clinical Trial - Precision Medicine in Achalasia",
-    "url": "https://premediatrial.com",
-    "description": "The PREcision MEDicine In Achalasia (PREMEDIA) study is the largest and most rigorous multicenter evaluation of achalasia treatment to date.",
-    "medicalSpecialty": "Gastroenterologic",
-    "sameAs": "https://clinicaltrials.gov/study/NCT07293650",
-    "identifier": [
-        {"@type": "PropertyValue", "name": "ClinicalTrials.gov ID", "value": "NCT07293650"},            
-        {"@type": "PropertyValue", "name": "ClinicalTrials.gov ID", "value": "NCT07293689"}
-    ],
-    "areaServed": [' . $area_served .
-    ']
-    } 
-    </script>';
-    /* /MedicalOrganization */
-
     if (!empty($clinical_site_info)) {
 
         $clinic_schema = '<script type="application/ld+json">';

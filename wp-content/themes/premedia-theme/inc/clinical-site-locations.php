@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 
 
 
-// Function to Ggnerate unique array of City, State pairs
+// Function to generate unique array of City, State pairs
 // from Locations page ACF repeater
 function premedia_get_geo_placenames()
 {
@@ -134,4 +134,109 @@ function state_abbreviation($state_name)
 
     $state_name = trim($state_name);
     return $states[ $state_name ] ?? $state_name;
+}
+
+
+
+// For use on every page in <head>
+// generate an alpha list of states served
+function generate_parent_schema()
+{
+
+    $cached = get_transient('parent_schema_transient');
+
+    if ($cached !== false) {
+        return $cached;
+    }
+
+    $medical_organization_schema = '';
+
+    // Allow graceful failure if ACF is disabled
+    if (function_exists('get_field')) {
+        $clinic_sites = get_field('sites', 13);
+
+        if (!empty($clinic_sites)) {
+            $state_arr = array();
+            foreach ($clinic_sites['state'] as $state) {
+                $state_arr [] = $clinic_sites['state'];
+            }
+            $state_arr = array_unique($state_arr);
+            sort($state_arr);
+
+            $area_served = '';
+            foreach ($state_arr as $state_key) {
+                $area_served .= '{   
+                "@type": "State", 
+                "name": "' . $state_key . '"
+                }';
+                if ($state_key !== end($state_arr)) {
+                    $area_served .= ',
+                    ';
+                }
+
+            }
+
+        }
+
+    } else {
+        $clinic_sites = array();
+    }
+
+    // Sites and physicians for LLMs and robots to cache/catch
+    $medical_organization_schema = '<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": ["MedicalOrganization", "MedicalTrial"], 
+    "@id": "https://premediatrial.com/#organization",
+    "name": "PREMEDIA Clinical Trial - Precision Medicine in Achalasia",
+    "url": "https://premediatrial.com",
+    "description": "The PREcision MEDicine In Achalasia (PREMEDIA) study is the largest and most rigorous multicenter evaluation of achalasia treatment to date.",
+    "medicalSpecialty": "Gastroenterologic",
+    "sameAs": "https://clinicaltrials.gov/study/NCT07293650",
+    "identifier": [
+        {"@type": "PropertyValue", "name": "ClinicalTrials.gov ID", "value": "NCT07293650"},            
+        {"@type": "PropertyValue", "name": "ClinicalTrials.gov ID", "value": "NCT07293689"}
+    ]';
+
+    if (!empty($clinic_sites)) {
+        $medical_organiation .= ',
+        "areaServed": [' . $area_served .
+        ']';
+    }
+
+    $medical_organization_schema .= '};  
+    </script>';
+
+    set_transient('parent_schema_transient', $result, 0);
+
+    return $medical_organization_schema;
+
+}
+
+
+// Run function defined above
+// and output as <meta> tag in <head> of all pages
+add_action('wp_head', 'output_parent_schema');
+
+function output_parent_schema()
+{
+    $parent_schema = generate_parent_schema();
+
+    //wp_die($parent_schema);
+
+    if (! empty($parent_schema)) {
+        echo $parent_schema;
+    }
+
+}
+
+
+
+// Bust cached transient when Locations page is saved
+add_action('acf/save_post', 'bust_parent_schema_cache');
+
+function bust_parent_schema_cache($post_id)
+{
+    if ((int) $post_id === 13) {
+        delete_transient('parent_schema_transient');
+    }
 }
