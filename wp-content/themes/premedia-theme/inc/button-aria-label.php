@@ -5,12 +5,9 @@ if (!defined('ABSPATH')) {
 }    // Exit if accessed directly
 
 
-
 /**
- * Add an optinoal aria-label meta box to Gutenberg native button blocks
+ * Add an optional aria-label meta box to Gutenberg native button blocks
  */
-
-
 add_action('enqueue_block_editor_assets', 'add_button_aria_label_control_dbllc');
 
 function add_button_aria_label_control_dbllc()

@@ -113,8 +113,6 @@ remove_action('wp_print_styles', 'print_emoji_styles');
 /**
  * Remove unnecessary WordPress head tags and HTTP headers
  */
-
-
 remove_action('wp_head', 'rsd_link');
 remove_action('wp_head', 'rest_output_link_wp_head');
 remove_action('wp_head', 'wp_oembed_add_discovery_links');
@@ -220,4 +218,30 @@ function clean_meta_content_dbllc($content)
     $content = preg_replace('/\s+/', ' ', $content);
 
     return trim($content);
+}
+
+
+/**
+ * Add fetchpriority="high" to the logo
+ */
+add_filter('render_block', 'add_fetchpriority_to_logo_dbllc', 10, 2);
+
+function add_fetchpriority_to_logo_dbllc($block_content, $block)
+{
+    // Only target image blocks
+    if ($block['blockName'] !== 'core/image') {
+        return $block_content;
+    }
+
+    // Only target image ID 358 (your logo)
+    if (isset($block['attrs']['id']) && $block['attrs']['id'] == 358) {
+        $block_content = preg_replace(
+            '/<img\s/',
+            '<img fetchpriority="high" ',
+            $block_content,
+            1
+        );
+    }
+
+    return $block_content;
 }
