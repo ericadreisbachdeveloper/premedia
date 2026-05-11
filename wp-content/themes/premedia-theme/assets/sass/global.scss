@@ -31,6 +31,7 @@
 }
 
 
+
 @media (min-width: $laptop) {
 
     .hide-on-desktop {
@@ -46,22 +47,10 @@
 
 
 
-@media (max-width: $narrower-than-desktop) {
-
-    .entry-content>.wp-block-group {
-
-        &>.wp-block-accordion,
-        &>.wp-block-heading,
-        &>p,
-        &>.wp-block-list {
-            max-width: 84%;
-            margin-right: 8%;
-            margin-left: 8%;
-        }
-
-    }
-
+.nowrap {
+    white-space: nowrap;
 }
+
 
 
 .img-with-corners {
@@ -110,6 +99,7 @@ p:has(.time) {
 .time:before {
     background-image: url('../img/clock.svg');
 }
+
 
 @media (min-width: $tablet) {
 
