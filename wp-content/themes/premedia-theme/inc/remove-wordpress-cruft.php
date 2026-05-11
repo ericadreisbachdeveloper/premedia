@@ -233,7 +233,7 @@ function add_fetchpriority_to_logo_dbllc($block_content, $block)
         return $block_content;
     }
 
-    // Only target image ID 358 (your logo)
+    // Only target image ID 358 (logo)
     if (isset($block['attrs']['id']) && $block['attrs']['id'] == 358) {
         $block_content = preg_replace(
             '/<img\s/',

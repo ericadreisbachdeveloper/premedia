@@ -6,50 +6,88 @@ if (!defined('ABSPATH')) {
 
 
 /**
- * Obfuscate email addresses
+ * Output buffer: rewrites mailto links for CSS display + JS onclick assembly.
+ * - Anchor text replaced by CSS ::before content (split across two data attributes)
+ * - mailto: assembled only on click
  */
-add_action('template_redirect', 'start_email_obfuscation_buffer_dbllc');
+add_action('template_redirect', 'obf_mailto_start');
 
-function start_email_obfuscation_buffer_dbllc()
+function obf_mailto_start()
 {
-    ob_start('obfuscate_all_emails_dbllc');
+    ob_start('obf_mailto_rewrite');
 }
 
-
-add_action('shutdown', 'end_email_obfuscation_buffer_dbllc', 0);
-
-function end_email_obfuscation_buffer_dbllc()
+function obf_mailto_rewrite($html)
 {
-    if (ob_get_level() > 0) {
-        ob_end_flush();
-    }
+    $pattern = '/<a\s([^>]*)href=["\']mailto:([a-zA-Z0-9._%+\-]+)@([a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})["\']([^>]*)>(.*?)<\/a>/is';
+
+    return preg_replace_callback($pattern, function ($matches) {
+        $before_href = $matches[1];
+        $user        = $matches[2];
+        $domain      = $matches[3];
+        $after_href  = $matches[4];
+
+        // Reverse both parts
+        $user_r   = strrev($user);
+        $domain_r = strrev($domain);
+
+        // Strip any existing onclick
+        $other_attrs = preg_replace('/onclick=["\'][^"\']*["\']/i', '', $before_href . $after_href);
+
+        // Split domain at the TLD boundary for CSS reassembly
+        // e.g. "northwestern.edu" -> data-d="ude.nretsewhtron"
+        // CSS will display: attr(data-u) + "@" + attr(data-d) -- but reversed,
+        // so we store them reversed and use JS to reverse on click.
+        // For CSS we store the display-friendly (non-reversed) halves separately.
+        $at_pos    = strpos($domain, '.');
+        $domain_a  = substr($domain, 0, $at_pos);  // e.g. "northwestern"
+        $domain_b  = substr($domain, $at_pos);      // e.g. ".edu"
+
+        return sprintf(
+            '<a %s href="#" 
+        data-u="%s" 
+        data-d="%s" 
+        data-da="%s" 
+        data-db="%s" 
+        class="obf-mailto" 
+        onclick="return obfMailto(this)"></a>',
+            trim($other_attrs),
+            esc_attr($user_r),       // reversed user, for JS
+            esc_attr($domain_r),     // reversed domain, for JS
+            esc_attr($user),         // plain user, for CSS  e.g. "premedia"
+            esc_attr('@' . $domain)  // @ + full domain, for CSS  e.g. "@northwestern.edu"
+        );
+    }, $html);
 }
 
-function obfuscate_all_emails_dbllc($html)
-{
-    // Match emails in mailto links
-    $html = preg_replace_callback(
-        '/href=["\']mailto:([^"\']+)["\']/',
-        function ($matches) {
-            $email = $matches[1];
-            $encoded = '';
-            for ($i = 0; $i < strlen($email); $i++) {
-                $encoded .= '&#' . ord($email[$i]) . ';';
-            }
-            return 'href="mailto:' . $encoded . '"';
-        },
-        $html
-    );
+/**
+ * Inject CSS and JS into footer.
+ */
+add_action('wp_footer', function () { ?>
 
-    // Match plain email text
-    $html = preg_replace_callback(
-        '/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/',
-        function ($matches) {
-            // Don't encode if it's already inside an HTML tag
-            return '&#' . implode(';&#', array_map('ord', str_split($matches[1]))) . ';';
-        },
-        $html
-    );
-
-    return $html;
+<?php
+/*
+ * Reassemble display from two separate attributes.
+ * No single attribute contains the full address.
+ * data-da = "premedia"
+ * data-db = "@northwestern.edu"  <- note the @ is on the domain side
+ */
+    ?>
+<style>
+a.obf-mailto::before {
+    content: attr(data-da) attr(data-db);
+    cursor: pointer;
 }
+</style>
+
+<script>
+function obfMailto(el) {
+    // Reverse stored parts to get real address, set href, follow link
+    var u = el.dataset.u.split('').reverse().join('');
+    var d = el.dataset.d.split('').reverse().join('');
+    el.href = 'mailto:' + u + '@' + d;
+    return true;
+}
+</script>
+
+<?php });
