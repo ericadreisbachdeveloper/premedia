@@ -44,7 +44,7 @@ function obf_mailto_rewrite($html)
         $domain_b  = substr($domain, $at_pos);      // e.g. ".edu"
 
         return sprintf(
-            '<a %s href="#" 
+            '<a %s aria-label="Email ' . esc_attr($user) . '" href="#" 
         data-u="%s" 
         data-d="%s" 
         data-da="%s" 
