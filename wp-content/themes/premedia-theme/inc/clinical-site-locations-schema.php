@@ -137,6 +137,15 @@ function generate_parent_schema()
     $medical_organization_schema = '<script type="application/ld+json">{
     "@context": "https://schema.org",
     "@type": ["MedicalOrganization", "MedicalTrial"], 
+    "conditionOrDisease": [
+        {
+            "@type": "MedicalCondition",
+            "name": "Achalasia",
+            "signOrSymptom": ["Dysphagia", "Difficulty swallowing", "Regurgitation", "Chest pain"]
+        }
+    ],
+    "eligibilityCriteria": "Adults experiencing difficulty swallowing due to achalasia or related esophageal motility disorders",
+    "keywords": "achalasia, dysphagia, difficulty swallowing, POEM, esophageal motility disorder, swallowing problems",
     "@id": "https://premediatrial.com/#organization",
     "name": "PREMEDIA Clinical Trial - Precision Medicine in Achalasia",
     "url": "https://premediatrial.com",
@@ -202,9 +211,10 @@ function premedia_bust_locations_cache($post_id)
 // NOTE from Claude:
 // If you ever need to force a rebuild outside of a save — for example
 // after a server migration or database restore — you can either
-// temporarily remove the transient via WP CLI (wp transient delete
-// premedia_geo_placenames) or save the locations page once to trigger the
-// bust and rebuild.
+// temporarily remove the transient via WP CLI
+// $ wp transient delete premedia_geo_placenames
+// $ wp transient delete parent_schema_transient
+// or save the locations page once to trigger the bust and rebuild.
 
 
 
