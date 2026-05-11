@@ -19,33 +19,44 @@ function custom_robots_txt_dbllc($output, $public)
     $custom = $output;
 
     $custom .= "
-# Block markdown files from traditional search engines
-User-agent: Googlebot
-Disallow: /*.md$
+# Block markdown files from traditional search engines to avoid duplicate content signal
 
 User-agent: Bingbot
 Disallow: /*.md$
 
+User-agent: Googlebot
+Disallow: /*.md$
+
+
 # Block aggressive AI scrapers entirely
-User-agent: Bytespider
-Disallow: /
-
-User-agent: Meta-ExternalAgent
-Disallow: /
-
-User-agent: FacebookBot
-Disallow: /
 
 User-agent: Amazonbot
+Disallow: /
+
+User-agent: Bytespider
 Disallow: /
 
 User-agent: cohere-ai
 Disallow: /
 
+User-agent: FacebookBot
+Disallow: /
+
 User-agent: GPTBot
 Disallow: /
 
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+
 # Allow specific AI crawlers with more ethical use patterns
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
 User-agent: ChatGPT-User
 Allow: /
 
@@ -55,16 +66,10 @@ Allow: /
 User-agent: Claude-Web
 Allow: /
 
-User-agent: anthropic-ai
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
 User-agent: Google-Extended
 Allow: /
 
-User-agent: Applebot-Extended
+User-agent: PerplexityBot
 Allow: /
 ";
 
