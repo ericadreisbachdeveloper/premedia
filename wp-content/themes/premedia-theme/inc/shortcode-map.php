@@ -603,8 +603,6 @@ function add_clinic_data_modal()
     }
 
     ?>
-
-
     <div id="data-modal" 
          class="modal modal-dismiss" 
          role="dialog" 
@@ -621,7 +619,5 @@ function add_clinic_data_modal()
         </div><?php /* /#clinic-data.modal-content */ ?>
 
     </div><?php /* /#data-modal */ ?>
-
-
     <?php
 }
