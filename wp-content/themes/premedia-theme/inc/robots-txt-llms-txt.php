@@ -45,7 +45,7 @@ Disallow: /
 User-agent: GPTBot
 Disallow: /
 
-# Allow specific AI crawlers - markdown only
+# Allow specific AI crawlers with more ethical use patterns
 User-agent: ChatGPT-User
 Allow: /
 
