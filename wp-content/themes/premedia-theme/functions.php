@@ -27,8 +27,9 @@ $style_vsn = '1.0.60';
  */
 require_once(THEMEPATH . '/inc/accordion-faq-schema.php');
 require_once(THEMEPATH . '/inc/button-aria-label.php');
-require_once(THEMEPATH . '/inc/clinical-site-locations.php');
+require_once(THEMEPATH . '/inc/clinical-site-locations-schema.php');
 require_once(THEMEPATH . '/inc/disable-comments.php');
+require_once(THEMEPATH . '/inc/medicalcondition-schema.php');
 require_once(THEMEPATH . '/inc/remove-wordpress-cruft.php');
 require_once(THEMEPATH . '/inc/robots-txt-llms-txt.php');
 require_once(THEMEPATH . '/inc/server-side-email-obfuscation.php');
@@ -106,7 +107,6 @@ function customize_css_in_gutenberg_back_end()
     }
 
 }
-
 
 
 
