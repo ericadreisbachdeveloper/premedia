@@ -28,8 +28,7 @@ define( 'THEMEPATH', get_stylesheet_directory() );
  * Style vsn
  * used to juke browser cache
  */
-global $style_vsn;
-$style_vsn = '1.0.60';
+define( 'VERSION', '1.0.60' );
 
 
 /**
@@ -81,9 +80,8 @@ if (!is_admin()) {
 add_action( 'wp_enqueue_scripts', 'enqueue_css_js', 100 );
 
 function enqueue_css_js() {
-    global $style_vsn;
 
-    wp_register_style( 'main', TDIR . '/assets/css/style.css', '', $style_vsn );
+    wp_register_style( 'main', TDIR . '/assets/css/style.css', '', VERSION );
     wp_enqueue_style( 'main' );
 
     wp_register_script( 'scroll', TDIR . '/assets/js/scroll-min.js', '', '1.0.4', true );
