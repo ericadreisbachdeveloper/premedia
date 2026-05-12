@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }    // Exit if accessed directly
 
@@ -9,12 +9,11 @@ if (!defined('ABSPATH')) {
 /**
  * Add MedicalWebPage adn MedicalCondition Schema to Home and For Patients
  */
-add_action('wp_head', 'add_symptom_schema_dbllc');
+add_action( 'wp_head', 'add_symptom_schema_dbllc' );
 
-function add_symptom_schema_dbllc()
-{
+function add_symptom_schema_dbllc() {
     // Only on homepage or relevant pages
-    if (!is_front_page() && !is_page('for-patients')) {
+    if ( ! is_front_page() && ! is_page( 'for-patients' ) ) {
         return;
     }
     ?>

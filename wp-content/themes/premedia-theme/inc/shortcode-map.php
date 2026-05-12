@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }    // Exit if accessed directly
 
@@ -11,10 +11,9 @@ if (!defined('ABSPATH')) {
  *
  * Relies on Advanced Custom Fields 'sites' repeater field
  */
-add_shortcode('map', 'map_shortcode_fxn');
+add_shortcode( 'map', 'map_shortcode_fxn' );
 
-function map_shortcode_fxn()
-{
+function map_shortcode_fxn() {
 
     global $post;
     global $map_shortcode_used;
@@ -28,10 +27,8 @@ function map_shortcode_fxn()
 
     $map_output = '';
 
-
     // Modal backdrop used to dismiss upon interaction when modal is open
     $map_output .= '<div id="modal-backdrop" class="modal-dismiss" tabindex="-1"></div>';
-
 
     // Map controls
     $map_output .= '<div class="map-controls" role="group" aria-label="Map controls">';
@@ -47,10 +44,9 @@ function map_shortcode_fxn()
 
     $map_output .= '<div id="map-container" class="map-container">';
 
-
     // Pull distributors data from ACF repeater field
-    if (function_exists('get_field')) {
-        $rows = get_field('sites', $post_id);
+    if ( function_exists( 'get_field' ) ) {
+        $rows = get_field( 'sites', $post_id );
     } else {
         // Allow graceful failure if ACF is disabled
         $rows = array();
@@ -59,36 +55,34 @@ function map_shortcode_fxn()
     // Initialize array of clinical sites
     $clinical_site_info = array();
 
-    if (!empty($rows)) {
+    if ( ! empty( $rows ) ) {
 
         // Loop through clinical sites to generate data array
-        foreach ($rows as $site) {
+        foreach ( $rows as $site ) {
 
-            $clinical_site_info[$site['slug']] = [
-                'site_name' => $site['site_name'],
-                'street_address' => $site['street_address'],
-                'display_city' => $site['display_city'],
+            $clinical_site_info[ $site['slug'] ] = array(
+                'site_name'        => $site['site_name'],
+                'street_address'   => $site['street_address'],
+                'display_city'     => $site['display_city'],
                 'address_locality' => $site['address_locality'],
-                'state' => $site['state'],
-                'state_abbrev' => state_abbreviation($site['state']),
-                'zip_code' => $site['zip_code']
-            ];
+                'state'            => $site['state'],
+                'state_abbrev'     => state_abbreviation( $site['state'] ),
+                'zip_code'         => $site['zip_code'],
+            );
 
-            if (!empty($site['physicians'])) {
+            if ( ! empty( $site['physicians'] ) ) {
 
-                foreach ($site['physicians'] as $physician) {
+                foreach ( $site['physicians'] as $physician ) {
 
-                    $clinical_site_info[$site['slug']]['physicians'][] = [
-                        'name' => $physician['physician'],
+                    $clinical_site_info[ $site['slug'] ]['physicians'][] = array(
+                        'name'        => $physician['physician'],
                         'institution' => $physician['institution'],
-                        'img_src' => $physician['photo']
-                    ];
+                        'img_src'     => $physician['photo'],
+                    );
 
                 }
-
             }
         }
-
     }
 
     $map_output .= '<svg id="us-map" preserveAspectRatio="xMaxYMin" class="us-map" xmlns="http://www.w3.org/2000/svg" style="width:959px; height: 593px;" viewBox="0 0 959 593">
@@ -437,21 +431,20 @@ function map_shortcode_fxn()
 
     $map_output .= '</div>'; // #map-container.map-container
 
-
     // Sites and physicians for markdown to cache/catch
-    if (!empty($clinical_site_info)) {
+    if ( ! empty( $clinical_site_info ) ) {
         $clinics_for_markdown = '';
-        $map_output .= '<div class="hidden">';
-        $map_output .= '<h1>Study Sites and Clinicians</h1>';
+        $map_output          .= '<div class="hidden">';
+        $map_output          .= '<h1>Study Sites and Clinicians</h1>';
 
-        foreach ($clinical_site_info as $site) {
+        foreach ( $clinical_site_info as $site ) {
             $clinics_for_markdown .= '<h2>' . $site['site_name'] . '</h2>';
             $clinics_for_markdown .= '<p>' . $site['display_city'] . ', ' . $site['state'] . '</p>';
 
-            if (!empty($site['physicians'])) {
-                foreach ($site['physicians'] as $physician) {
+            if ( ! empty( $site['physicians'] ) ) {
+                foreach ( $site['physicians'] as $physician ) {
                     $clinics_for_markdown .= '<p>' . $physician['name'];
-                    if (!str_contains($physician['img_src'], 'stethoscope')) {
+                    if ( ! str_contains( $physician['img_src'], 'stethoscope' ) ) {
                         $clinics_for_markdown .= '<img src="' . $physician['img_src'] . '" alt="photo of ' . $physician['name'] . '"></p>';
                     } else {
                         $clinics_for_markdown .= '</p>';
@@ -466,8 +459,51 @@ function map_shortcode_fxn()
     }
     // END Sites and physicians for markdown
 
+    // Generate an alpha list of states served
+    $area_served = '';
+    if ( ! empty( $clinical_site_info ) ) {
 
-    if (!empty($clinical_site_info)) {
+        foreach ( $clinical_site_info as $site ) {
+            $all_states [] = $site['state'];
+        }
+
+        $unique_states = array_unique( $all_states );
+        sort( $unique_states );
+
+        foreach ( $unique_states as $state ) {
+            $area_served .= '
+            {   
+                "array_key_last": "' . array_key_last( $unique_states ) . '",
+                "@type": "State", 
+                "name": "' . $state . '"
+            }';
+            if ( array_key_last( $unique_states ) == $state ) {
+                $area_served .= ',
+            ';
+            }
+        }
+    }
+
+    // Sites and physicians for LLMs and robots to cache/catch
+    $map_output .= '<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": ["MedicalOrganization", "MedicalTrial"], 
+    "@id": "https://premediatrial.com/#organization",
+    "name": "PREMEDIA Clinical Trial - Precision Medicine in Achalasia",
+    "url": "https://premediatrial.com",
+    "description": "The PREcision MEDicine In Achalasia (PREMEDIA) study is the largest and most rigorous multicenter evaluation of achalasia treatment to date.",
+    "medicalSpecialty": "Gastroenterologic",
+    "sameAs": "https://clinicaltrials.gov/study/NCT07293650",
+    "identifier": [
+        {"@type": "PropertyValue", "name": "ClinicalTrials.gov ID", "value": "NCT07293650"},            
+        {"@type": "PropertyValue", "name": "ClinicalTrials.gov ID", "value": "NCT07293689"}
+    ],
+    "areaServed": [' . $area_served .
+    ']
+    }';
+    /* /MedicalOrganization */
+
+    if ( ! empty( $clinical_site_info ) ) {
 
         $clinic_schema = '<script type="application/ld+json">';
 
@@ -475,7 +511,7 @@ function map_shortcode_fxn()
         $clinic_schema .= '"@context": "https://schema.org",';
         $clinic_schema .= '"@graph": [
                           ';
-        foreach ($clinical_site_info as $site) {
+        foreach ( $clinical_site_info as $site ) {
 
             $clinic_schema .= '{
                                "@type": "MedicalClinic", 
@@ -491,22 +527,24 @@ function map_shortcode_fxn()
                                "medicalSpecialty": "Gastroenterologic", 
                                "parentOrganization": {
                                     "@type": ["MedicalOrganization", "MedicalTrial"], 
-                                    "@id": "https://premediatrial.com/#organization"
+                                    "@id": "https://premediatrial.com/#organization", 
+                                    "name": "PREMEDIA Clinical Trial - Precision Medicine in Achalasia", 
+                                    "url": "https://premediatrial.com"
                                }';
 
-            if (!empty($site['physicians'])) {
+            if ( ! empty( $site['physicians'] ) ) {
 
                 $clinic_schema .= ',
                                   "employee": [
                                   ';
 
-                foreach ($site['physicians'] as $physician) {
+                foreach ( $site['physicians'] as $physician ) {
 
                     $clinic_schema .= '{
                                        "@type": "Person", 
                                        "name": "' . $physician['name'] . '"';
 
-                    if (!str_contains($physician['img_src'], 'stethoscope')) {
+                    if ( ! str_contains( $physician['img_src'], 'stethoscope' ) ) {
                         $clinic_schema .= ', 
                                        "image": {
                                             "@type": "ImageObject",
@@ -518,10 +556,9 @@ function map_shortcode_fxn()
                     $clinic_schema .= '
                                   }';
 
-                    if (end($site['physicians']) !== $physician) {
+                    if ( end( $site['physicians'] ) !== $physician ) {
                         $clinic_schema .= ', ';
                     }
-
                 }
 
                 $clinic_schema .= ']'; /* employee(s) */
@@ -529,11 +566,10 @@ function map_shortcode_fxn()
 
             $clinic_schema .= '}'; /* /MedicalClinic */
 
-            if (end($clinical_site_info) !== $site) {
+            if ( end( $clinical_site_info ) !== $site ) {
                 $clinic_schema .= ', 
                 ';
             }
-
         }
 
         $clinic_schema .= ']'; /* / @graph */
@@ -545,11 +581,10 @@ function map_shortcode_fxn()
         $map_output .= $clinic_schema;
     }
 
-
     wp_enqueue_script(
         'panzoom',
         'https://unpkg.com/@panzoom/panzoom@4.6.1/dist/panzoom.min.js',
-        [],
+        array(),
         '4.6.1',
         true
     );
@@ -557,7 +592,7 @@ function map_shortcode_fxn()
     wp_enqueue_script(
         'panzoom-init',
         TDIR . '/assets/js/panzoom-init.js',
-        ['panzoom'],
+        array( 'panzoom' ),
         '1.0.40',
         true
     );
@@ -565,7 +600,7 @@ function map_shortcode_fxn()
     wp_enqueue_script(
         'map-js',
         TDIR . '/assets/js/map.js',
-        ['panzoom', 'panzoom-init'],
+        array( 'panzoom', 'panzoom-init' ),
         '1.0.66',
         true
     );
@@ -575,7 +610,7 @@ function map_shortcode_fxn()
         'map-js',
         'clinicData',
         array(
-        'clinical_site_info' => $clinical_site_info
+			'clinical_site_info' => $clinical_site_info,
         )
     );
 
@@ -591,22 +626,23 @@ function map_shortcode_fxn()
  * Add clinic data modal to footer when [map] shortcode is used
  */
 
-add_action('wp_footer', 'add_clinic_data_modal');
+add_action( 'wp_footer', 'add_clinic_data_modal' );
 
-function add_clinic_data_modal()
-{
+function add_clinic_data_modal() {
     global $map_shortcode_used;
 
     // Only output modal if the shortcode was used on this page
-    if (!isset($map_shortcode_used) || !$map_shortcode_used) {
+    if ( ! isset( $map_shortcode_used ) || ! $map_shortcode_used ) {
         return;
     }
 
     ?>
+
+
     <div id="data-modal" 
-         class="modal modal-dismiss" 
-         role="dialog" 
-         aria-labelledby="clinic-site-name">
+        class="modal modal-dismiss" 
+        role="dialog" 
+        aria-labelledby="clinic-site-name">
 
         <?php /* ref:https://github.com/gdkraus/accessible-modal-dialog/blob/master/index.html */ ?>
         <div id="clinic-data" class="modal-content" role="document">
@@ -619,5 +655,7 @@ function add_clinic_data_modal()
         </div><?php /* /#clinic-data.modal-content */ ?>
 
     </div><?php /* /#data-modal */ ?>
+
+
     <?php
 }

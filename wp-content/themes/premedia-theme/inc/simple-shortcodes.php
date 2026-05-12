@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }    // Exit if accessed directly
 
@@ -14,11 +14,10 @@ if (!defined('ABSPATH')) {
  * Shortcode output (c)CURRENT YEAR
  * [copyright]
  */
-add_shortcode('copyright', 'copyright_sign');
+add_shortcode( 'copyright', 'copyright_sign' );
 
-function copyright_sign()
-{
-    $current_year = date('Y');
+function copyright_sign() {
+    $current_year = date( 'Y' );
 
-    return '&copy;'.$current_year;
+    return '&copy;' . $current_year;
 }

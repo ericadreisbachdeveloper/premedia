@@ -1,4 +1,4 @@
-<?php if (!defined('ABSPATH')) {
+<?php if ( ! defined( 'ABSPATH' ) ) {
     exit;
 } ?>
 
@@ -63,9 +63,9 @@
 
 ?>
 
-<link rel="icon" href="<?php echo(esc_url(SITE.'/favicon.ico')); ?>" sizes="48x48">
-<link rel="icon" href="<?php echo(esc_url(SITE.'/favicon.svg')); ?>" sizes="any">
-<link rel="apple-touch-icon" href="<?php echo(esc_url(SITE.'/apple-touch-icon.png')); ?>">
+<link rel="icon" href="<?php echo( esc_url( SITE . '/favicon.ico' ) ); ?>" sizes="48x48">
+<link rel="icon" href="<?php echo( esc_url( SITE . '/favicon.svg' ) ); ?>" sizes="any">
+<link rel="apple-touch-icon" href="<?php echo( esc_url( SITE . '/apple-touch-icon.png' ) ); ?>">
 
 
 <?php
@@ -88,4 +88,4 @@
  * ref: https://miro.medium.com/v2/resize:fit:1400/1*k07wulFO297SXn7EZ-Xaow.png
  */
 ?>
-<link rel="manifest" href="<?php echo(esc_url(SITE.'/site.webmanifest')); ?>">
+<link rel="manifest" href="<?php echo( esc_url( SITE . '/site.webmanifest' ) ); ?>">
