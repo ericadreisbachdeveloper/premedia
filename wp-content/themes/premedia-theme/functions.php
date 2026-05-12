@@ -45,6 +45,7 @@ require_once THEMEPATH . '/inc/robots-txt-llms-txt.php';
 require_once THEMEPATH . '/inc/server-side-email-obfuscation.php';
 require_once THEMEPATH . '/inc/simple-shortcodes.php'; /* includes query functions and references to template partials       */
 require_once THEMEPATH . '/inc/shortcode-map.php';
+require_once THEMEPATH . '/inc/template-locations.php'; 
 
 
 
@@ -100,18 +101,22 @@ function enqueue_css_js() {
 add_action( 'enqueue_block_assets', 'customize_css_in_gutenberg_back_end' );
 
 function customize_css_in_gutenberg_back_end() {
-    if ( is_admin() ) {
-
-        global $post;
-
-        if ( 2 === $post->ID ) {
-            wp_enqueue_style(
-                'admin-only',
-                TDIR . '/assets/css/admin.css'
-            );
-
-        }
+    if ( !is_admin() ) {
+        return; 
     }
+
+    global $post;
+
+    // Only use this CSS on front page template editor
+    if ( ! isset( $post->ID ) || (int) $post->ID !== (int) get_option( 'page_on_front' ) ) {
+        return;
+    }
+
+    wp_enqueue_style(
+        'admin-only',
+        TDIR . '/assets/css/admin.css'
+    );
+
 }
 
 
@@ -146,13 +151,13 @@ gtag('config', 'G-8EX4823B06');
 </script>
 
     <?php
-    $slug = '';
-
-    if ( 'home' === $post->post_name ) {
-        $slug = 'index';
-    } else {
-        $slug = $post->post_name;
+    
+    // Only add markdown link on singular posts/pages
+    if ( ! is_singular() || ! isset( $post->post_name ) ) {
+        return;
     }
+    
+    $slug = ( 'home' === $post->post_name ) ? 'index' : $post->post_name;
     ?>
 <link rel="alternate" type="text/markdown" href="<?php echo esc_url( SITE . '/' . $slug . '.md' ); ?>">
     <?php

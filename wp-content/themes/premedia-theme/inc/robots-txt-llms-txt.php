@@ -82,7 +82,7 @@ add_action( 'template_redirect', 'extend_rank_math_llms_txt_dbllc', 1 );
 function extend_rank_math_llms_txt_dbllc() {
 
     // Only handle llms.txt requests
-    if ( isset( $_SERVER['REQUEST_URI'] ) && $_SERVER['REQUEST_URI'] !== '/llms.txt' ) {
+    if ( isset( $_SERVER['REQUEST_URI'] ) && esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI']  ) ) !== '/llms.txt' ) {
         return;
     }
 
