@@ -124,7 +124,7 @@ add_action( 'init', 'dbllc_block_author_query' );
 
 function dbllc_block_author_query() {
     // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reading public URL parameter, no state changes
-    if ( ! is_admin() && isset( $_GET['author'] ) && is_numeric( $_GET['author'] ) ) {
+    if ( ! is_admin() && isset( $_GET['author'] ) ) {
         wp_safe_redirect( home_url(), 301 );
         exit;
     }
