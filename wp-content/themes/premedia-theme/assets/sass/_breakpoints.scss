@@ -60,6 +60,16 @@ $desktop: calc(1300rem / 16);
 $narrower-than-desktop: calc(1299rem / 16);
 
 
+@media (max-width: $narrower-than-desktop) {
+
+    .laptop-hide {
+        display: none;
+    }
+
+}
+
+
+
 @media (min-width: $desktop) {
 
     .desktop-hide {

@@ -28,7 +28,7 @@ define( 'THEMEPATH', get_stylesheet_directory() );
  * Style vsn
  * used to juke browser cache
  */
-define( 'VERSION', '1.0.60' );
+define( 'VERSION', '1.0.64' );
 
 
 /**

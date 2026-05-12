@@ -21,8 +21,8 @@ $navh: calc(122rem / 16);
 
 @media (max-width: $thick-admin-bar) {
 
-    html.admin-bar main {
-        padding-top: calc(#{$navh} + #{#thick-admin-bar});
+    body.admin-bar header {
+        padding-top: $thick-admin-bar-h;
     }
 
 }
@@ -30,14 +30,19 @@ $navh: calc(122rem / 16);
 
 @media (min-width: $thin-admin-bar) and (max-width: $narrower-than-laptop) {
 
-    html.admin-bar main {
-        padding-top: calc(#{$navh} + #{#thin-admin-bar});
+    body.admin-bar header { 
+        padding-top: $thin-admin-bar-h;
     }
 
 }
 
 
 @media (max-width: $narrower-than-laptop) {
+
+    body.admin-bar #wpadminbar {
+        position: fixed;
+        top: 0;
+    }
 
     header {
         width: 100%;
