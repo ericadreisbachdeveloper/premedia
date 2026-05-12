@@ -5,20 +5,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }    // Exit if accessed directly
 
 
-
 /**
- * Global location metadata for <head>
+ * Generate semicolon-separated list of clinical site locations
+ *
+ * @since 1.0.0
+ * @return string Semicolon-separated city, state pairs or empty string
+ * 
+ * Eventually outputs in <head> as
+ * <meta name="geo.placename" content="...">
  */
-
-
-
-/**
- * 1. Add <meta name="geo.placename" content="...">
- *    for improved surfaceability in searches of "achalasia study near me"
- */
-
-
-// 1a. Generate unique array of City, State pairs from Locations page ACF repeater
 function premedia_get_geo_placenames() {
     $cached = get_transient( 'premedia_geo_placenames' );
     if ( $cached !== false ) {
@@ -29,7 +24,7 @@ function premedia_get_geo_placenames() {
 
     // Allow graceful failure if ACF is disabled
     if ( function_exists( 'get_field' ) ) {
-        $clinic_sites = get_field( 'sites', 13 );
+        $clinic_sites = get_field( 'sites', dbllc_get_locations_page_id() );
     } else {
         $clinic_sites = array();
     }
@@ -66,8 +61,15 @@ function premedia_get_geo_placenames() {
 }
 
 
-
-// 1b. Output City, State pairs as <meta> tag in <head>
+/**
+ * Output City, State pairs as <meta> tag in <head>
+ * 
+ * @since 1.0.0
+ * @return string Semicolon-separated city, state pairs or empty string
+ * 
+ * Outputs in <head> as
+ * <meta name="geo.placename" content="...">
+ */
 add_action( 'wp_head', 'premedia_geo_meta_tag' );
 
 function premedia_geo_meta_tag() {
@@ -81,16 +83,16 @@ function premedia_geo_meta_tag() {
 
 
 /**
- * 2. Generate MedicalOrganization parent Schema including alpha-sorted list of states for areaServed
+ * Generate  alpha-sorted list of states and parent MedicalOrganization Schema 
+ *
+ * @since 1.0.0
+ * @return string JSON-LD schema markup or empty string
  */
-
-
-// 2a. Generate alpha-sorted list of states and parent MedicalOrganization Schema
 function generate_parent_schema() {
 
     $cached = get_transient( 'parent_schema_transient' );
 
-    if ( $cached !== false ) {
+    if ( false !== $cached ) {
         return $cached;
     }
 
@@ -98,7 +100,7 @@ function generate_parent_schema() {
 
     // Allow graceful failure if ACF is disabled
     if ( function_exists( 'get_field' ) ) {
-        $clinic_sites = get_field( 'sites', 13 );
+        $clinic_sites = get_field( 'sites', dbllc_get_locations_page_id() );
     } else {
         $clinic_sites = array();
     }
@@ -110,7 +112,9 @@ function generate_parent_schema() {
     $state_arr = array();
 
     foreach ( $clinic_sites as $site ) {
-        $state_arr [] = $site['state'];
+        if ( isset( $site['state'] ) ) {
+            $state_arr[] = $site['state'];
+        }
     }
 
     $state_arr = array_unique( $state_arr );
@@ -121,7 +125,7 @@ function generate_parent_schema() {
     foreach ( $state_arr as $state_key ) {
         $area_served .= '{   
                 "@type": "State", 
-                "name": "' . $state_key . '"
+                "name": "' . esc_js( $state_key ) . '"
                 }';
         if ( $state_key !== end( $state_arr ) ) {
             $area_served .= ',
@@ -156,7 +160,7 @@ function generate_parent_schema() {
         {"@type": "PropertyValue", "name": "ClinicalTrials.gov ID", "value": "NCT07293689"}
     ]';
 
-    if ( ! empty( $clinic_sites ) ) {
+    if ( ! empty( $area_served ) ) {
         $medical_organization_schema .= ',
         "areaServed": [' . $area_served .
         ']';
@@ -171,24 +175,29 @@ function generate_parent_schema() {
 }
 
 
-// 2b. Output parent Schema in <head> of all pages
+/**
+ * Output MedicalOrganization schema in <head>
+ *
+ * @since 1.0.0
+ * @return void
+ */
 add_action( 'wp_head', 'output_parent_schema' );
 
 function output_parent_schema() {
     $parent_schema = generate_parent_schema();
 
     if ( ! empty( $parent_schema ) ) {
-        echo wp_kses( $parent_schema );
+        echo $parent_schema; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Schema generated internally, dynamic data escaped at build time
     }
 }
 
 
-
 /**
- *  3. Bust cached transients when Locations page is saved
+ * Bust location-related transient caches when Locations page is saved
  *
- *     NOTE from Claude:
- *     One transient per function, but a single shared bust function that clears both.
+ * @since 1.0.0
+ * @param int $post_id The post ID being saved
+ * @return void
  */
 add_action( 'acf/save_post', 'premedia_bust_locations_cache' );
 
@@ -199,7 +208,7 @@ function premedia_bust_locations_cache( $post_id ) {
         return;
     }
     
-    $locations_page_id = apply_filters( 'premedia_locations_page_id', 13 );
+    $locations_page_id = dbllc_get_locations_page_id();
 
     if ( (int) $post_id === (int) $locations_page_id ) {
         delete_transient( 'premedia_geo_placenames' );
@@ -219,10 +228,11 @@ function premedia_bust_locations_cache( $post_id ) {
 
 
 /**
- *  4. Map state names to postal abbreviations
- *     for use in inc/shortcode-map.php
- *     @param string $state_name Full state name (e.g., 'California')
- *     @return string State abbreviation (e.g., 'CA') or original if not found
+ * Map state name to postal abbreviation
+ *
+ * @since 1.0.0
+ * @param string $state_name Full state name (e.g., 'California')
+ * @return string Two-letter state abbreviation or original input if not found
  */
 function state_abbreviation( $state_name ) {
     $states = array(

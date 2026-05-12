@@ -6,10 +6,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Locations map shortcode
- * [map]
+ * Output interactive US map with clinical site locations
  *
- * Relies on Advanced Custom Fields 'sites' repeater field
+ * Uses ACF 'sites' repeater field to populate map markers and modal content.
+ * Includes zoom, pan controls, and click-to-expand site details.
+ *
+ * @since 1.0.0
+ * @return string Map HTML markup
  */
 add_shortcode( 'map', 'map_shortcode_fxn' );
 
@@ -623,9 +626,12 @@ function map_shortcode_fxn() {
 
 
 /**
- * Add clinic data modal to footer when [map] shortcode is used
+ * Output clinic data modal in footer when map shortcode is used
+ * [map]
+ *
+ * @since 1.0.0
+ * @return void
  */
-
 add_action( 'wp_footer', 'add_clinic_data_modal' );
 
 function add_clinic_data_modal() {
@@ -637,8 +643,6 @@ function add_clinic_data_modal() {
     }
 
     ?>
-
-
     <div id="data-modal" 
         class="modal modal-dismiss" 
         role="dialog" 
@@ -655,7 +659,5 @@ function add_clinic_data_modal() {
         </div><?php /* /#clinic-data.modal-content */ ?>
 
     </div><?php /* /#data-modal */ ?>
-
-
     <?php
 }

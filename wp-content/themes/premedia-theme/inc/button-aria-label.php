@@ -7,6 +7,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Add an optional aria-label meta box to Gutenberg native button blocks
+ * 
+ * @since 1.0.0
+ * @return void
  */
 add_action( 'enqueue_block_editor_assets', 'add_button_aria_label_control_dbllc' );
 
@@ -19,7 +22,14 @@ function add_button_aria_label_control_dbllc() {
     );
 }
 
-
+/**
+ * Add aria-label attribute to button blocks on render
+ *
+ * @since 1.0.0
+ * @param string $block_content Block HTML content
+ * @param array  $block         Block data
+ * @return string Modified block content
+ */
 add_filter( 'render_block', 'add_aria_label_to_button_dbllc', 10, 2 );
 
 function add_aria_label_to_button_dbllc( $block_content, $block ) {

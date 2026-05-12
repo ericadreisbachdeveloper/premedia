@@ -12,6 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * "and add a defer attribute to your script tag"
  *
  * ref: https://flaviocopes.com/javascript-async-defer/#just-tell-me-the-best-way
+  *
+ * @since 1.0.0
+ * @param string $tag    Script tag HTML
+ * @param string $handle Script handle
+ * @return string Modified script tag
  */
 add_filter( 'script_loader_tag', 'add_async_attribute', 100, 2 );
 
@@ -34,6 +39,11 @@ function add_async_attribute( $tag, $handle ) {
  *
  * ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style
  * ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script
+*
+ * @since 1.0.0
+ * @param string $tag    Tag HTML
+ * @param string $handle Script/style handle
+ * @return string Modified tag
  */
 add_filter( 'style_loader_tag', 'remove_type_attr', 10, 2 );
 add_filter( 'script_loader_tag', 'remove_type_attr', 10, 2 );
@@ -46,6 +56,9 @@ function remove_type_attr( $tag, $handle ) {
 /**
  * Remove Gutenberg styling
  * ref: https://simplerevolutions.design/making-wordpress-faster-with-and-without-plugins/
+ *
+ * @since 1.0.0
+ * @return void
  */
 add_action( 'wp_enqueue_scripts', 'remove_gutenberg_styling', 100 );
 
@@ -72,6 +85,9 @@ remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
  * Disable comments RSS
  *
  * ref: https://wordpress.stackexchange.com/questions/126174/disable-comments-feed-but-not-the-others/218786
+ *
+ * @since 1.0.0
+ * @return void
  */
 add_action( 'after_setup_theme', 'head_cleanup' );
 
@@ -111,19 +127,23 @@ remove_action( 'wp_print_styles', 'print_emoji_styles' );
  */
 remove_action( 'wp_head', 'rsd_link' );
 remove_action( 'wp_head', 'rest_output_link_wp_head' );
-remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 remove_action( 'wp_head', 'wp_generator' );
 remove_action( 'wp_head', 'wp_shortlink_wp_head' );
 
+remove_action( 'wp_head', 'rest_output_link_wp_head' );
 remove_action( 'template_redirect', 'rest_output_link_header', 11 );
+
 remove_action( 'template_redirect', 'wp_shortlink_header', 11 );
 
 
 /**
- * Removes RSS feed endpoints
+ * Removes RSS feed endpoints and redirect to homepage
+ *
+ * @since 1.0.0
+ * @return void
  */
-// Remove ALL feed links from head - run later to override theme/plugins
 add_action( 'after_setup_theme', 'disable_all_feeds_dbllc' );
+
 function disable_all_feeds_dbllc() {
     // Remove default feed links
     remove_action( 'wp_head', 'feed_links', 2 );
@@ -161,13 +181,25 @@ add_action(
 add_filter( 'rank_math/frontend/feed_link', '__return_false' );
 
 
-
-// Convert &nbsp; to space for use in meta descriptions
+/**
+ * Start output buffering to clean meta descriptions
+ *
+ * @since 1.0.0
+ * @return void
+ */
 add_action( 'wp_head', 'clean_all_meta_descriptions_dbllc', 999 );
+
 function clean_all_meta_descriptions_dbllc() {
     ob_start( 'filter_meta_description_output_dbllc' );
 }
 
+/**
+ * Filter output buffer to remove &nbsp; from meta descriptions
+ *
+ * @since 1.0.0
+ * @param string $buffer HTML output buffer
+ * @return string Filtered buffer
+ */
 function filter_meta_description_output_dbllc( $buffer ) {
     // Match any meta description tag
     $buffer = preg_replace_callback(
@@ -195,7 +227,13 @@ function filter_meta_description_output_dbllc( $buffer ) {
     return $buffer;
 }
 
-// Also filter at common plugin hooks
+/**
+ * Clean &nbsp; and non-breaking spaces from meta content
+ *
+ * @since 1.0.0
+ * @param string $content Meta content to clean
+ * @return string Cleaned content
+ */
 add_filter( 'rank_math/frontend/description', 'clean_meta_content_dbllc' );
 add_filter( 'rank_math/opengraph/facebook/og_description', 'clean_meta_content_dbllc' );
 add_filter( 'rank_math/opengraph/twitter/twitter_description', 'clean_meta_content_dbllc' );

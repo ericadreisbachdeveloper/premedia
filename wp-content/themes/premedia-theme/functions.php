@@ -13,7 +13,6 @@ declare(strict_types=1);
 /**
  * Set up constants to avoid extra queries to DB
  * use as needed in functions.php and template files
- * @return void
  */
 define( 'PDIR', get_template_directory_uri() );
 define( 'TDIR', get_bloginfo( 'stylesheet_directory' ) );
@@ -28,14 +27,12 @@ define( 'THEMEPATH', get_stylesheet_directory() );
 /**
  * Style vsn
  * used to juke browser cache
- * @return void
  */
 define( 'VERSION', '1.0.60' );
 
 
 /**
  * Vital functions and includes
- * @return void
  */
 require_once THEMEPATH . '/inc/accordion-faq-schema.php';
 require_once THEMEPATH . '/inc/button-aria-label.php';
@@ -72,6 +69,9 @@ if (!is_admin()) {
 
 /**
  * D/enqueue styles + scripts
+ * 
+ * @since 1.0.0
+ * @return void
  *
  * Syntax: wp_register_style( $handle, $src, $deps, $ver, $media );
  * https://developer.wordpress.org/reference/functions/wp_enqueue_style/
@@ -98,6 +98,9 @@ function enqueue_css_js() {
 
 /**
  * Admin styles - as of 6 May 2026 adding .sr-only to Homepage Gutenberg editor ONLY
+ * 
+ * @since 1.0.0
+ * @return void
  */
 add_action( 'enqueue_block_assets', 'customize_css_in_gutenberg_back_end' );
 
@@ -124,6 +127,9 @@ function customize_css_in_gutenberg_back_end() {
 
 /**
  * Add viewport detector for use with CSS animations entering and existing viewport
+ * 
+ * @since 1.0.0
+ * @return void
  */
 add_action( 'wp_body_open', 'add_viewport_detector_dbllc' );
 
@@ -135,6 +141,10 @@ function add_viewport_detector_dbllc() {
 
 /**
  * Modify <head>
+ * 
+ * @since 1.0.0
+ * @return void
+ * 
  * 1. Google Analytics
  * 2. Reference markdown mirrors - cf /plugins/markdown-mirror-dbllc
  */

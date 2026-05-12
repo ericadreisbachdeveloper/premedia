@@ -6,13 +6,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Simple shortcodes that don't warrant a standalone PHP file
- */
-
-
-/**
- * Shortcode output (c)CURRENT YEAR
- * [copyright]
+ * Output copyright symbol
+ *
+ * Usage: [copyright]
+ *
+ * @since 1.0.0
+ * @return string Copyright symbol HTML entity
  */
 add_shortcode( 'copyright', 'copyright_sign' );
 

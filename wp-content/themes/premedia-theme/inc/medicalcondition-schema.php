@@ -7,7 +7,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Add MedicalWebPage adn MedicalCondition Schema to Home and For Patients
+ * Add MedicalWebPage and MedicalCondition Schema to Home and For Patients
+ *
+ * @since 1.0.0
+ * @return void
  */
 add_action( 'wp_head', 'add_symptom_schema_dbllc' );
 

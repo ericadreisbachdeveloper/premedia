@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Output buffer: rewrites mailto links for CSS display + JS onclick assembly.
  * - Anchor text replaced by CSS ::before content (split across two data attributes)
  * - mailto: assembled only on click
+ * 
+ * @since 1.0.0
+ * @return void
  */
 add_action( 'template_redirect', 'obf_mailto_start' );
 
@@ -16,6 +19,14 @@ function obf_mailto_start() {
     ob_start( 'obf_mailto_rewrite' );
 }
 
+
+/**
+ * Obfuscate mailto links in HTML output
+ *
+ * @since 1.0.0
+ * @param string $html HTML content to process
+ * @return string HTML with obfuscated mailto links
+ */
 function obf_mailto_rewrite( $html ) {
     $pattern = '/<a\s([^>]*)href=["\']mailto:([a-zA-Z0-9._%+\-]+)@([a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})["\']([^>]*)>(.*?)<\/a>/is';
 
@@ -63,7 +74,12 @@ function obf_mailto_rewrite( $html ) {
 }
 
 /**
- * Inject CSS and JS into footer.
+ * Add email deobfuscation JavaScript to footer
+ *
+ * NOTE: This is an anonymous function hooked to wp_footer.
+ * If you need to document it, consider extracting to a named function.
+ *
+ * @since 1.0.0
  */
 add_action(
     'wp_footer',

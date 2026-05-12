@@ -5,6 +5,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }    // Exit if accessed directly
 
 
+/**
+ * Customize robots.txt with crawl-delay and sitemap reference
+ *
+ * @since 1.0.0
+ * @param string $output WordPress default robots.txt output
+ * @param string $public Whether blog is public ('1') or not ('0')
+ * @return string Modified robots.txt content
+ */
 add_filter( 'robots_txt', 'custom_robots_txt_dbllc', 10, 2 );
 
 function custom_robots_txt_dbllc( $output, $public ) {
@@ -77,8 +85,14 @@ Allow: /
 
 
 
-
+/**
+ * Extend Rank Math llms.txt with markdown content
+ *
+ * @since 1.0.0
+ * @return void
+ */
 add_action( 'template_redirect', 'extend_rank_math_llms_txt_dbllc', 1 );
+
 function extend_rank_math_llms_txt_dbllc() {
 
     // Only handle llms.txt requests
@@ -90,6 +104,14 @@ function extend_rank_math_llms_txt_dbllc() {
     ob_start( 'append_markdown_to_llms_txt_dbllc' );
 }
 
+
+/**
+ * Append markdown content to llms.txt buffer
+ *
+ * @since 1.0.0
+ * @param string $buffer Output buffer content
+ * @return string Modified buffer with markdown appended
+ */
 function append_markdown_to_llms_txt_dbllc( $buffer ) {
     // Add markdown section to the end of llms.txt
     $markdown_section = "\n## Markdown Versions\n";

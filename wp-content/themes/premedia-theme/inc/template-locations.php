@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get the page currently using the locations template
  *
+ * @since 1.0.0
  * @return int|null Page ID or null if none found
  */
 function dbllc_get_locations_template_page_id() {
@@ -44,33 +45,14 @@ function dbllc_get_locations_template_page_id() {
     return null;
 }
 
-/**
- * Remove locations template from dropdown if already in use by another page
- */
-add_filter( 'theme_page_templates', 'dbllc_restrict_locations_template', 10, 3 );
-
-function dbllc_restrict_locations_template( $templates, $theme, $post ) {
-    // Only apply to pages
-    if ( ! $post || 'page' !== $post->post_type ) {
-        return $templates;
-    }
-    
-    // Get current template of this page
-    $current_template = get_post_meta( $post->ID, '_wp_page_template', true );
-    
-    // Get page that's already using the locations template
-    $locations_page_id = dbllc_get_locations_template_page_id();
-    
-    // If another page is using it and it's not this page, remove it from dropdown
-    if ( $locations_page_id && (int) $locations_page_id !== (int) $post->ID && 'locations' !== $current_template ) {
-        unset( $templates['locations'] );
-    }
-    
-    return $templates;
-}
 
 /**
- * Bust cache when any page template changes
+ * Bust locations template cache when any page is saved
+ *
+ * @since 1.0.0
+ * @param int     $post_id Post ID
+ * @param WP_Post $post    Post object
+ * @return void
  */
 add_action( 'save_post_page', 'dbllc_bust_locations_template_cache', 10, 2 );
 
@@ -91,7 +73,6 @@ function dbllc_bust_locations_template_cache( $post_id, $post ) {
 
 /**
  * Helper function to get locations page ID
- * Use this throughout your theme instead of hard-coded IDs
  */
 function dbllc_get_locations_page_id() {
     $page_id = dbllc_get_locations_template_page_id();
