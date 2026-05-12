@@ -261,6 +261,14 @@ function clean_meta_content_dbllc( $content ) {
 
 /**
  * Add fetchpriority="high" to the logo
+ *
+ * Improves Largest Contentful Paint (LCP) by prioritizing logo loading.
+ * Only targets image block with ID 358 (site logo).
+ *
+ * @since 1.0.0
+ * @param string $block_content Block HTML content
+ * @param array  $block         Block data
+ * @return string Modified block content with fetchpriority attribute
  */
 add_filter( 'render_block', 'add_fetchpriority_to_logo_dbllc', 10, 2 );
 
@@ -288,3 +296,46 @@ function add_fetchpriority_to_logo_dbllc( $block_content, $block ) {
 
     return $block_content;
 }
+
+
+/**
+ * Customize login page logo
+ *
+ * Replaces default WordPress logo with site logo (attachment ID from LOGO_ID constant).
+ * Outputs inline CSS to style the #login h1 a element.
+ *
+ * @since 1.0.0
+ * @return void
+ */
+add_action( 'login_enqueue_scripts', 'dbllc_login_logo' );
+
+function dbllc_login_logo() { 
+    $img_url = wp_get_attachment_image_url(LOGO_ID, 'medium'); 
+    
+    ?>
+    <style type="text/css">
+        #login h1 a, .login h1 a {
+            background-image: url(<?php echo esc_url( $img_url ); ?>);
+            height: 100px;
+            width: 320px;
+            background-size: contain;
+        }
+    </style>
+<?php }
+
+
+/**
+ * Change login page logo URL to point to site homepage
+ *
+ * By default, WordPress login logo links to wordpress.org.
+ * This filter changes it to link to the site's homepage instead.
+ *
+ * @since 1.0.0
+ * @return string Site homepage URL
+ */
+add_filter( 'login_headerurl', 'dbllc_login_logo_url' );
+
+function dbllc_login_logo_url() {
+    return home_url();
+}
+
