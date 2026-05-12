@@ -264,14 +264,20 @@ function clean_meta_content_dbllc( $content ) {
  */
 add_filter( 'render_block', 'add_fetchpriority_to_logo_dbllc', 10, 2 );
 
+// Logo id = 358 
+// In other builds with significant hero images there would be more value in adding
+// a meta box for fetchpriority to any given image
+// or programmatically setting an image as "hero" with fetchpriority=high
+define('LOGO_ID', 358);
+
 function add_fetchpriority_to_logo_dbllc( $block_content, $block ) {
     // Only target image blocks
     if ( $block['blockName'] !== 'core/image' ) {
         return $block_content;
     }
 
-    // Only target image ID 358 (logo)
-    if ( isset( $block['attrs']['id'] ) && $block['attrs']['id'] == 358 ) {
+    // ... and of image blocks, only target logo
+    if ( isset( $block['attrs']['id'] ) && $block['attrs']['id'] == LOGO_ID ) {
         $block_content = preg_replace(
             '/<img\s/',
             '<img fetchpriority="high" ',

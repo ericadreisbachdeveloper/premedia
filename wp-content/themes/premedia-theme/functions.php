@@ -127,7 +127,7 @@ function customize_css_in_gutenberg_back_end() {
 
 
 /**
- * Add viewport detector for use with CSS animations entering and existing viewport
+ * Add viewport detector for use with CSS animations entering and exiting viewport
  * 
  * @since 1.0.0
  * @return void

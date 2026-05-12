@@ -73,7 +73,16 @@ function dbllc_bust_locations_template_cache( $post_id, $post ) {
 
 /**
  * Helper function to get locations page ID
+ *  
+ * IMPORTANT: The Locations page (ID 13) contains the ACF repeater field with city/state data used for:
+ * - Global MedicalOrganization schema
+ * - Global <meta name="geo.placename"> tags
+ * - Clinical site location display on /locations/
+ *
+ * Fallback ID is hardcoded in the event template detection fails
  */
+define( 'LOCATIONS_PAGE_ID', 13 );
+
 function dbllc_get_locations_page_id() {
     $page_id = dbllc_get_locations_template_page_id();
     
@@ -85,7 +94,7 @@ function dbllc_get_locations_page_id() {
             return $page->ID;
         }
         // Ultimate fallback
-        return 13;
+        return LOCATIONS_PAGE_ID;
     }
     
     return $page_id;
