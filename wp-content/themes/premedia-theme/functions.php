@@ -13,6 +13,7 @@ declare(strict_types=1);
 /**
  * Set up constants to avoid extra queries to DB
  * use as needed in functions.php and template files
+ * @return void
  */
 define( 'PDIR', get_template_directory_uri() );
 define( 'TDIR', get_bloginfo( 'stylesheet_directory' ) );
@@ -27,12 +28,14 @@ define( 'THEMEPATH', get_stylesheet_directory() );
 /**
  * Style vsn
  * used to juke browser cache
+ * @return void
  */
 define( 'VERSION', '1.0.60' );
 
 
 /**
  * Vital functions and includes
+ * @return void
  */
 require_once THEMEPATH . '/inc/accordion-faq-schema.php';
 require_once THEMEPATH . '/inc/button-aria-label.php';
@@ -81,13 +84,13 @@ add_action( 'wp_enqueue_scripts', 'enqueue_css_js', 100 );
 
 function enqueue_css_js() {
 
-    wp_register_style( 'main', TDIR . '/assets/css/style.css', '', VERSION );
+    wp_register_style( 'main', TDIR . '/assets/css/style.css', array(), VERSION );
     wp_enqueue_style( 'main' );
 
-    wp_register_script( 'scroll', TDIR . '/assets/js/scroll-min.js', '', '1.0.4', true );
+    wp_register_script( 'scroll', TDIR . '/assets/js/scroll-min.js', array(), '1.0.4', true );
     wp_enqueue_script( 'scroll' );
 
-    wp_register_script( 'skiplink', TDIR . '/assets/js/skiplink-min.js', '', '1.0.4', true );
+    wp_register_script( 'skiplink', TDIR . '/assets/js/skiplink-min.js', array(), '1.0.4', true );
     wp_enqueue_script( 'skiplink' );
 }
 

@@ -178,7 +178,7 @@ function output_parent_schema() {
     $parent_schema = generate_parent_schema();
 
     if ( ! empty( $parent_schema ) ) {
-        echo wp_json_encode( $parent_schema );
+        echo wp_kses( $parent_schema );
     }
 }
 
@@ -193,7 +193,15 @@ function output_parent_schema() {
 add_action( 'acf/save_post', 'premedia_bust_locations_cache' );
 
 function premedia_bust_locations_cache( $post_id ) {
-    if ( (int) $post_id === 13 ) {
+
+    // Verify nonce for manual saves
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+    
+    $locations_page_id = apply_filters( 'premedia_locations_page_id', 13 );
+
+    if ( (int) $post_id === (int) $locations_page_id ) {
         delete_transient( 'premedia_geo_placenames' );
         delete_transient( 'parent_schema_transient' );
     }
@@ -212,7 +220,9 @@ function premedia_bust_locations_cache( $post_id ) {
 
 /**
  *  4. Map state names to postal abbreviations
- *    for use in inc/shortcode-map.php
+ *     for use in inc/shortcode-map.php
+ *     @param string $state_name Full state name (e.g., 'California')
+ *     @return string State abbreviation (e.g., 'CA') or original if not found
  */
 function state_abbreviation( $state_name ) {
     $states = array(
@@ -270,5 +280,6 @@ function state_abbreviation( $state_name ) {
     );
 
     $state_name = trim( $state_name );
+    
     return $states[ $state_name ] ?? $state_name;
 }
