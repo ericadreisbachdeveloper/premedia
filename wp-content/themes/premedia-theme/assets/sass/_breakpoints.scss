@@ -62,7 +62,7 @@ $narrower-than-desktop: calc(1299rem / 16);
 
 @media (max-width: $narrower-than-desktop) {
 
-    .laptop-hide {
+    .narrower-than-desktop-hide {
         display: none;
     }
 
