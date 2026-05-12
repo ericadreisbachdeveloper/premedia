@@ -39,6 +39,13 @@ function dbllc_disable_user_endpoints( $endpoints ) {
             unset( $endpoints['/wp/v2/users/(?P<id>[\d]+)'] );
         }
     }
+
+    if (isset($endpoints['/wp/v2/comments'])) {
+        unset($endpoints['/wp/v2/comments']);
+    }
+    if (isset($endpoints['/wp/v2/comments/(?P<id>[\d]+)'])) {
+        unset($endpoints['/wp/v2/comments/(?P<id>[\d]+)']);
+    }
     
     return $endpoints;
 }
