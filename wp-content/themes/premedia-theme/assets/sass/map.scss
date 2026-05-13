@@ -220,6 +220,7 @@ $physician-size: 5rem;
     height: $physician-size;
     border: calc(3rem / 16) solid $lightblue;
     border-radius: 50%;
+    object-fit: cover; 
 }
 
 
