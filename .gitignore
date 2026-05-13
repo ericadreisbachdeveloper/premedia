@@ -1,4 +1,4 @@
-# as of 16 Feb 2026 - erica dreisbach - erica@peppergroup.com
+# as of 13 May 2026 - erica dreisbach - erica@peppergroup.com
 
 
 #
@@ -13,6 +13,9 @@
 #
 !.editorconfig
 !.gitignore
+!android-chrome-192x192.png
+!android-chrome-512x512.png
+!apple-touch-icon.png
 !favicon.ico
 !favicon.svg
 !favicon.png
