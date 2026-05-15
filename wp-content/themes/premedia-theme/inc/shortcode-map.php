@@ -602,9 +602,9 @@ function map_shortcode_fxn() {
 
     wp_enqueue_script(
         'map-js',
-        TDIR . '/assets/js/map.js',
+        TDIR . '/assets/js/map-min.js',
         array( 'panzoom', 'panzoom-init' ),
-        '1.0.66',
+        '1.0.68',
         true
     );
 
