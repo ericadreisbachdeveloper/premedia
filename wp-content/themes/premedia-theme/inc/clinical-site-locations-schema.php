@@ -175,6 +175,8 @@ function generate_parent_schema() {
 }
 
 
+
+
 /**
  * Output MedicalOrganization schema in <head>
  *
