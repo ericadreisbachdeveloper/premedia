@@ -14,12 +14,77 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0.0
  * @return string Map HTML markup
  */
+/**
+ * Load clinical site data from ACF into the $clinical_site_info global.
+ *
+ * Extracted from map_shortcode_fxn() so the Markdown Mirror plugin can
+ * populate the global directly from ACF without depending on the [map]
+ * shortcode having run first.
+ *
+ * Safe to call multiple times — returns early if the global is already
+ * populated, so the shortcode and the Markdown plugin can both call it
+ * without duplicating work or overwriting each other's data.
+ *
+ * @param int $post_id  The post ID to read the 'sites' ACF repeater from.
+ * @return array        The populated $clinical_site_info array.
+ */
+function mdm_load_clinical_site_info( int $post_id ): array {
+    global $clinical_site_info;
+
+    // Return early if already populated (e.g. shortcode already ran).
+    if ( ! empty( $clinical_site_info ) ) {
+        return $clinical_site_info;
+    }
+
+    $clinical_site_info = array();
+
+    if ( ! function_exists( 'get_field' ) ) {
+        return $clinical_site_info; // Graceful failure if ACF is disabled.
+    }
+
+    $rows = get_field( 'sites', $post_id );
+
+    if ( empty( $rows ) ) {
+        return $clinical_site_info;
+    }
+
+    foreach ( $rows as $site ) {
+
+        $clinical_site_info[ $site['slug'] ] = array(
+            'site_name'        => $site['site_name'],
+            'street_address'   => $site['street_address'],
+            'display_city'     => $site['display_city'],
+            'address_locality' => $site['address_locality'],
+            'state'            => $site['state'],
+            'state_abbrev'     => state_abbreviation( $site['state'] ),
+            'zip_code'         => $site['zip_code'],
+        );
+
+        if ( ! empty( $site['physicians'] ) ) {
+
+            foreach ( $site['physicians'] as $physician ) {
+
+                $clinical_site_info[ $site['slug'] ]['physicians'][] = array(
+                    'name'        => $physician['physician'],
+                    'institution' => $physician['institution'],
+                    'img_src'     => $physician['photo'],
+                );
+
+            }
+        }
+    }
+
+    return $clinical_site_info;
+}
+
+
 add_shortcode( 'map', 'map_shortcode_fxn' );
 
 function map_shortcode_fxn() {
 
     global $post;
     global $map_shortcode_used;
+    global $clinical_site_info;
 
     $post_id = $post->ID;
 
@@ -47,46 +112,11 @@ function map_shortcode_fxn() {
 
     $map_output .= '<div id="map-container" class="map-container">';
 
-    // Pull distributors data from ACF repeater field
-    if ( function_exists( 'get_field' ) ) {
-        $rows = get_field( 'sites', $post_id );
-    } else {
-        // Allow graceful failure if ACF is disabled
-        $rows = array();
-    }
-
-    // Initialize array of clinical sites
-    $clinical_site_info = array();
-
-    if ( ! empty( $rows ) ) {
-
-        // Loop through clinical sites to generate data array
-        foreach ( $rows as $site ) {
-
-            $clinical_site_info[ $site['slug'] ] = array(
-                'site_name'        => $site['site_name'],
-                'street_address'   => $site['street_address'],
-                'display_city'     => $site['display_city'],
-                'address_locality' => $site['address_locality'],
-                'state'            => $site['state'],
-                'state_abbrev'     => state_abbreviation( $site['state'] ),
-                'zip_code'         => $site['zip_code'],
-            );
-
-            if ( ! empty( $site['physicians'] ) ) {
-
-                foreach ( $site['physicians'] as $physician ) {
-
-                    $clinical_site_info[ $site['slug'] ]['physicians'][] = array(
-                        'name'        => $physician['physician'],
-                        'institution' => $physician['institution'],
-                        'img_src'     => $physician['photo'],
-                    );
-
-                }
-            }
-        }
-    }
+    // Load clinical site data via shared loader function.
+    // mdm_load_clinical_site_info() populates the $clinical_site_info global
+    // and returns early if it has already been populated (e.g. by the Markdown
+    // Mirror plugin loading data before this shortcode ran).
+    mdm_load_clinical_site_info( $post_id );
 
     $map_output .= '<svg id="us-map" preserveAspectRatio="xMaxYMin" class="us-map" xmlns="http://www.w3.org/2000/svg" style="width:959px; height: 593px;" viewBox="0 0 959 593">
     <defs>

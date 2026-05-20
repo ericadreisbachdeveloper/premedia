@@ -2,44 +2,45 @@
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
-}    // Exit if accessed directly
-
+}
 
 /**
- * Outout clinical sites and physicians for markdown files 
- * cf /plugins/markdown-mirror-dblls
+ * Build clinical site and physician HTML for the Markdown Mirror plugin.
  *
+ * Reads from the $clinical_site_info global, which is populated by
+ * mdm_load_clinical_site_info() in shortcode-map.php. Called directly
+ * by mdm_append_locations_markdown() in the Markdown Mirror plugin.
  *
- * @since 1.0.0
- * @return string Clinical site and physicial HTML
+ * @since 2.0.0
+ * @return string  HTML string ready for conversion to Markdown, or '' if
+ *                 no clinical site data is available.
  */
+function mdm_build_locations_html(): string {
+    global $clinical_site_info;
 
+    if ( empty( $clinical_site_info ) ) {
+        return '';
+    }
 
-// Sites and physicians for markdown to cache/catch
-global $clinical_site_info; 
-
-if ( ! empty( $clinical_site_info ) ) {
-    
-    $clinics_for_markdown = '';
-    
-    $clinics_for_markdown .= '<h1>Study Sites and Clinicians</h1>';
+    $html  = '<h1>Study Sites and Clinicians</h1>';
 
     foreach ( $clinical_site_info as $site ) {
-        $clinics_for_markdown .= '<h2>' . $site['site_name'] . '</h2>';
-        $clinics_for_markdown .= '<p>' . $site['display_city'] . ', ' . $site['state'] . '</p>';
+        $html .= '<h2>' . esc_html( $site['site_name'] ) . '</h2>';
+        $html .= '<p>' . esc_html( $site['display_city'] ) . ', ' . esc_html( $site['state'] ) . '</p>';
 
         if ( ! empty( $site['physicians'] ) ) {
             foreach ( $site['physicians'] as $physician ) {
-                $clinics_for_markdown .= '<p>' . $physician['name'];
+                $html .= '<p>' . esc_html( $physician['name'] );
+
+                // Omit placeholder stethoscope images; include real physician photos.
                 if ( ! str_contains( $physician['img_src'], 'stethoscope' ) ) {
-                    $clinics_for_markdown .= '<img src="' . $physician['img_src'] . '" alt="photo of ' . $physician['name'] . '"></p>';
-                } else {
-                    $clinics_for_markdown .= '</p>';
+                    $html .= '<img src="' . esc_url( $physician['img_src'] ) . '" alt="photo of ' . esc_attr( $physician['name'] ) . '">';
                 }
+
+                $html .= '</p>';
             }
         }
     }
 
-    return $$clinics_for_markdown; 
+    return $html;
 }
-// END Sites and physicians for markdown
