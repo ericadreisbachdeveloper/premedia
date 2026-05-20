@@ -434,34 +434,6 @@ function map_shortcode_fxn() {
 
     $map_output .= '</div>'; // #map-container.map-container
 
-    // Sites and physicians for markdown to cache/catch
-    if ( ! empty( $clinical_site_info ) ) {
-        $clinics_for_markdown = '';
-        $map_output          .= '<div class="hidden">';
-        $map_output          .= '<h1>Study Sites and Clinicians</h1>';
-
-        foreach ( $clinical_site_info as $site ) {
-            $clinics_for_markdown .= '<h2>' . $site['site_name'] . '</h2>';
-            $clinics_for_markdown .= '<p>' . $site['display_city'] . ', ' . $site['state'] . '</p>';
-
-            if ( ! empty( $site['physicians'] ) ) {
-                foreach ( $site['physicians'] as $physician ) {
-                    $clinics_for_markdown .= '<p>' . $physician['name'];
-                    if ( ! str_contains( $physician['img_src'], 'stethoscope' ) ) {
-                        $clinics_for_markdown .= '<img src="' . $physician['img_src'] . '" alt="photo of ' . $physician['name'] . '"></p>';
-                    } else {
-                        $clinics_for_markdown .= '</p>';
-                    }
-                }
-            }
-        }
-
-        $map_output .= $clinics_for_markdown;
-
-        $map_output .= '</div>';
-    }
-    // END Sites and physicians for markdown
-
     // Generate an alpha list of states served
     $area_served = '';
     if ( ! empty( $clinical_site_info ) ) {

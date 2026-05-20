@@ -84,6 +84,7 @@ function dbllc_bust_locations_template_cache( $post_id, $post ) {
 define( 'LOCATIONS_PAGE_ID', 13 );
 
 function dbllc_get_locations_page_id() {
+    
     $page_id = dbllc_get_locations_template_page_id();
     
     // Fallback to hard-coded ID if template not found
