@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Disable comments in WordPress back end 
  *
@@ -9,11 +10,50 @@
  * - Widgets
  * - Scripts
  *
+ * Also tarpits comment submission attempts by holding the connection
+ * open for 30 seconds before returning an empty response, wasting
+ * bot and spammer resources.
+ *
  * @since      1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
+}
+
+
+/**
+ * Tarpit comment submission attempts
+ *
+ * Intercepts POST requests to wp-comments-post.php as early as possible,
+ * holds the connection open for 30 seconds, then exits with an empty 200.
+ * This wastes bot/spammer time and resources without revealing the block.
+ *
+ * Requires max_execution_time >= 30 (or 0 for unlimited).
+ * Run `php -i | grep max_execution_time` to verify.
+ *
+ * @since 1.1.0
+ * @return void
+ */
+add_action( 'init', 'dbllc_tarpit_comment_submissions', 1 );
+
+function dbllc_tarpit_comment_submissions() {
+    if (
+        isset( $_SERVER['REQUEST_METHOD'] ) &&
+        $_SERVER['REQUEST_METHOD'] === 'POST' &&
+        isset( $_SERVER['SCRIPT_NAME'] ) &&
+        str_contains( $_SERVER['SCRIPT_NAME'], 'wp-comments-post.php' )
+    ) {
+        // Ensure PHP won't terminate the sleep early
+        set_time_limit( 90 );
+
+        // Hold the connection open for 30 seconds
+        sleep( 30 );
+
+        // Return empty 200 — indistinguishable from previous behavior
+        http_response_code( 200 );
+        exit;
+    }
 }
 
 
