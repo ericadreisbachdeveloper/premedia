@@ -96,6 +96,63 @@ function enqueue_css_js() {
 }
 
 
+/**
+ * Locations page scripts
+ * 
+ * @since 1.0.2
+ * @return void 
+ * 
+ * - Panzoom library and initialization
+ * - Modal helper (asset/js/map-min.js) 
+ * - Localization from PHP to JS
+ */
+add_action( 'wp_footer', 'locations_js', 1 );
+
+function locations_js() {
+
+    global $map_shortcode_used;
+    global $clinical_site_info;
+
+    if ( empty( $map_shortcode_used ) ) {
+        return;
+    }
+
+    wp_enqueue_script(
+        'panzoom',
+        'https://unpkg.com/@panzoom/panzoom@4.6.1/dist/panzoom.min.js',
+        array(),
+        '4.6.1',
+        true
+    );
+
+    wp_enqueue_script(
+        'panzoom-init',
+        TDIR . '/assets/js/panzoom-init.js',
+        array( 'panzoom' ),
+        '1.0.40',
+        true
+    );
+
+    wp_enqueue_script(
+        'map-js',
+        TDIR . '/assets/js/map-min.js',
+        array( 'panzoom', 'panzoom-init' ),
+        '1.0.71',
+        true
+    );
+
+    // Pass clinicData object to JavaScript
+    wp_localize_script(
+        'map-js',
+        'clinicData',
+        array(
+			'clinical_site_info' => $clinical_site_info,
+        )
+    );
+
+}
+
+
 
 /**
  * Admin styles - as of 6 May 2026 adding .sr-only to Homepage Gutenberg editor ONLY

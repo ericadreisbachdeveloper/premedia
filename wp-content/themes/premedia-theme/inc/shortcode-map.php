@@ -50,6 +50,8 @@ function mdm_load_clinical_site_info( int $post_id ): array {
             'state'            => $site['state'],
             'state_abbrev'     => state_abbreviation( $site['state'] ),
             'zip_code'         => $site['zip_code'],
+            'x'                => round( ( (float) $site['pin_x'] ) * 959 / 100, 2 ),
+            'y'                => round( ( (float) $site['pin_y'] ) * 593 / 100, 2 ),
         );
 
         if ( ! empty( $site['physicians'] ) ) {
@@ -80,17 +82,14 @@ function map_shortcode_fxn() {
 
     $post_id = $post->ID;
 
-    $map_shortcode_used = true; // Set flag when shortcode is called - used for wp_footer() hook below to generate modal
-
-    // Save string to output buffer
-    ob_start();
+    $map_shortcode_used = true; // Set flag when shortcode is called - used for wp_footer() hook to generate modal
 
     $map_output = '';
 
-    // Modal backdrop used to dismiss upon interaction when modal is open
+    // Modal backdrop used to dismiss upon interaction when modal is open - transparent 
     $map_output .= '<div id="modal-backdrop" class="modal-dismiss" tabindex="-1"></div>';
 
-    // Map controls
+    // Map controls - accessibility 
     $map_output .= '<div class="map-controls" role="group" aria-label="Map controls">';
     $map_output .= '<div class="map-zoom">
     <button class="map-control-btn" id="map-zoom-in" aria-label="Zoom in on map"><svg class="map-zoom-in-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M256 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 160-160 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l160 0 0 160c0 17.7 14.3 32 32 32s32-14.3 32-32l0-160 160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-160 0 0-160z"/></svg></button>';
@@ -112,6 +111,7 @@ function map_shortcode_fxn() {
 
     $map_output .= '<svg id="us-map" preserveAspectRatio="xMaxYMin" class="us-map" xmlns="http://www.w3.org/2000/svg" style="width:959px; height: 593px;" viewBox="0 0 959 593">
     <defs>
+    <path id="pin-light-blue" class="s3" d="m40.69 17.55c0 11.43-15.18 29.29-15.83 30.04-0.17 0.22-0.44 0.33-0.72 0.33-0.28 0-0.55-0.12-0.73-0.34-0.65-0.76-15.82-18.92-15.82-30.03 0-9.12 7.43-16.55 16.55-16.55 9.13 0 16.55 7.43 16.55 16.55zm-1.91 0c0-8.07-6.56-14.64-14.64-14.64-8.07 0-14.64 6.57-14.64 14.64 0 9.1 11.6 24.13 14.65 27.92 3.05-3.75 14.63-18.56 14.63-27.92zm-14.64 6.73c-3.89 0-7.04-3.15-7.04-7.04 0-3.89 3.15-7.04 7.04-7.04 3.89 0 7.04 3.15 7.04 7.04 0 3.89-3.15 7.04-7.04 7.04z"/>
     <style>
     .state path { fill: lightgray; } 
     .borders path { stroke: white; } 
@@ -389,12 +389,20 @@ function map_shortcode_fxn() {
     /* clinical sites positioned within map SVG - edit SVG image file to add a new site - array key MUST correspond to ACF clinical site slug entered into WordPress back end - this allows for clients to easily change physician names and photos */
     if(!empty($clinical_site_info)) {
          
-        foreach($clinical_site_info as $clinical_site_slug => $site ) {
+        foreach($clinical_site_info as $clinical_site_slug => $site ) {            
+ 
             
-            $map_output .= '<g>
-                <path id="' . $clinical_site_slug . '" class="s2 map-pin-path" role="button" aria-pressed="false" aria-label="' . $site['site_name'] . ' physicians" tabindex="0" d="m96.26 342.03c-5.62 0-10.2 4.58-10.2 10.2 0 6.84 9.35 18.03 9.75 18.5q0.18 0.2 0.45 0.21 0.27 0 0.44-0.21c0.4-0.46 9.76-11.46 9.76-18.5 0-5.62-4.57-10.2-10.2-10.2z"/>
-                <path fill-rule="evenodd" class="s3" d="m106.46 352.23c0 7.04-9.36 18.04-9.76 18.5q-0.17 0.21-0.44 0.21-0.27-0.01-0.45-0.21c-0.4-0.47-9.75-11.66-9.75-18.5 0-5.62 4.58-10.2 10.2-10.2 5.63 0 10.2 4.58 10.2 10.2zm-1.18 0c0-4.98-4.05-9.03-9.02-9.03-4.98 0-9.02 4.05-9.02 9.03 0 5.6 7.14 14.86 9.02 17.2 1.89-2.31 9.02-11.44 9.02-17.2zm-9.02 4.14c-2.4 0-4.34-1.94-4.34-4.34 0-2.39 1.94-4.33 4.34-4.33 2.4 0 4.33 1.94 4.33 4.33 0 2.4-1.93 4.34-4.33 4.34z"/>
-            </g>';
+            $map_output .= '<g transform="translate(' . $site['x'] . ', ' . $site['y'] . '), scale(.6)">';
+            $map_output .= '<path id="'.  esc_attr( $clinical_site_slug ) . '"
+              class="map-pin-path s2"
+              role="button"
+              tabindex="0"
+              aria-pressed="false"
+              aria-label="' . esc_attr( $site['site_name'] ). ' physicians"
+              fill="transparent"
+              d="m24.15 45.47c-3.05-3.79-14.65-18.82-14.65-27.92 0-8.07 6.57-14.64 14.64-14.64 8.08 0 14.64 6.57 14.64 14.64 0 9.36-11.58 24.17-14.63 27.92z"/>'; 
+            $map_output .= '<use href="#pin-light-blue" aria-hidden="true" focusable="false"/>';  
+            $map_output .= '</g>';
         }
     }
 
@@ -405,6 +413,8 @@ function map_shortcode_fxn() {
     // Generate an alpha list of states served
     $area_served = '';
     if ( ! empty( $clinical_site_info ) ) {
+
+        $all_states = array(); 
 
         foreach ( $clinical_site_info as $site ) {
             $all_states [] = $site['state'];
@@ -420,7 +430,7 @@ function map_shortcode_fxn() {
                 "@type": "State", 
                 "name": "' . $state . '"
             }';
-            if ( array_key_last( $unique_states ) == $state ) {
+            if ( !array_key_last( $unique_states ) == $state ) {
                 $area_served .= ',
             ';
             }
@@ -458,12 +468,12 @@ function map_shortcode_fxn() {
 
             $clinic_schema .= '{
                                "@type": "MedicalClinic", 
-                               "name": "' . $site['site_name'] . '", 
+                               "name": "' . esc_js( $site['site_name'] ) . '", 
                                "address": {
                                     "@type": "PostalAddress", 
-                                    "streetAddress": "' . $site['street_address'] . '", 
-                                    "addressLocality": "' . $site['address_locality'] . '",
-                                    "addressRegion": "' . $site['state_abbrev'] . '",
+                                    "streetAddress": "' . esc_js( $site['street_address'] ). '", 
+                                    "addressLocality": "' . esc_js( $site['address_locality'] ) . '",
+                                    "addressRegion": "' .  $site['state_abbrev'] . '",
                                     "postalCode": "' . $site['zip_code'] . '",
                                     "addressCountry": "US"
                                }, 
@@ -485,14 +495,14 @@ function map_shortcode_fxn() {
 
                     $clinic_schema .= '{
                                        "@type": "Person", 
-                                       "name": "' . $physician['name'] . '"';
+                                       "name": "' . esc_js( $physician['name'] ) . '"';
 
                     if ( ! str_contains( $physician['img_src'], 'stethoscope' ) ) {
                         $clinic_schema .= ', 
                                        "image": {
                                             "@type": "ImageObject",
                                             "url": "' . $physician['img_src'] . '", 
-                                            "contentUrl": "' . $physician['img_src'] . '"
+                                            "contentUrl": "' . esc_js( $physician['img_src'] ) . '"
                                        }';
                     }
 
@@ -524,43 +534,8 @@ function map_shortcode_fxn() {
         $map_output .= $clinic_schema;
     }
 
-    wp_enqueue_script(
-        'panzoom',
-        'https://unpkg.com/@panzoom/panzoom@4.6.1/dist/panzoom.min.js',
-        array(),
-        '4.6.1',
-        true
-    );
-
-    wp_enqueue_script(
-        'panzoom-init',
-        TDIR . '/assets/js/panzoom-init.js',
-        array( 'panzoom' ),
-        '1.0.40',
-        true
-    );
-
-    wp_enqueue_script(
-        'map-js',
-        TDIR . '/assets/js/map-min.js',
-        array( 'panzoom', 'panzoom-init' ),
-        '1.0.71',
-        true
-    );
-
-    // Pass clinicData object to JavaScript
-    wp_localize_script(
-        'map-js',
-        'clinicData',
-        array(
-			'clinical_site_info' => $clinical_site_info,
-        )
-    );
-
     return $map_output;
 
-    // Clear output buffer
-    return ob_get_clean();
 }
 
 
