@@ -50,8 +50,8 @@ function mdm_load_clinical_site_info( int $post_id ): array {
             'state'            => $site['state'],
             'state_abbrev'     => state_abbreviation( $site['state'] ),
             'zip_code'         => $site['zip_code'],
-            'x'                => round( ( (float) $site['pin_x'] ) * 959 / 100, 2 ),
-            'y'                => round( ( (float) $site['pin_y'] ) * 593 / 100, 2 ),
+            'x'                => $site['pin_x'],
+            'y'                => $site['pin_y'],
         );
 
         if ( ! empty( $site['physicians'] ) ) {
@@ -86,7 +86,7 @@ function map_shortcode_fxn() {
 
     $map_output = '';
 
-    // Modal backdrop used to dismiss upon interaction when modal is open - transparent 
+    // Click to transparent modal backdrop dismisses modal 
     $map_output .= '<div id="modal-backdrop" class="modal-dismiss" tabindex="-1"></div>';
 
     // Map controls - accessibility 
@@ -103,10 +103,11 @@ function map_shortcode_fxn() {
 
     $map_output .= '<div id="map-container" class="map-container">';
 
-    // Load clinical site data via shared loader function.
+    // Load clinical site data via shared loader function
+    //
     // mdm_load_clinical_site_info() populates the $clinical_site_info global
-    // and returns early if it has already been populated (e.g. by the Markdown
-    // Mirror plugin loading data before this shortcode ran).
+    // and returns early if it has already been populated 
+    // e.g. by the Markdown Mirror plugin loading data before this shortcode
     mdm_load_clinical_site_info( $post_id );
 
     $map_output .= '<svg id="us-map" preserveAspectRatio="xMaxYMin" class="us-map" xmlns="http://www.w3.org/2000/svg" style="width:959px; height: 593px;" viewBox="0 0 959 593">
@@ -390,7 +391,6 @@ function map_shortcode_fxn() {
     if(!empty($clinical_site_info)) {
          
         foreach($clinical_site_info as $clinical_site_slug => $site ) {            
- 
             
             $map_output .= '<g transform="translate(' . $site['x'] . ', ' . $site['y'] . '), scale(.6)">';
             $map_output .= '<path id="'.  esc_attr( $clinical_site_slug ) . '"
