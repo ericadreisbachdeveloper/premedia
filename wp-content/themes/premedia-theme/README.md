@@ -18,4 +18,4 @@ All clinical sites are included within the parent map SVG to keep Panzoom scope 
 Minor refactor to Locations page for modular SVG pins, better escaping of attributes for Schema
 
 ## 1.0.1 - 28 May 2026
-Site Launch 
+Site launch 
