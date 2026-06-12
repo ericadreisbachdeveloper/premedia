@@ -236,30 +236,6 @@ gtag('config', 'G-8EX4823B06');
 /**
  * Add Google Analytics conversion event upon successful WPForms submission
  */
-add_action(
-    'wp_footer',
-    function () {
-        if ( ! function_exists( 'wpforms' ) || ! wpforms()->frontend->forms ) {
-            return;
-        }
-        ?>
-<script>
-
-
-
-window.addEventListener('wpformsAjaxSubmitSuccess', function (event) {
-    gtag('event', 'form_submission', {
-    event_category: 'WPForms',
-    event_label: 'Contact Form',
-    form_id: event.detail?.formId ?? 'unknown'
-    });
-});
-</script>
-        <?php
-    }
-);
-
-
 add_action( 'wp_footer', function () {
     if ( ! is_page( 15 ) ) return;
     ?>
@@ -273,5 +249,4 @@ jQuery(document).on('wpformsAjaxSubmitSuccess', function(event, json, $form) {
 });
 </script>
     <?php
-
 });
