@@ -251,4 +251,4 @@ add_action( 'wp_footer', function () {
 })(window.jQuery);
 </script>
     <?php
-});
+}, 99 );
