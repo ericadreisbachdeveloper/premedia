@@ -22,7 +22,7 @@ function mdm_build_locations_html(): string {
         return '';
     }
 
-    $html  = '<h1>Study Sites and Clinicians</h1>';
+    $html = '<h1>Study Sites and Clinicians</h1>';
 
     foreach ( $clinical_site_info as $site ) {
         $html .= '<h2>' . esc_html( $site['site_name'] ) . '</h2>';

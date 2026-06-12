@@ -10,16 +10,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  * @param string $output WordPress default robots.txt output
- * @param string $public Whether blog is public ('1') or not ('0')
+ * @param string $is_public Whether blog is public ('1') or not ('0')
  * @return string Modified robots.txt content
  */
 add_filter( 'robots_txt', 'custom_robots_txt_dbllc', 10, 2 );
 
-function custom_robots_txt_dbllc( $output, $public ) {
+function custom_robots_txt_dbllc( $output, $is_public ) {
     // Only apply if site is public
     // i.e. "Discourage search engines from indexing this site" unchecked under
     // Settings > Reading
-    if ( '1' != $public ) {
+    if ( '1' !== $is_public ) {
         return $output;
     }
 
@@ -118,9 +118,9 @@ function append_markdown_to_llms_txt_dbllc( $buffer ) {
 
     $pages = get_posts(
         array(
-			'post_type'   => 'page',
-			'numberposts' => -1,
-			'post_status' => 'publish',
+            'post_type'   => 'page',
+            'numberposts' => -1,
+            'post_status' => 'publish',
         )
     );
     foreach ( $pages as $page ) {
@@ -128,7 +128,7 @@ function append_markdown_to_llms_txt_dbllc( $buffer ) {
         // Skip if Rank Math is active and has marked this page as noindex
         if ( function_exists( 'rank_math' ) ) {
             $robots_meta = get_post_meta( $page->ID, 'rank_math_robots', true );
-            if ( is_array( $robots_meta ) && in_array( 'noindex', $robots_meta ) ) {
+            if ( is_array( $robots_meta ) && in_array( 'noindex', $robots_meta, true ) ) {
                 continue;
             }
         }

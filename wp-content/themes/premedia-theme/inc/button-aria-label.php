@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Add an optional aria-label meta box to Gutenberg native button blocks
- * 
+ *
  * @since 1.0.0
  * @return void
  */

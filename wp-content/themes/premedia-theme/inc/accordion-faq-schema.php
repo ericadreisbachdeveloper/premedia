@@ -31,7 +31,7 @@ function dbllc_register_faq_schema_metadata() {
  */
 add_filter( 'render_block', 'dbllc_add_faq_schema_to_accordion', 10, 2 );
 
-function dbllc_add_faq_schema_to_accordion($block_content, $block ) {
+function dbllc_add_faq_schema_to_accordion( $block_content, $block ) {
     if ( 'core/accordion' !== $block['blockName'] ) {
         return $block_content;
     }

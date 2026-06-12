@@ -45,7 +45,7 @@ require_once THEMEPATH . '/inc/secure-endpoints.php';
 require_once THEMEPATH . '/inc/server-side-email-obfuscation.php';
 require_once THEMEPATH . '/inc/simple-shortcodes.php'; /* includes query functions and references to template partials       */
 require_once THEMEPATH . '/inc/shortcode-map.php';
-require_once THEMEPATH . '/inc/template-locations.php'; 
+require_once THEMEPATH . '/inc/template-locations.php';
 
 
 
@@ -70,7 +70,7 @@ if (!is_admin()) {
 
 /**
  * D/enqueue styles + scripts
- * 
+ *
  * @since 1.0.0
  * @return void
  *
@@ -98,12 +98,12 @@ function enqueue_css_js() {
 
 /**
  * Locations page scripts
- * 
+ *
  * @since 1.0.2
- * @return void 
- * 
+ * @return void
+ *
  * - Panzoom library and initialization
- * - Modal helper (asset/js/map-min.js) 
+ * - Modal helper (asset/js/map-min.js)
  * - Localization from PHP to JS
  */
 add_action( 'wp_footer', 'locations_js', 1 );
@@ -146,7 +146,7 @@ function locations_js() {
         'map-js',
         'clinicData',
         array(
-			'clinical_site_info' => $clinical_site_info,
+            'clinical_site_info' => $clinical_site_info,
         )
     );
 
@@ -156,15 +156,15 @@ function locations_js() {
 
 /**
  * Admin styles - as of 6 May 2026 adding .sr-only to Homepage Gutenberg editor ONLY
- * 
+ *
  * @since 1.0.0
  * @return void
  */
 add_action( 'enqueue_block_assets', 'customize_css_in_gutenberg_back_end' );
 
 function customize_css_in_gutenberg_back_end() {
-    if ( !is_admin() ) {
-        return; 
+    if ( ! is_admin() ) {
+        return;
     }
 
     global $post;
@@ -185,7 +185,7 @@ function customize_css_in_gutenberg_back_end() {
 
 /**
  * Add viewport detector for use with CSS animations entering and exiting viewport
- * 
+ *
  * @since 1.0.0
  * @return void
  */
@@ -199,10 +199,10 @@ function add_viewport_detector_dbllc() {
 
 /**
  * Modify <head>
- * 
+ *
  * @since 1.0.0
  * @return void
- * 
+ *
  * 1. Google Analytics
  * 2. Reference markdown mirrors - cf /plugins/markdown-mirror-dbllc
  */
@@ -220,12 +220,12 @@ gtag('config', 'G-8EX4823B06');
 </script>
 
     <?php
-    
+
     // Only add markdown link on singular posts/pages
     if ( ! is_singular() || ! isset( $post->post_name ) ) {
         return;
     }
-    
+
     $slug = ( 'home' === $post->post_name ) ? 'index' : $post->post_name;
     ?>
 <link rel="alternate" type="text/markdown" href="<?php echo esc_url( SITE . '/' . $slug . '.md' ); ?>">
@@ -244,6 +244,9 @@ add_action(
         }
         ?>
 <script>
+
+
+
 window.addEventListener('wpformsAjaxSubmitSuccess', function (event) {
     gtag('event', 'form_submission', {
     event_category: 'WPForms',
@@ -255,3 +258,20 @@ window.addEventListener('wpformsAjaxSubmitSuccess', function (event) {
         <?php
     }
 );
+
+
+add_action( 'wp_footer', function () {
+    if ( ! is_page( 15 ) ) return;
+    ?>
+<script>
+jQuery(document).on('wpformsAjaxSubmitSuccess', function(event, json, $form) {
+    gtag('event', 'form_submission', {
+    event_category: 'WPForms',
+    event_label: 'Contact Form',
+    form_id: $form.data('formid') ?? 'unknown'
+    });
+});
+</script>
+    <?php
+
+});

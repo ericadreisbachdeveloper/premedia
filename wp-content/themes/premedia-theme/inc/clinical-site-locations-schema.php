@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  * @return string Semicolon-separated city, state pairs or empty string
- * 
+ *
  * Eventually outputs in <head> as
  * <meta name="geo.placename" content="...">
  */
@@ -63,10 +63,10 @@ function premedia_get_geo_placenames() {
 
 /**
  * Output City, State pairs as <meta> tag in <head>
- * 
+ *
  * @since 1.0.0
  * @return string Semicolon-separated city, state pairs or empty string
- * 
+ *
  * Outputs in <head> as
  * <meta name="geo.placename" content="...">
  */
@@ -83,7 +83,7 @@ function premedia_geo_meta_tag() {
 
 
 /**
- * Generate  alpha-sorted list of states and parent MedicalOrganization Schema 
+ * Generate  alpha-sorted list of states and parent MedicalOrganization Schema
  *
  * @since 1.0.0
  * @return string JSON-LD schema markup or empty string
@@ -209,7 +209,7 @@ function premedia_bust_locations_cache( $post_id ) {
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
         return;
     }
-    
+
     $locations_page_id = dbllc_get_locations_page_id();
 
     if ( (int) $post_id === (int) $locations_page_id ) {
@@ -239,59 +239,59 @@ function premedia_bust_locations_cache( $post_id ) {
 function state_abbreviation( $state_name ) {
     $states = array(
         'Alabama'              => 'AL',
-		'Alaska'               => 'AK',
+        'Alaska'               => 'AK',
         'Arizona'              => 'AZ',
-		'Arkansas'             => 'AR',
+        'Arkansas'             => 'AR',
         'California'           => 'CA',
-		'Colorado'             => 'CO',
+        'Colorado'             => 'CO',
         'Connecticut'          => 'CT',
-		'Delaware'             => 'DE',
+        'Delaware'             => 'DE',
         'Florida'              => 'FL',
-		'Georgia'              => 'GA',
+        'Georgia'              => 'GA',
         'Hawaii'               => 'HI',
-		'Idaho'                => 'ID',
+        'Idaho'                => 'ID',
         'Illinois'             => 'IL',
-		'Indiana'              => 'IN',
+        'Indiana'              => 'IN',
         'Iowa'                 => 'IA',
-		'Kansas'               => 'KS',
+        'Kansas'               => 'KS',
         'Kentucky'             => 'KY',
-		'Louisiana'            => 'LA',
+        'Louisiana'            => 'LA',
         'Maine'                => 'ME',
-		'Maryland'             => 'MD',
+        'Maryland'             => 'MD',
         'Massachusetts'        => 'MA',
-		'Michigan'             => 'MI',
+        'Michigan'             => 'MI',
         'Minnesota'            => 'MN',
-		'Mississippi'          => 'MS',
+        'Mississippi'          => 'MS',
         'Missouri'             => 'MO',
-		'Montana'              => 'MT',
+        'Montana'              => 'MT',
         'Nebraska'             => 'NE',
-		'Nevada'               => 'NV',
+        'Nevada'               => 'NV',
         'New Hampshire'        => 'NH',
-		'New Jersey'           => 'NJ',
+        'New Jersey'           => 'NJ',
         'New Mexico'           => 'NM',
-		'New York'             => 'NY',
+        'New York'             => 'NY',
         'North Carolina'       => 'NC',
-		'North Dakota'         => 'ND',
+        'North Dakota'         => 'ND',
         'Ohio'                 => 'OH',
-		'Oklahoma'             => 'OK',
+        'Oklahoma'             => 'OK',
         'Oregon'               => 'OR',
-		'Pennsylvania'         => 'PA',
+        'Pennsylvania'         => 'PA',
         'Rhode Island'         => 'RI',
-		'South Carolina'       => 'SC',
+        'South Carolina'       => 'SC',
         'South Dakota'         => 'SD',
-		'Tennessee'            => 'TN',
+        'Tennessee'            => 'TN',
         'Texas'                => 'TX',
-		'Utah'                 => 'UT',
+        'Utah'                 => 'UT',
         'Vermont'              => 'VT',
-		'Virginia'             => 'VA',
+        'Virginia'             => 'VA',
         'Washington'           => 'WA',
-		'West Virginia'        => 'WV',
+        'West Virginia'        => 'WV',
         'Wisconsin'            => 'WI',
-		'Wyoming'              => 'WY',
+        'Wyoming'              => 'WY',
         'District of Columbia' => 'DC',
     );
 
     $state_name = trim( $state_name );
-    
+
     return $states[ $state_name ] ?? $state_name;
 }

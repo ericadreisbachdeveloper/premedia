@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Output buffer: rewrites mailto links for CSS display + JS onclick assembly.
  * - Anchor text replaced by CSS ::before content (split across two data attributes)
  * - mailto: assembled only on click
- * 
+ *
  * @since 1.0.0
  * @return void
  */

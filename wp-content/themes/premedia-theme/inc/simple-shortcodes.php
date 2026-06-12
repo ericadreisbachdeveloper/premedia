@@ -16,7 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_shortcode( 'copyright', 'copyright_sign' );
 
 function copyright_sign() {
-    $current_year = date( 'Y' );
+
+    $current_year = gmdate( 'Y' );
 
     return '&copy;' . $current_year;
+
 }

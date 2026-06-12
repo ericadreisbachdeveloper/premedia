@@ -86,10 +86,10 @@ function map_shortcode_fxn() {
 
     $map_output = '';
 
-    // Click to transparent modal backdrop dismisses modal 
+    // Click to transparent modal backdrop dismisses modal
     $map_output .= '<div id="modal-backdrop" class="modal-dismiss" tabindex="-1"></div>';
 
-    // Map controls - accessibility 
+    // Map controls - accessibility
     $map_output .= '<div class="map-controls" role="group" aria-label="Map controls">';
     $map_output .= '<div class="map-zoom">
     <button class="map-control-btn" id="map-zoom-in" aria-label="Zoom in on map"><svg class="map-zoom-in-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M256 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 160-160 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l160 0 0 160c0 17.7 14.3 32 32 32s32-14.3 32-32l0-160 160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-160 0 0-160z"/></svg></button>';
@@ -106,7 +106,7 @@ function map_shortcode_fxn() {
     // Load clinical site data via shared loader function
     //
     // mdm_load_clinical_site_info() populates the $clinical_site_info global
-    // and returns early if it has already been populated 
+    // and returns early if it has already been populated
     // e.g. by the Markdown Mirror plugin loading data before this shortcode
     mdm_load_clinical_site_info( $post_id );
 
@@ -388,20 +388,20 @@ function map_shortcode_fxn() {
     </g>';
 
     /* clinical sites positioned within map SVG - edit SVG image file to add a new site - array key MUST correspond to ACF clinical site slug entered into WordPress back end - this allows for clients to easily change physician names and photos */
-    if(!empty($clinical_site_info)) {
-         
-        foreach($clinical_site_info as $clinical_site_slug => $site ) {            
-            
+    if ( ! empty($clinical_site_info) ) {
+
+        foreach ( $clinical_site_info as $clinical_site_slug => $site ) {
+
             $map_output .= '<g transform="translate(' . $site['x'] . ', ' . $site['y'] . '), scale(.6)">';
-            $map_output .= '<path id="'.  esc_attr( $clinical_site_slug ) . '"
+            $map_output .= '<path id="' . esc_attr( $clinical_site_slug ) . '"
               class="map-pin-path s2"
               role="button"
               tabindex="0"
               aria-pressed="false"
-              aria-label="' . esc_attr( $site['site_name'] ). ' physicians"
+              aria-label="' . esc_attr( $site['site_name'] ) . ' physicians"
               fill="transparent"
-              d="m24.15 45.47c-3.05-3.79-14.65-18.82-14.65-27.92 0-8.07 6.57-14.64 14.64-14.64 8.08 0 14.64 6.57 14.64 14.64 0 9.36-11.58 24.17-14.63 27.92z"/>'; 
-            $map_output .= '<use href="#pin-light-blue" aria-hidden="true" focusable="false"/>';  
+              d="m24.15 45.47c-3.05-3.79-14.65-18.82-14.65-27.92 0-8.07 6.57-14.64 14.64-14.64 8.08 0 14.64 6.57 14.64 14.64 0 9.36-11.58 24.17-14.63 27.92z"/>';
+            $map_output .= '<use href="#pin-light-blue" aria-hidden="true" focusable="false"/>';
             $map_output .= '</g>';
         }
     }
@@ -414,7 +414,7 @@ function map_shortcode_fxn() {
     $area_served = '';
     if ( ! empty( $clinical_site_info ) ) {
 
-        $all_states = array(); 
+        $all_states = array();
 
         foreach ( $clinical_site_info as $site ) {
             $all_states [] = $site['state'];
@@ -430,7 +430,7 @@ function map_shortcode_fxn() {
                 "@type": "State", 
                 "name": "' . $state . '"
             }';
-            if ( !array_key_last( $unique_states ) == $state ) {
+            if ( ! array_key_last( $unique_states ) === $state ) {
                 $area_served .= ',
             ';
             }
@@ -471,9 +471,9 @@ function map_shortcode_fxn() {
                                "name": "' . esc_js( $site['site_name'] ) . '", 
                                "address": {
                                     "@type": "PostalAddress", 
-                                    "streetAddress": "' . esc_js( $site['street_address'] ). '", 
+                                    "streetAddress": "' . esc_js( $site['street_address'] ) . '", 
                                     "addressLocality": "' . esc_js( $site['address_locality'] ) . '",
-                                    "addressRegion": "' .  $site['state_abbrev'] . '",
+                                    "addressRegion": "' . $site['state_abbrev'] . '",
                                     "postalCode": "' . $site['zip_code'] . '",
                                     "addressCountry": "US"
                                }, 

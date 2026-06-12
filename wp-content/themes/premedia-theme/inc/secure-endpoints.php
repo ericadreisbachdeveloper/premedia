@@ -40,13 +40,13 @@ function dbllc_disable_user_endpoints( $endpoints ) {
         }
     }
 
-    if (isset($endpoints['/wp/v2/comments'])) {
+    if ( isset($endpoints['/wp/v2/comments']) ) {
         unset($endpoints['/wp/v2/comments']);
     }
-    if (isset($endpoints['/wp/v2/comments/(?P<id>[\d]+)'])) {
+    if ( isset($endpoints['/wp/v2/comments/(?P<id>[\d]+)']) ) {
         unset($endpoints['/wp/v2/comments/(?P<id>[\d]+)']);
     }
-    
+
     return $endpoints;
 }
 
@@ -68,18 +68,18 @@ function dbllc_remove_author_from_rest( $response, $post, $request ) {
     // Only filter for non-authenticated users
     if ( ! is_user_logged_in() ) {
         $data = $response->get_data();
-        
+
         // Remove author ID and link
         unset( $data['author'] );
-        
+
         // Remove _links that expose author info
         if ( isset( $data['_links']['author'] ) ) {
             unset( $data['_links']['author'] );
         }
-        
+
         $response->set_data( $data );
     }
-    
+
     return $response;
 }
 

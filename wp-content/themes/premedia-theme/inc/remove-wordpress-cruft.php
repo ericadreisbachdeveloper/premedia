@@ -272,7 +272,7 @@ function clean_meta_content_dbllc( $content ) {
  */
 add_filter( 'render_block', 'add_fetchpriority_to_logo_dbllc', 10, 2 );
 
-// Logo id = 358 
+// Logo id = 358
 // In other builds with significant hero images there would be more value in adding
 // a meta box for fetchpriority to any given image
 // or programmatically setting an image as "hero" with fetchpriority=high
@@ -285,7 +285,7 @@ function add_fetchpriority_to_logo_dbllc( $block_content, $block ) {
     }
 
     // ... and of image blocks, only target logo
-    if ( isset( $block['attrs']['id'] ) && $block['attrs']['id'] == LOGO_ID ) {
+    if ( isset( $block['attrs']['id'] ) && $block['attrs']['id'] === LOGO_ID ) {
         $block_content = preg_replace(
             '/<img\s/',
             '<img fetchpriority="high" ',
@@ -309,9 +309,9 @@ function add_fetchpriority_to_logo_dbllc( $block_content, $block ) {
  */
 add_action( 'login_enqueue_scripts', 'dbllc_login_logo' );
 
-function dbllc_login_logo() { 
-    $img_url = wp_get_attachment_image_url(LOGO_ID, 'medium'); 
-    
+function dbllc_login_logo() {
+    $img_url = wp_get_attachment_image_url(LOGO_ID, 'medium');
+
     ?>
     <style type="text/css">
         #login h1 a, .login h1 a {
@@ -321,7 +321,8 @@ function dbllc_login_logo() {
             background-size: contain;
         }
     </style>
-<?php }
+    <?php
+}
 
 
 /**

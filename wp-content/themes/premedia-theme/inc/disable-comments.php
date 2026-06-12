@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Disable comments in WordPress back end 
+ * Disable comments in WordPress back end
  *
  * Removes all comment functionality from WordPress including:
  * - Comment forms and submission
@@ -20,7 +20,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
-
 
 /**
  * Tarpit comment submission attempts
@@ -42,7 +41,7 @@ function dbllc_tarpit_comment_submissions() {
         isset( $_SERVER['REQUEST_METHOD'] ) &&
         $_SERVER['REQUEST_METHOD'] === 'POST' &&
         isset( $_SERVER['SCRIPT_NAME'] ) &&
-        str_contains( $_SERVER['SCRIPT_NAME'], 'wp-comments-post.php' )
+        str_contains( sanitize_url( wp_unslash( $_SERVER['SCRIPT_NAME'] ) ), 'wp-comments-post.php' )
     ) {
         // Ensure PHP won't terminate the sleep early
         set_time_limit( 90 );
@@ -56,16 +55,18 @@ function dbllc_tarpit_comment_submissions() {
     }
 }
 
-
-add_filter('rest_endpoints', function ($endpoints) {
-    if (isset($endpoints['/wp/v2/comments'])) {
-        unset($endpoints['/wp/v2/comments']);
+add_filter(
+    'rest_endpoints',
+    function ( $endpoints ) {
+        if ( isset( $endpoints['/wp/v2/comments'] ) ) {
+            unset( $endpoints['/wp/v2/comments'] );
+        }
+        if ( isset( $endpoints['/wp/v2/comments/(?P<id>[\d]+)'] ) ) {
+            unset( $endpoints['/wp/v2/comments/(?P<id>[\d]+)'] );
+        }
+        return $endpoints;
     }
-    if (isset($endpoints['/wp/v2/comments/(?P<id>[\d]+)'])) {
-        unset($endpoints['/wp/v2/comments/(?P<id>[\d]+)']);
-    }
-    return $endpoints;
-});
+);
 
 
 /**
@@ -79,6 +80,7 @@ add_filter( 'feed_links_show_comments_feed', '__return_false' );
  * @since 1.0.0
  * @return void
  */
+
 add_action( 'admin_menu', 'dbllc_remove_comments_menu' );
 
 function dbllc_remove_comments_menu() {

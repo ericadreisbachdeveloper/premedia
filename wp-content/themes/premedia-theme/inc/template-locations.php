@@ -15,17 +15,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function dbllc_get_locations_template_page_id() {
     static $page_id = null;
-    
+
     if ( null !== $page_id ) {
         return $page_id;
     }
-    
+
     $cached = get_transient( 'dbllc_locations_template_page' );
     if ( false !== $cached ) {
         $page_id = (int) $cached;
         return $page_id;
     }
-    
+
     $pages = get_posts(
         array(
             'post_type'      => 'page',
@@ -35,13 +35,13 @@ function dbllc_get_locations_template_page_id() {
             'meta_value'     => 'locations',
         )
     );
-    
+
     if ( ! empty( $pages ) ) {
         $page_id = $pages[0]->ID;
         set_transient( 'dbllc_locations_template_page', $page_id, DAY_IN_SECONDS );
         return $page_id;
     }
-    
+
     return null;
 }
 
@@ -61,19 +61,19 @@ function dbllc_bust_locations_template_cache( $post_id, $post ) {
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
         return;
     }
-    
+
     // Check permissions
     if ( ! current_user_can( 'edit_page', $post_id ) ) {
         return;
     }
-    
+
     // Bust cache when any page template changes
     delete_transient( 'dbllc_locations_template_page' );
 }
 
 /**
  * Helper function to get locations page ID
- *  
+ *
  * IMPORTANT: The Locations page (ID 13) contains the ACF repeater field with city/state data used for:
  * - Global MedicalOrganization schema
  * - Global <meta name="geo.placename"> tags
@@ -84,9 +84,9 @@ function dbllc_bust_locations_template_cache( $post_id, $post ) {
 define( 'LOCATIONS_PAGE_ID', 13 );
 
 function dbllc_get_locations_page_id() {
-    
+
     $page_id = dbllc_get_locations_template_page_id();
-    
+
     // Fallback to hard-coded ID if template not found
     if ( null === $page_id ) {
         // Try to find by slug as last resort
@@ -97,6 +97,6 @@ function dbllc_get_locations_page_id() {
         // Ultimate fallback
         return LOCATIONS_PAGE_ID;
     }
-    
+
     return $page_id;
 }
