@@ -240,13 +240,15 @@ add_action( 'wp_footer', function () {
     if ( ! is_page( 15 ) ) return;
     ?>
 <script>
-jQuery(document).on('wpformsAjaxSubmitSuccess', function(event, json, $form) {
+(function($) {
+    $(document).on('wpformsAjaxSubmitSuccess', function(event, json, $form) {
     gtag('event', 'form_submission', {
-    event_category: 'WPForms',
-    event_label: 'Contact Form',
-    form_id: $form.data('formid') ?? 'unknown'
+        event_category: 'WPForms',
+        event_label: 'Contact Form',
+        form_id: $form.data('formid') ?? 'unknown'
     });
-});
+    });
+})(window.jQuery);
 </script>
     <?php
 });
