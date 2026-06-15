@@ -51,6 +51,14 @@
     white-space: nowrap;
 }
 
+// wrap text of long links 
+// ref: https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/
+p>[href],
+li>[href] {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
 
 
 .img-with-corners {
