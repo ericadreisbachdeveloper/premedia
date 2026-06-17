@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0.0
  * @return string Map HTML markup
  */
+
 /**
  * Load clinical site data from ACF into the $clinical_site_info global.
  *
@@ -79,6 +80,10 @@ function map_shortcode_fxn() {
     global $post;
     global $map_shortcode_used;
     global $clinical_site_info;
+
+    if ( ! isset( $post ) || ! ( $post instanceof WP_Post ) ) {
+        return '';
+    }
 
     $post_id = $post->ID;
 
