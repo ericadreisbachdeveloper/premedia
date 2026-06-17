@@ -86,7 +86,8 @@ function map_shortcode_fxn() {
         $post_id = '13';
     }
 
-    $post_id = $post->ID;
+    //$post_id = $post->ID;
+    $post_id = '13';
 
     $map_shortcode_used = true; // Set flag when shortcode is called - used for wp_footer() hook to generate modal
 
