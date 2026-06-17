@@ -82,7 +82,8 @@ function map_shortcode_fxn() {
     global $clinical_site_info;
 
     if ( ! isset( $post ) || ! ( $post instanceof WP_Post ) || empty( $post->ID ) ) {
-        return '';
+        //return '';
+        $post_id = '13';
     }
 
     $post_id = $post->ID;
