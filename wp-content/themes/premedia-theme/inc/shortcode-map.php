@@ -417,31 +417,28 @@ function map_shortcode_fxn() {
 
     $map_output .= '</div>'; // #map-container.map-container
 
-    // Generate an alpha list of states served
-    $area_served = '';
+    // Generate an alpha-sorted list of unique states served, encoded as valid JSON
+    $area_served_json = '[]';
     if ( ! empty( $clinical_site_info ) ) {
 
         $all_states = array();
 
         foreach ( $clinical_site_info as $site ) {
-            $all_states [] = $site['state'];
+            $all_states[] = $site['state'];
         }
 
         $unique_states = array_unique( $all_states );
         sort( $unique_states );
 
-        foreach ( $unique_states as $state ) {
-            $area_served .= '
-            {   
-                "array_key_last": "' . array_key_last( $unique_states ) . '",
-                "@type": "State", 
-                "name": "' . $state . '"
-            }';
-            if ( ! array_key_last( $unique_states ) === $state ) {
-                $area_served .= ',
-            ';
-            }
-        }
+        $area_served_array = array_map(
+            fn( string $state ): array => array(
+                '@type' => 'State',
+                'name'  => $state,
+            ),
+            $unique_states
+        );
+
+        $area_served_json = wp_json_encode( $area_served_array, JSON_UNESCAPED_UNICODE );
     }
 
     // Sites and physicians for LLMs and robots to cache/catch
@@ -458,8 +455,7 @@ function map_shortcode_fxn() {
         {"@type": "PropertyValue", "name": "ClinicalTrials.gov ID", "value": "NCT07293650"},            
         {"@type": "PropertyValue", "name": "ClinicalTrials.gov ID", "value": "NCT07293689"}
     ],
-    "areaServed": [' . $area_served .
-    ']
+    "areaServed": ' . $area_served_json . '
     }';
     /* /MedicalOrganization */
 
