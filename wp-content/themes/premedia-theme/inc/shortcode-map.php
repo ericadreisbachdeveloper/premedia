@@ -81,7 +81,7 @@ function map_shortcode_fxn() {
     global $map_shortcode_used;
     global $clinical_site_info;
 
-    if ( ! isset( $post ) || ! ( $post instanceof WP_Post ) ) {
+    if ( ! isset( $post ) || ! ( $post instanceof WP_Post ) || empty( $post->ID ) ) {
         return '';
     }
 
