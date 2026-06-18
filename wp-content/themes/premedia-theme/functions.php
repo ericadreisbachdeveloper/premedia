@@ -239,16 +239,19 @@ gtag('config', 'G-8EX4823B06');
 add_action( 'wp_footer', function () {
     if ( ! is_page( 15 ) ) return;
     ?>
-<script>
-(function($) {
-    $(document).on('wpformsAjaxSubmitSuccess', function(event, json, $form) {
-    gtag('event', 'form_submission', {
-        event_category: 'WPForms',
-        event_label: 'Contact Form',
-        form_id: $form.data('formid') ?? 'unknown'
+  <script>
+    window.addEventListener('load', function() {
+      (function($) {
+        $(document).on('wpformsAjaxSubmitSuccess', function(event, json, $form) {
+          console.log('wpformsAjaxSubmitSuccess fired!'); // remove after confirming
+          gtag('event', 'form_submission', {
+            event_category: 'WPForms',
+            event_label: 'Contact Form',
+            form_id: $form.data('formid') ?? 'unknown'
+          });
+        });
+      })(window.jQuery);
     });
-    });
-})(window.jQuery);
-</script>
+  </script>
     <?php
-}, 99 );
+}, 99);
