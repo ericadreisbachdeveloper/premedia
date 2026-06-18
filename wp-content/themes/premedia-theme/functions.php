@@ -127,9 +127,9 @@ function locations_js() {
 
     wp_enqueue_script(
         'panzoom-init',
-        TDIR . '/assets/js/panzoom-init.js',
+        TDIR . '/assets/js/panzoom-init-min.js',
         array( 'panzoom' ),
-        '1.0.40',
+        '1.0.41',
         true
     );
 
