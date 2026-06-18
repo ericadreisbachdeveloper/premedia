@@ -129,7 +129,7 @@ function locations_js() {
         'panzoom-init',
         TDIR . '/assets/js/panzoom-init-min.js',
         array( 'panzoom' ),
-        '1.0.41',
+        '1.0.42',
         true
     );
 
