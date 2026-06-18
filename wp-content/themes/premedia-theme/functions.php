@@ -243,7 +243,6 @@ add_action( 'wp_footer', function () {
     window.addEventListener('load', function() {
       (function($) {
         $(document).on('wpformsAjaxSubmitSuccess', function(event, json, $form) {
-          console.log('wpformsAjaxSubmitSuccess fired!'); // remove after confirming
           gtag('event', 'form_submission', {
             event_category: 'WPForms',
             event_label: 'Contact Form',
